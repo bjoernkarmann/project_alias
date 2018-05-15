@@ -1,0 +1,24 @@
+{
+  "name": "project_alias",
+  "version": "1.0.0",
+  "description": "Naming hack for voice activated devices",
+  "main": "server/app.js",
+  "scripts": {
+    "start": "node server/app.js"
+  },
+  "keywords": [
+    "alias",
+    "ml",
+    "keras",
+    "classifier"
+  ],
+  "author": "Bjørn Karmann",
+  "license": "MIT",
+  "dependencies": {
+    "aplay": "^1.2.0",
+    "express": "^4.16.3",
+    "mic": "^2.1.2",
+    "socket.io": "^2.1.0",
+    "loudness": "^0.2.2"
+  }
+}
