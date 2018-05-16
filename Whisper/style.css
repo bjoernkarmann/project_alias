@@ -1,0 +1,76 @@
+
+
+.content{
+	margin: 20px;
+}
+#sketch-holder{
+
+}
+
+.btn{
+display: block;
+border:none;
+outline: none;
+padding: 10px 16px;
+background-color: #f1f1f1;
+cursor: pointer;
+width: 250px; 
+margin-top: 10px;
+margin-left: 20px;
+}
+ 
+.btn:hover{
+	background-color: rgb(50,50,70);
+	color:white;
+}
+
+.btn.active, .btn.active:hover{
+	background-color: orange;
+	color: black;
+}
+
+
+.slider{
+	-webkit-appearance: none;
+    width: 100px;
+    height: 5px;
+    border-radius: 5px;   
+    background: #d3d3d3;
+    color:orange;
+    outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; 
+    appearance: none;
+    width: 14px; 
+    height: 14px;
+    border-radius: 100%;
+    background: orange;
+    cursor: pointer;
+}
+
+.slider-text{
+	font-size: 12px;
+	font-family: sans-serif;
+	color: rgb(90,90,90);
+}
+
+.toggle{
+
+}
+
+.dropdown{
+
+display: block;
+border:none;
+outline: none;
+padding: 10px 16px;
+background-color: #f1f1f1;
+cursor: pointer;
+width: 250px; 
+height: 25px;
+margin-top: 10px;
+margin-left: 20px;
+
+}
