@@ -2,17 +2,19 @@
 function sound() {
 
   //=====================//
-  //      WEBSERVER      //
+  //       SPEAKER       //
   //=====================//
 
-  this.setVolume = function(n) {
-    //https://www.npmjs.com/package/loudness
-    var loudness = require('loudness');
-    loudness.setVolume(n, function (err) {});
+  // volume controle
+  var cmd = require('node-cmd');
+  //https://www.npmjs.com/package/node-cmd
+  this.setVolume = function(n){
+    cmd.run('amixer -c 1 sset Speaker '+n);
   }
 
+  //play a soundfile
+  //https://www.npmjs.com/package/aplay
   this.playFile = function(path) {
-    //https://www.npmjs.com/package/aplay
     var Sound = require('aplay');
     var music = new Sound();
     music.play(path);
@@ -21,15 +23,24 @@ function sound() {
     });
   }
 
+  this.loopFile = function(path) {
+    var Sound = require('aplay');
+    var music = new Sound();
+    music.play(path);
+    music.on('complete', function () {
+      music.play(path);
+    });
+  }
+
   //=====================//
   //     MICROPHONE      //
   //=====================//
 
-  //https://github.com/ashishbajaj99/mic
   var mic = require('mic');
   var fs = require('fs');
 
   this.record = function(){
+    //https://github.com/ashishbajaj99/mic
     var micInstance = mic({
         rate: '16000',
         channels: '1',
