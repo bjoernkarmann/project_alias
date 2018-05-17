@@ -4,7 +4,7 @@ var knn = new kNear(3);
 
 // Init variables for sound input and spectogram
 var mic, fft;
-var specInterval; 
+var specInterval;
 var r, g, b;
 var Pixels = [];
 
@@ -18,19 +18,19 @@ var step;
 
 // Init variables for K-near output smoothing
 var sampleSize = 12;
-var classSample = []; 
-var index = 0; 
+var classSample = [];
+var index = 0;
 var realOutput, oldOutput = 0;
 
 //Variables for recording preData
-var table, trainingExamples; 
-var recordData = false; // if true a new predata set will be recorded while traiing the null state, and saved as csv. 
+var table, trainingExamples;
+var recordData = false; // if true a new predata set will be recorded while traiing the null state, and saved as csv.
 var recordCounter = 0;
 var preRecordLimit = 3000; // amout of samples before recording is stoped and saved as csv
 var doneTraining = false;
 
-// Create device object to hold different home-assitences 
-var device = []; 
+// Create device object to hold different home-assitences
+var device = [];
 var Device = function(name, command){
   this.name = name;
   this.command = command;
@@ -49,7 +49,7 @@ function setup() {
     canvas.parent('sketch-holder');
     frameRate(30);
 
-    //load activation sounds 
+    //load activation sounds
     helloGoogle = loadSound('assets/google.mp3');
     alexa = loadSound('assets/alexa.mp3');
     //init devices
@@ -61,7 +61,7 @@ function setup() {
     resolution = floor(sqrt(inputToKnn));
     step = height / resolution;
     //Create interface
-    dropDown(); 
+    dropDown();
     slidersInit()
     buttons();
 
@@ -89,8 +89,8 @@ function setup() {
 //-----------------------------------------------------------
 // D R A W
 //-----------------------------------------------------------
-function draw() { 
-   
+function draw() {
+
    if(!doneTraining){
         // nothing
    }
@@ -98,15 +98,15 @@ function draw() {
     //reset array of pixels to k-near algorithm
     pixelToKnn = [];
     //fill array with spectrogram pixels
-    pixelToKnn = soundAnalyze(); 
+    pixelToKnn = soundAnalyze();
     //train k-near algorithm with data
     trainOnData(pixelToKnn);
     //get the output from classification of data
     var keyWord = classifyData(pixelToKnn);
     //If keyword matches the command class, play device command when keyWord is said
     if(keyWord == cmdBtn.identity){
-     setTimeout(function(){device[dropDown.value()].executeCmd(); }, 1000);  
-   }  
+     setTimeout(function(){device[dropDown.value()].executeCmd(); }, 1000);
+   }
 
     //update sliders
     for(var i = 0; i < sliderArr.length; i++){
@@ -114,7 +114,7 @@ function draw() {
    }
  }
 }
-   
+
 
 //-----------------------------------------------------------
 // Handles to control the training
@@ -135,7 +135,7 @@ function trainOnData(arr) {
       if(recordData) recordSamples(arr);
       else if( device[dropDown.value()].command.isPlaying() === false ){
         output = knn.classify(arr);
-        output = avrOutput(output); 
+        output = avrOutput(output);
         console.log("output from " + arr.length + " inputs is: " + output);
       }
       return output;
@@ -177,7 +177,7 @@ function recordSamples(arr){
 var avrOutput = function(output_) {
   var match = true;
   classSample = splice(classSample, output_, 0);
-  classSample = subset(classSample, 0, sampleSize); 
+  classSample = subset(classSample, 0, sampleSize);
 
   var first = classSample[0];
   for (var i = 1; i < classSample.length; i++) {
@@ -185,11 +185,9 @@ var avrOutput = function(output_) {
   }
 
   if (match) {
-    realOutput = output_; 
+    realOutput = output_;
     oldOutput = output_;
   } else realOutput = oldOutput;
 
   return realOutput;
 }
-
-
