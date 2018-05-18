@@ -4,7 +4,7 @@ var io     = new(require('./js/io.js'));
 var client = new(require('./js/client.js'));
 
 sound.startRecord(function(data){
-  console.log(data); // sending back buffer
+  sound.makeFFT(data);
 })
 
 sound.setVolume(80);

@@ -12,5 +12,5 @@ function client() {
       console.log('A client is connected!');
       socket.emit('message', 'You are connected!');
   });
-
+}
 module.exports = client;

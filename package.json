@@ -1,24 +1,27 @@
 {
   "name": "project_alias",
   "version": "1.0.0",
-  "description": "Naming hack for voice activated devices",
+  "description": "A open-source hack to train custom wake-up names for smart home devices and block the their build in microphone.",
   "main": "server/app.js",
   "scripts": {
-    "start": "node server/app.js"
+    "start": "nodejs server/app.js"
   },
   "keywords": [
     "alias",
     "ml",
-    "keras",
+    "knear",
     "classifier"
   ],
   "author": "Bjørn Karmann",
   "license": "MIT",
   "dependencies": {
+    "apa102-spi": "0.0.3",
     "aplay": "^1.2.0",
     "express": "^4.16.3",
+    "fft-js": "0.0.11",
     "mic": "^2.1.2",
-    "socket.io": "^2.1.0",
-    "loudness": "^0.2.2"
+    "node-cmd": "^3.0.0",
+    "rpio": "^0.9.21",
+    "socket.io": "^2.1.0"
   }
 }
