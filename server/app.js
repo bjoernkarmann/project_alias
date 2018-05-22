@@ -1,10 +1,10 @@
-var knn    =     require('./js/knear.js')(3); // number of classes
-var sound  = new(require('./js/sound.js'));
-var io     = new(require('./js/io.js'));
-var client = new(require('./js/client.js'));
+var knn     =     require('./js/knear.js')(3); // number of classes
+var trainer = new(require('./js/trainer.js'));
+var sound   = new(require('./js/sound.js'));
+var io      = new(require('./js/io.js'));
+var client  = new(require('./js/client.js'));
 
 sound.startRecord(function(data){
-
   console.log(data);
 })
 

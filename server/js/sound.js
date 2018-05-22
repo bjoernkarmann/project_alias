@@ -49,8 +49,9 @@ function sound() {
   // For debugging use on mac use sox
   this.startRecord = function(callback){
     var mic = micInstance.getAudioStream();
-    var outputFileStream = fs.WriteStream('server/data/output.wav'); // temp file
+    var outputFileStream = fs.WriteStream('./server/data/output.wav'); // temp file
     mic.pipe(outputFileStream);
+    // when data is resieved from buffer
     mic.on('data', function(data) {
       var arr = Array.prototype.slice.call(data, 0); // convert buffer array to num array
       var fft = makeFFT(data);
@@ -60,7 +61,7 @@ function sound() {
   }
 
   //=====================//
-  //  FOURIER TRANSFORM  //
+  //   SOUND ANALYTICS   //
   //=====================//
 
   // Private function for Fast Fourier Transformation
@@ -70,6 +71,11 @@ function sound() {
     var out = new Array(1024);
     f.realTransform(out,data);
     return out;
+  }
+
+  // Private function for getting apl
+  function amplitude(data){
+    return data;
   }
 }
 

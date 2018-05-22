@@ -4,7 +4,7 @@
   "description": "A open-source hack to train custom wake-up names for smart home devices and block the their build in microphone.",
   "main": "server/app.js",
   "scripts": {
-     "start": "nodejs server/app.js",
+    "start": "nodejs server/app.js",
     "test": "node server/app.js"
   },
   "keywords": [
@@ -19,8 +19,8 @@
     "apa102-spi": "0.0.3",
     "aplay": "^1.2.0",
     "express": "^4.16.3",
-    "fft-js": "0.0.11",
     "fft.js": "^4.0.3",
+    "fs": "0.0.1-security",
     "knear": "0.0.5",
     "mic": "^2.1.2",
     "node-cmd": "^3.0.0",
