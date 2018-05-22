@@ -4,7 +4,8 @@
   "description": "A open-source hack to train custom wake-up names for smart home devices and block the their build in microphone.",
   "main": "server/app.js",
   "scripts": {
-    "start": "nodejs server/app.js"
+     "start": "nodejs server/app.js",
+    "test": "node server/app.js"
   },
   "keywords": [
     "alias",

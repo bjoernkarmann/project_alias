@@ -1,4 +1,4 @@
-var kNear = function(k) {
+var knear = function(k) {
     //PRIVATE
     var training = [];
 
@@ -81,4 +81,4 @@ var kNear = function(k) {
     };
 };
 
-module.exports = kNear;
+module.exports = knear;

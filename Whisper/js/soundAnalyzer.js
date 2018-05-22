@@ -5,7 +5,7 @@ function soundAnalyze() {
   var spectrum = fft.analyze();
 
   //-----------------------------------------------------------
-  // get binSize and adjust to cutoff. 
+  // get binSize and adjust to cutoff.
   var binSize = spectrum.length - sliderArr[0].slider.value(); //freqCut
 
   //-----------------------------------------------------------
@@ -25,11 +25,11 @@ function soundAnalyze() {
         //get the amplitude value from the specific bin
         var value = constrain(spectrum[i],0,255);
 
-        //Apply treshhold 
+        //Apply treshhold
         if(value < thresh) value = 0;
         else value = map(value,thresh,maxVal ,0,255);
         value = constrain(value,0,255);
-       
+
         // create colors from values
         r = constrain(50 + norm(value, 0, 255) * (370), 0, 255);
         g = constrain(50 + norm(value, 0, 255) * norm(value, 0, 255) * 220, 0, 255);
@@ -55,10 +55,9 @@ function soundAnalyze() {
             noStroke();
             rect(step * x, step * y, step, step);
 
-            //make pixelarray ready for Knear classifier 
+            //make pixelarray ready for Knear classifier
             pixelToKnn[loc] = ( Pixels[loc].levels[0] + Pixels[loc].levels[1] + Pixels[loc].levels[2] ) / 2;
         }
     }
     return pixelToKnn;
 }
-
