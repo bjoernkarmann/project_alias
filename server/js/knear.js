@@ -35,6 +35,7 @@ var kNear = function(k) {
     }
 
 
+
     //PUBLIC
 
     //add a point to the training set
