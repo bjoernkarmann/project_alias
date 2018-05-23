@@ -4,12 +4,12 @@ var sound   = new(require('./js/sound.js'));
 var io      = new(require('./js/io.js'));
 var client  = new(require('./js/client.js'));
 
-sound.startRecord(function(data){
-  console.log(data);
-})
+  sound.startRecord();
+
+ 
 
 //sound.setVolume(80);
 //sound.playFile('server/data/noise.wav');
-io.setRGB(0, 0, 200);
+//io.setRGB(0, 0, 200);
 
 console.log("Alias is Ready!");
