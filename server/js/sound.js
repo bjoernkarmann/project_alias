@@ -5,15 +5,16 @@ function sound() {
   //       SPEAKER       //
   //=====================//
 
-  // Public function to controle the volume
   var cmd = require('node-cmd'); //https://www.npmjs.com/package/node-cmd
-  this.setVolume = function(n){
-    cmd.run('amixer -c 1 sset Speaker '+n);
-  }
-
   var Sound = require('aplay'); //https://www.npmjs.com/package/aplay
   var music = new Sound();
 
+  this.noise = false; // Public toogle for noise
+
+  // Public function to controle the volume
+  this.setVolume = function(n){
+    cmd.run('amixer -c 1 sset Speaker '+n);
+  }
   // Public functions to play and pause soundfiles
   this.playFile = function(path) {
     music.play(path);
@@ -73,7 +74,6 @@ function sound() {
         })
       buffers = []; // free recorded data
     });
-
     micInstance.start();
   }
 

@@ -1,5 +1,9 @@
 function client() {
 
+  //=====================//
+  //      SOCKET IO      //
+  //=====================//
+
   //https://github.com/socketio/socket.io
   var express = require('express');
   var app = express();
@@ -8,11 +12,13 @@ function client() {
   var socket = require('socket.io').listen(server);
 
   // When  client connects reseive messages
-  socket.on('connection', function (socket) {
-      socket.on('msg', function (data) {
-        console.log(data);
-      });
-  });
+  this.listen = function(callback){
+    socket.on('connection', function (socket) {
+        socket.on('msg', function (data) {
+          callback(data);
+        });
+    });
+  }
 
   // Send data to the client
   this.sendData = function(data){
