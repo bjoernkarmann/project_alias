@@ -54,8 +54,9 @@ function sound() {
     // when data is resieved from buffer
     mic.on('data', function(data) {
       var arr = Array.prototype.slice.call(data, 0); // convert buffer array to num array
-      var fft = makeFFT(data);
-      callback(fft);
+      var fft = makeFFT(arr);
+      var freq = analyseFreq(fft);
+      callback(anlyse);
     });
     micInstance.start();
   }
@@ -70,13 +71,14 @@ function sound() {
     var f = new FFT(1024);
     var out = new Array(1024);
     f.realTransform(out,data);
+    f.completeSpectrum(out);
     return out;
   }
 
-  // Private function for getting apl
-  function amplitude(data){
+  function analyseFreq(data){
     return data;
   }
+
 }
 
 module.exports = sound;
