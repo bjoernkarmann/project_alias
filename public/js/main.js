@@ -4,6 +4,7 @@ var socket = io.connect('http://localhost:3000');
 socket.on('msg', function (data) {
   console.log(data);
 });
+
 var train = false;
 // send data to server
 var train = document.getElementById('train');

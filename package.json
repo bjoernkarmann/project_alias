@@ -23,7 +23,6 @@
     "fft.js": "^4.0.3",
     "frequencyjs": "0.0.4",
     "fs": "0.0.1-security",
-    "knear": "0.0.5",
     "lodash": "^4.17.10",
     "lodash.chunk": "^4.2.0",
     "lodash.max": "^4.0.1",
