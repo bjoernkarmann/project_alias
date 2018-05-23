@@ -57,17 +57,6 @@ function sound() {
   // For debugging use on mac use sox
 
   this.startRecord = function(callback){
-<<<<<<< HEAD
-    var mic = micInstance.getAudioStream();
-    var outputFileStream = fs.WriteStream('./server/data/output.wav'); // temp file
-    mic.pipe(outputFileStream);
-    // when data is resieved from buffer
-    mic.on('data', function(data) {
-      var arr = Array.prototype.slice.call(data, 0); // convert buffer array to num array
-      var fft = makeFFT(arr);
-      var freq = analyseFreq(fft);
-      callback(anlyse);
-=======
     let buffers = [];
     var micInstance =  mic(config);
     var stream = micInstance.getAudioStream();
@@ -84,7 +73,6 @@ function sound() {
           //var fttStream = makeFFT(wave);
         })
       buffers = []; // free recorded data
->>>>>>> new-fft
     });
     micInstance.start();
   }
@@ -95,19 +83,6 @@ function sound() {
 
   var fjs = require("frequencyjs"); // https://www.npmjs.com/package/frequencyjs
   // Private function for Fast Fourier Transformation
-<<<<<<< HEAD
-  var FFT = require('fft.js'); // https://github.com/indutny/fft.js
-  function makeFFT(data){
-    var f = new FFT(1024);
-    var out = new Array(1024);
-    f.realTransform(out,data);
-    f.completeSpectrum(out);
-    return out;
-  }
-
-  function analyseFreq(data){
-    return data;
-=======
   function makeFFT(dataStream){
      var maxAmp = _.max(dataStream);
      var minAmp = _.min(dataStream);
@@ -124,7 +99,6 @@ function sound() {
      //print amount of frequency bins affected
      console.log("dominant freq: " + freq + " | " + " num of freq-bins affected: " + count + " | " +
      " max-Amplitude: " + _.round(maxAmp,1) + " | " + " min-Amplitude: " + _.round(minAmp,1));
->>>>>>> new-fft
   }
 
 }
