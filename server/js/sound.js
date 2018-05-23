@@ -81,5 +81,24 @@ function sound() {
   //   SOUND ANALYTICS   //
   //=====================//
 
+  var fjs = require("frequencyjs"); // https://www.npmjs.com/package/frequencyjs
+  // Private function for Fast Fourier Transformation
+  function makeFFT(dataStream){
+     var maxAmp = _.max(dataStream);
+     var minAmp = _.min(dataStream);
+
+     var count = 0;
+     for(var i = 0; i < dataStream.length; i++){
+       if(dataStream[i] > 0.1) count++;
+     }
+
+     // print the dominant frequency bin and amplitude
+     var spectrum = fjs.Transform.toSpectrum(dataStream,{ method: 'fft'});
+     var freq = spectrum.dominantFrequency().frequency;
+
+     //print amount of frequency bins affected
+     console.log("dominant freq: " + freq + " | " + " num of freq-bins affected: " + count + " | " +
+     " max-Amplitude: " + _.round(maxAmp,1) + " | " + " min-Amplitude: " + _.round(minAmp,1));
+  }
 }
 module.exports = sound;
