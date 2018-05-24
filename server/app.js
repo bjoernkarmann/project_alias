@@ -19,7 +19,7 @@ sound.startRecord(function(data){
 
 // Listen for commands from the client
 client.listen(function(data){
-  if(data=='train')    trainer.startTraining(); 
+  if(data=='train')    trainer.startTraining();
   if(data=='trainoff') trainer.stopTraining();
   if(data=='reset')    trainer.resetTraining();
   if(data=='noise')    sound.noise = !sound.noise; // toggle noise

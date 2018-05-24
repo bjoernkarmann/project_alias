@@ -1,12 +1,8 @@
 var socket = io.connect('http://localhost:3000');
-
+socket.emit('msg', 'reset');
 // resive data from server
-socket.on('connection', function (socket) {
-  socket.emit('msg', 'hello');
-});
-
 socket.on('msg', function (data) {
-  console.log(data);
+  //console.log(data);
 });
 
 var train = false;
@@ -16,10 +12,25 @@ var reset = document.getElementById('reset');
 var noise = document.getElementById('noise');
 
 
-train.onmousedown = function(){socket.emit('msg', 'train');};
-train.onmouseup   = function(){socket.emit('msg', 'trainoff');};
+var timeout;
+train.onmousedown = function(){
+  console.log("hej");
+    timeout = setInterval(function(){
+        socket.emit('msg', 'train');
+        console.log("hej");
+    }, 10);
+    return false;
+};
 
-train.onmousedown = function(){socket.emit('msg', 'train');};
+train.onmouseup = function(){
+    clearInterval(timeout);
+    return false;
+};
+
+// train.onmousedown = function(){socket.emit('msg', 'train');};
+// train.onmouseup   = function(){socket.emit('msg', 'trainoff');};
+// train.onmousedown = function(){socket.emit('msg', 'train');};
+
 reset.addEventListener('click', function() {
     socket.emit('msg', 'reset');
 });
