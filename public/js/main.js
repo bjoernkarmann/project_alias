@@ -1,4 +1,6 @@
 var socket = io.connect('http://localhost:3000');
+import * as Canvas from './canvas.js';
+var pixels = [];
 
 // resive data from server
 socket.on('connection', function (socket) {
@@ -6,7 +8,8 @@ socket.on('connection', function (socket) {
 });
 
 socket.on('msg', function (data) {
-  console.log(data);
+  pixels = data.server.color; 
+  Canvas.drawSpecto(pixels); 
 });
 
 var train = false;

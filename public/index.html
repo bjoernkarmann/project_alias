@@ -19,7 +19,7 @@
             <p>Project: Alias</p>
             <p class="g">Hold record to train your alias wake-up word</p>
           </div>
-          <div id="canvas">Spectrogram</div>
+          <canvas id="myCanvas">Spectrogram</canvas>
           <div class="t" id="train" class="center"></div>
         </div>
         <div id="footer">
@@ -27,7 +27,10 @@
           <div class="g" id="info">info </div>
           <div class="t" id="noise">noise: on</div>
         </div>
-
-        <script src="js/main.js" type="text/javascript"></script>
+        
+        <script type="module" src="js/canvas.js" type="text/javascript"></script>
+        <script type="module" src="js/main.js" type="text/javascript"></script>
+        
+       
     </body>
 </html>

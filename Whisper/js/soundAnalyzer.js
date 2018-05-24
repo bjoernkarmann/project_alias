@@ -20,7 +20,7 @@ function soundAnalyze() {
   // iretrate through the frequency bins
   for (i = 0; i < binSize; i++) {
         // calculate the vertical location of the pixel
-        var vLoc = int(i * resolution / (binSize));
+        var vLoc = floor(i * resolution / (binSize));
 
         //get the amplitude value from the specific bin
         var value = constrain(spectrum[i],0,255);
@@ -42,9 +42,10 @@ function soundAnalyze() {
     // Update the spectrogram one step to the left
     for (var r = 0; r < resolution; r++) {
         for (var p = 0; p < sliderArr[3].slider.value(); p++) {
-            arrayCopy(Pixels, resolution * r + 1, Pixels, resolution * r, resolution - 1);
+        Pixels.copyWithin(resolution * r, resolution * r + 1, (resolution * r + 1)+ (resolution - 1));
         }
     }
+    console.log("lol hey");
 
     //Draw the spectrogram
     for (var x = 0; x < resolution; x++) {
