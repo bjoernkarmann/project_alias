@@ -4,6 +4,8 @@ var ctx = canvas.getContext("2d");
 
 window.addEventListener('resize', function() {
   resize(canvas);
+  xRes = canvas.width / resolution;
+  yRes = canvas.height / resolution;
 }, false);
 resize(canvas);
 
