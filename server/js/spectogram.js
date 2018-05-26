@@ -6,16 +6,17 @@ function Spectogram(){
 	var inputToKnn = 625; // 625
 	var thresh = 0; 
     resolution = Math.floor(Math.sqrt(inputToKnn));
+
+    var r,g,b; 
+    var Pixels = []; 
+	for (let i = 0; i < inputToKnn; i++) {
+	     Pixels[i] = 50;
+	}
 		        
 	this.convertToSpec = function(dataStream) {
-	
-	var Pixels = []; 
-	 for (var i = 0; i < inputToKnn; i++) {
-	 	 let color =  { r:50, g:50, b:70 };
-	     Pixels[i] = color;
-	 }
 	    
-	 var binSize = dataStream.length;
+	 var binSize = dataStream.length - 1024;
+	 console.log(binSize);
 
 	  for (let i = 0; i < binSize; i++) {
 
@@ -26,32 +27,18 @@ function Spectogram(){
 	        // else value = map(value,thresh,maxVal ,0,255);
 	        // value = constrain(value,0,255);
 	        // create colors from values
-	        let r_ = constrain(50 + norm(value,0,1) * (370), 0, 255);
-	        let g_ = constrain(50 + norm(value, 0, 1) * norm(value, 0, 1) * 220, 0, 255);
-	        let b_ = constrain((70 + norm(value, 0, 1) * (255 / 2 - value)), 0, 255);
+	        r = constrain(50 + norm(value,0,1) * (370), 0, 255);
+	        g = constrain(50 + norm(value, 0, 1) * norm(value, 0, 1) * 220, 0, 255);
+	        b = constrain((70 + norm(value, 0, 1) * (255 / 2 - value)), 0, 255);
 	       	    	
 	 		var index = resolution + (((resolution - 1) - vLoc) * resolution - 1);	       
 
-	    	Pixels[index].r = Math.round(r_,2);       
-	    	Pixels[index].g = Math.round(g_,2);  
-	    	Pixels[index].b = Math.round(b_,2);   
+	 		//convert to B/W
+	    	Pixels[index] = (r + g + b) / 3; 
 	    }
-	 
-	 /*    
-	    //DEBUG
-	      var activeCol = [];     
-    	 for(var i = 0; i < Pixels.length; i++){
-     	  if(Pixels[i].r > 50){
-        var stream_ = {bin: i, vol: Pixels[i].r };
-        activeCol.push(stream_); 
-      }
-     }      
-     console.log(activeCol);
-     */
-
      // Update the spectrogram one step to the left
-	 for (var r = 0; r < resolution; r++) {
-	        for (var p = 0; p < 1; p++) {
+	 for (let r = 0; r < resolution; r++) {
+	        for (let p = 0; p < 1; p++) {
 	            Pixels.copyWithin(resolution * r, resolution * r + 1, (resolution * r + 1)+ (resolution - 1));
 	        }
 	   	}

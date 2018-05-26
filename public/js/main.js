@@ -5,11 +5,11 @@ var pixels = [];
 // resive data from server
 socket.on('connection', function (socket) {
   socket.emit('msg', 'hello');
-});
+});	
 
 socket.on('msg', function (data) {
-  pixels = data.server.color; 
-  Canvas.drawSpecto(pixels); 
+  pixels = data.server.color; // --> get Pixel array from server
+  Canvas.drawSpecto(pixels); // --> draw pixels as spectogram
 });
 
 var train = false;

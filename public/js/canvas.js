@@ -19,16 +19,13 @@
 	        for (var y = 0; y < resolution; y++) {
 	            var loc = x + (y * resolution);
 
-	            var r = Math.floor(data[loc].r);
-	            var g = Math.floor(data[loc].g);
-	            var b = Math.floor(data[loc].b);
-
-	          	ctx.fillStyle = 'rgb('+r+','+g+','+b+')';
+	            var r = Math.floor(data[loc]);
+	
+	          	ctx.fillStyle = 'rgb('+r+','+r+','+r+')';
 				ctx.fillRect(step * x, step * y, step, step);
 	    }
 	}
 }
-
 	function constrain(val, min, max) {
 	    return  (val > max ? max : val < min ? min : val);
 	}
