@@ -12,19 +12,17 @@ function client() {
   var socket = require('socket.io').listen(server);
 
   // When  client connects reseive messages
-  this.listen = function(callback) {
-    socket.on('connection', function(socket) {
-      socket.on('msg', function(data) {
-        callback(data);
-      });
+  this.listen = function(callback){
+    socket.on('connection', function (socket) {
+        socket.on('msg', function (data) {
+          callback(data);
+        });
     });
   }
 
   // Send data to the client
-  this.sendData = function(data) {
-    socket.emit('msg', {
-      server: data
-    });
+  this.sendData = function(data){
+    socket.emit('msg', {server: data});
   }
 }
 module.exports = client;

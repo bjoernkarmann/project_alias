@@ -21,6 +21,7 @@
     "audio-analyser": "^1.0.2",
     "express": "^4.16.3",
     "fft.js": "^4.0.3",
+    "fourier-transform": "^1.1.2",
     "frequencyjs": "0.0.4",
     "fs": "0.0.1-security",
     "lodash": "^4.17.10",

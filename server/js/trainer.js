@@ -1,19 +1,21 @@
 var trainer = function(knn) {
-  this.result = 0;
-  this.examples = 0;
+  var result = 0;
+  var examples = 0;
 
-  this.feed = function(data) {
+  this.feed = function(data){
 
   }
 
-  this.startTraining = function(data) {
-    this.examples++;
-    console.log(this.examples);
+  this.startTraining = function(data){
+    console.log("Starting training");
   }
 
-  this.resetTraining = function(data) {
-    this.examples=0;
-    console.log(this.examples);
+  this.stopTraining = function(data){
+    console.log("Stopping training");
+  }
+
+  this.resetTraining = function(data){
+    console.log("Resetting training");
   }
 };
 
