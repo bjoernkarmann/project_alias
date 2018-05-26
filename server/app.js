@@ -7,11 +7,10 @@ var client = new(require('./js/client.js'));
 sound.setVolume(80);
 
 sound.startRecord(function(data) {
-  trainer.feed(data); // Feed the audio data to the training module
+  var pixelArray = spectogram.convertToSpec(data);
+  trainer.feed(pixelArray); // Feed the audio data to the training module
   var clientPackage = { // Prepere clientPackage for client
-    //spectogram: spectogram.convertToSpec(data),
-    spectogram: data,
-    //color: Array.from({length: 625}, () => Math.floor(Math.random() * 40)),
+    spectogram: pixelArray,
     class: trainer.result,
     examples: trainer.examples,
     noise: sound.noise

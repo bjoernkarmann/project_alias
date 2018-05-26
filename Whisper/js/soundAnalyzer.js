@@ -57,7 +57,7 @@ function soundAnalyze() {
             rect(step * x, step * y, step, step);
 
             //make pixelarray ready for Knear classifier
-            pixelToKnn[loc] = ( Pixels[loc].levels[0] + Pixels[loc].levels[1] + Pixels[loc].levels[2] ) / 2;
+            pixelToKnn[loc] = ( Pixels[loc].levels[0] + Pixels[loc].levels[1] + Pixels[loc].levels[2] ) / 3;
         }
     }
     return pixelToKnn;

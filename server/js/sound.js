@@ -69,10 +69,49 @@ function sound() {
         .then(audioData => {
           var audioStream = audioData.channelData[0]; // get audiostream array
           callback(audioStream);
+          //var fttStream = makeFFT(wave);
         })
       buffers = []; // free recorded data
     });
     micInstance.start();
   }
+
+  //=====================//
+  //   SOUND ANALYTICS   //
+  //=====================//
+
+  var fjs = require("frequencyjs"); // https://www.npmjs.com/package/frequencyjs
+  // Private function for Fast Fourier Transformation
+  function makeFFT(dataStream){
+     var maxAmp = _.max(dataStream);
+     var minAmp = _.min(dataStream);
+
+  /*  console.log("#52 bin " + _.round(dataStream[52],3));
+    console.log("#1000 bin " + _.round(dataStream[1000],3));
+    console.log("#683 bin " + _.round(dataStream[683],3));
+    console.log("#230 bin " + _.round(dataStream[230],3));
+    console.log("#1700 bin " + _.round(dataStream[1700],3));
+    console.log("_____________");
+    */
+
+      var activeFreq = [];
+     for(var i = 0; i < dataStream.length; i++){
+       if(dataStream[i] > 0.1){
+        var stream_ = {bin: i, vol: dataStream[i]};
+
+        activeFreq.push(stream_);
+      }
+     }
+     //console.log(activeFreq);
+
+     // print the dominant frequency bin and amplitude
+     var spectrum = fjs.Transform.toSpectrum(dataStream,{ method: 'fft'});
+     var freq = spectrum.dominantFrequency().frequency;
+
+     //print amount of frequency bins affected
+  //   console.log("dominant freq: " + freq + " | " + " num of freq-bins affected: " + count + " | " +
+   //  " max-Amplitude: " + _.round(maxAmp,2) + " | " + " min-Amplitude: " + _.round(minAmp,2));
+  }
+
 }
 module.exports = sound;
