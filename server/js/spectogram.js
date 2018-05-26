@@ -3,7 +3,7 @@ function Spectogram() {
   // Init input and output variables for K-near algorithm
   var inputToKnn = 625; // 625
   resolution = Math.floor(Math.sqrt(inputToKnn));
-  var mappingRoof = 3.5;
+  var mappingRoof = 2.4;
   var thresh = 0.2;
   var r, g, b;
   var Pixels = [];
@@ -25,9 +25,9 @@ function Spectogram() {
       if (value < thresh) value = 0;
 
       // create colors from values
-      r = constrain(50 + norm(value, thresh, mappingRoof) * (370), 0, 255);
-      g = constrain(50 + norm(value, thresh, mappingRoof) * norm(value, thresh, mappingRoof) * 220, 0, 255);
-      b = constrain((70 + norm(value, thresh, mappingRoof) * (255 / 2 - value)), 0, 255);
+      r = constrain(norm(value, thresh, mappingRoof) * (370), 0, 255);
+      g = constrain(norm(value, thresh, mappingRoof) * norm(value, thresh, mappingRoof) * 220, 0, 255);
+      b = constrain(norm(value, thresh, mappingRoof) * (255 / 2 - value), 0, 255);
 
       var index = resolution + (((resolution - 1) - vLoc) * resolution - 1);
 
