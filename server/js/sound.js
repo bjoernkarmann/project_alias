@@ -85,16 +85,15 @@ function sound() {
   var ft = require('fourier-transform');
   // Private function for Fast Fourier Transformation
   function makeFFT(dataStream){
-
     var spectrum = ft(dataStream);
     //Convert from Object to Array
     var arr = [];
     var i = 0;
     Object.keys(spectrum).map(function(key){
       arr[i] = _.round(spectrum[key]*100, 4);
-      i++; 
-    }) 
-    return arr; // --> Return array of FFT values 
+      i++;
+    })
+    return arr; // --> Return array of FFT values
   }
 
 }
