@@ -2,7 +2,7 @@
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext("2d");
 
-window.addEventListener('resize', function(){
+window.addEventListener('resize', function() {
   resize(canvas);
 }, false);
 resize(canvas);
@@ -11,18 +11,18 @@ var resolution = Math.floor(Math.sqrt(625));
 var xRes = canvas.width / resolution;
 var yRes = canvas.height / resolution;
 
-export function drawSpecto(data){
-    //Draw the spectrogram
-    for (var x = 0; x < resolution; x++) {
-        for (var y = 0; y < resolution; y++) {
-            var loc = x + (y * resolution);
+export function drawSpecto(data) {
+  //Draw the spectrogram
+  for (var x = 0; x < resolution; x++) {
+    for (var y = 0; y < resolution; y++) {
+      var loc = x + (y * resolution);
 
-            var r = 255-(Math.floor(data[loc]))*10;
+      var r = Math.floor(data[loc]);
 
-            ctx.fillStyle = 'rgb('+r+','+r+','+r+')';
+      ctx.fillStyle = 'rgb(' + r + ',' + r + ',' + r + ')';
       ctx.fillRect(xRes * x, yRes * y, xRes, yRes);
     }
-}
+  }
 
 }
 // export function drawButton(data){
@@ -50,7 +50,7 @@ export function drawSpecto(data){
 //
 // }
 
-function ellipse(ctx,x,y,r) {
+function ellipse(ctx, x, y, r) {
   ctx.beginPath();
   ctx.arc(x, y, r, 0, 2 * Math.PI);
   ctx.closePath();
@@ -67,15 +67,15 @@ function norm(val, min, max) {
 
 function resize(canvas) {
   // Lookup the size the browser is displaying the canvas.
-  var displayWidth  = canvas.clientWidth;
+  var displayWidth = canvas.clientWidth;
   var displayHeight = canvas.clientHeight;
 
   // Check if the canvas is not the same size.
-  if (canvas.width  != displayWidth ||
-      canvas.height != displayHeight) {
+  if (canvas.width != displayWidth ||
+    canvas.height != displayHeight) {
 
     // Make the canvas the same size
-    canvas.width  = displayWidth;
+    canvas.width = displayWidth;
     canvas.height = displayHeight;
   }
 }

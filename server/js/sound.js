@@ -71,7 +71,7 @@ function sound() {
           var wave = audioData.channelData[0]; // get audiostream array
           var fftValues = makeFFT(wave);
           callback(fftValues);
-          //var fttStream = makeFFT(wave);
+          var wave = audioData.channelData[0]; // get audiostream array
         })
       buffers = []; // free recorded data
     });
@@ -94,13 +94,13 @@ function sound() {
     var i = 0;
     Object.keys(spectrum).map(function(key){
       arr[i] = _.round(spectrum[key], 4);
-      i++; 
-    })  
+      i++;
+    })
 
     if(_.max(arr) > maxVal) maxVal = _.max(arr);
       console.log(maxVal);
 
-    return arr; // --> Return array of FFT values 
+    return arr; // --> Return array of FFT values
 
     /*
      var maxAmp = _.max(dataStream);
@@ -112,14 +112,13 @@ function sound() {
     console.log("#230 bin " + _.round(dataStream[230],3));
     console.log("#1700 bin " + _.round(dataStream[1700],3));
     console.log("_____________");
-    
+    */
 
-      var activeFreq = [];     
+      var activeFreq = [];
      for(var i = 0; i < dataStream.length; i++){
        if(dataStream[i] > 0.1){
         var stream_ = {bin: i, vol: dataStream[i]};
-
-        activeFreq.push(stream_); 
+        activeFreq.push(stream_);
       }
      }
      //console.log(activeFreq);
@@ -128,7 +127,7 @@ function sound() {
      var spectrum = fjs.Transform.toSpectrum(dataStream,{ method: 'fft'});
      var freq = spectrum.dominantFrequency().frequency;
 
-*/
+
      //print amount of frequency bins affected
   //   console.log("dominant freq: " + freq + " | " + " num of freq-bins affected: " + count + " | " +
    //  " max-Amplitude: " + _.round(maxAmp,2) + " | " + " min-Amplitude: " + _.round(minAmp,2));
