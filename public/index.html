@@ -6,9 +6,9 @@
       <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
       <link rel="stylesheet" type="text/css" href="css/main.css">
-      <script src="js/lib/p5.js" type="text/javascript"></script>
-      <script src="js/lib/socket.io.js" type="text/javascript"></script>
-      <script src="js/lib/jquery.min.js" type="text/javascript"></script>
+      <script type="text/javascript" src="js/lib/socket.io.js" ></script>
+      <script type="text/javascript" src="js/lib/jquery.min.js" ></script>
+      <script type="text/javascript" src="js/lib/mousehold.js"></script>
       <style>
 
       </style>
@@ -19,13 +19,12 @@
             <p>Project: Alias</p>
             <p class="g">Hold record to train your alias wake-up word</p>
           </div>
-          <canvas id="myCanvas">Spectrogram</canvas>
-          <div class="t" id="train" class="center"></div>
+          <canvas id="canvas">Spectrogram</canvas>
         </div>
         <div id="footer">
-          <div class="t" id="reset">reset </div>
-          <div class="g" id="info">info </div>
-          <div class="t" id="noise">noise: on</div>
+          <div class="t" id="reset">reset</div>
+          <div class="g" id="info"></div>
+          <div class="t" id="noise"></div>
         </div>
 
         <script type="module" src="js/canvas.js" type="text/javascript"></script>

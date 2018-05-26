@@ -5,25 +5,23 @@ var io = new(require('./js/io.js'));
 var client = new(require('./js/client.js'));
 
 sound.setVolume(80);
-sound.startRecord(function(data) {
 
-  // Feed the audio data to the training module
-  trainer.feed(data);
-  // Prepere clientPackage for client
-  var clientPackage = {
-    color: spectogram.convertToSpec(data),
+sound.startRecord(function(data) {
+  trainer.feed(data); // Feed the audio data to the training module
+  var clientPackage = { // Prepere clientPackage for client
+    //spectogram: spectogram.convertToSpec(data),
+    spectogram: data,
     //color: Array.from({length: 625}, () => Math.floor(Math.random() * 40)),
     class: trainer.result,
     examples: trainer.examples,
     noise: sound.noise
   }
-  client.sendData(clientPackage);
+  client.sendData(clientPackage); // Send clientPackage for client
 });
 
 // Listen for commands from the client
 client.listen(function(data) {
   if (data == 'train') trainer.startTraining();
-  if (data == 'trainoff') trainer.stopTraining();
   if (data == 'reset') trainer.resetTraining();
   if (data == 'noise') sound.noise = !sound.noise; // toggle noise
 });

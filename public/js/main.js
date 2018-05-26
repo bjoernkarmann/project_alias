@@ -1,41 +1,23 @@
 var socket = io.connect('http://localhost:3000');
 import * as Canvas from './canvas.js';
-var pixels = [];
 
 // resive data from server
 socket.on('msg', function(data) {
-  pixels = data.server.color;
-  Canvas.drawSpecto(pixels);
+  //Canvas.drawSpecto(data.server.spectogram); // send data to canvas
+  Canvas.drawButton(data.server.spectogram); // send data to canvas
+  // update GUI with data from server
+  $("#noise").text("Noise: "+data.server.noise);
+  $("#info" ).text("Examples: "+data.server.examples);
 });
 
-var train = false;
-// send data to server
-var train = document.getElementById('train');
-var reset = document.getElementById('reset');
-var noise = document.getElementById('noise');
+$('#canvas').mouseHold(function(){
+  socket.emit('msg', 'train');
+});
 
-
-var timeout;
-train.onmousedown = function() {
-  timeout = setInterval(function() {
-    socket.emit('msg', 'train');
-    console.log("hej");
-  }, 10);
-  return false;
-};
-
-train.onmouseup = function() {
-  clearInterval(timeout);
-  return false;
-};
-
-// train.onmousedown = function(){socket.emit('msg', 'train');};
-// train.onmouseup   = function(){socket.emit('msg', 'trainoff');};
-// train.onmousedown = function(){socket.emit('msg', 'train');};
-
-reset.addEventListener('click', function() {
+$('#reset').on('mousedown touch',function(){
   socket.emit('msg', 'reset');
 });
-noise.addEventListener('click', function() {
+
+$('#noise').on('mousedown touch',function(){
   socket.emit('msg', 'noise');
 });
