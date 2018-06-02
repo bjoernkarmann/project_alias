@@ -57,40 +57,40 @@ function sound() {
   // Public function start recording from the microphone
   // For debugging use on mac use sox
 
-  // this.startRecord = function(callback){
-  //   var micInstance = mic(config);
-  //   var micInputStream = micInstance.getAudioStream();
-  //   var outputFileStream = fs.WriteStream('output.wav');
-  //
-  //   micInputStream.pipe(outputFileStream);
-  //   micInputStream.on('data', function(data) {
-  //     console.log(data);
-  //     var fftValues = makeFFT(data);
-  //     callback(fftValues);
-  //   });
-  // }
-
   this.startRecord = function(callback){
-    var buffers = [];
-    var micInstance =  mic(config);
-    var stream = micInstance.getAudioStream();
+    var micInstance = mic(config);
+    var micInputStream = micInstance.getAudioStream();
+    var outputFileStream = fs.WriteStream('output.wav');
 
-    stream.on('data', buffer => {
-      buffers.push(buffer); // -> save previous recorded data
-      var headerBuf = header(config.rate, config); // ->  create wav header
-      buffers.unshift(headerBuf); // -> set header in top of buffers
-      var length = _.sum(buffers.map(b => b.length));
-      WavDecoder.decode(Buffer.concat(buffers, length)) // -> decode buffers to float array
-        .then(audioData => {
-          var wave = audioData.channelData[0]; // get audiostream array
-          var fftValues = makeFFT(wave);
-          callback(fftValues);
-          //var fttStream = makeFFT(wave);
-        })
-      buffers = []; // free recorded data
+    micInputStream.pipe(outputFileStream);
+    micInputStream.on('data', function(data) {
+      console.log(data);
+      var fftValues = makeFFT(data);
+      callback(fftValues);
     });
-    micInstance.start();
   }
+
+  // this.startRecord = function(callback){
+  //   var buffers = [];
+  //   var micInstance =  mic(config);
+  //   var stream = micInstance.getAudioStream();
+  //
+  //   stream.on('data', buffer => {
+  //     buffers.push(buffer); // -> save previous recorded data
+  //     var headerBuf = header(config.rate, config); // ->  create wav header
+  //     buffers.unshift(headerBuf); // -> set header in top of buffers
+  //     var length = _.sum(buffers.map(b => b.length));
+  //     WavDecoder.decode(Buffer.concat(buffers, length)) // -> decode buffers to float array
+  //       .then(audioData => {
+  //         var wave = audioData.channelData[0]; // get audiostream array
+  //         var fftValues = makeFFT(wave);
+  //         callback(fftValues);
+  //         //var fttStream = makeFFT(wave);
+  //       })
+  //     buffers = []; // free recorded data
+  //   });
+  //   micInstance.start();
+  // }
 
   //=====================//
   //   SOUND ANALYTICS   //
