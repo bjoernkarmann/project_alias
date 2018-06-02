@@ -42,7 +42,7 @@ function sound() {
   var header = require("waveheader"); https:// https://www.npmjs.com/package/waveheader
   var WavDecoder = require('wav-decoder'); // https://www.npmjs.com/package/wav-decoder
   //For calculations
-  var _ = require('lodash');// https://lodash.com
+  var math = require('mathjs');
 
   //mic config object
   const config = {
@@ -104,7 +104,7 @@ function sound() {
     var arr = [];
     var i = 0;
     Object.keys(spectrum).map(function(key){
-      arr[i] = _.round(spectrum[key]*1000, 4);
+      arr[i] = Math.round(spectrum[key]*1000, 4);
       i++;
     })
     return arr; // --> Return array of FFT values

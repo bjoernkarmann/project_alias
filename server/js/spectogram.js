@@ -1,5 +1,5 @@
 function Spectogram() {
-  var _ = require('lodash'); // https://lodash.com
+  var math = require('mathjs');
   // Init input and output variables for K-near algorithm
   var inputToKnn = 625; // 625
   resolution = Math.floor(Math.sqrt(inputToKnn));
@@ -17,7 +17,7 @@ function Spectogram() {
     for (var i = 0; i < binSize; i++) {
 
       // calculate the vertical location of the pixel
-      var vLoc = _.floor(i * resolution / (binSize));
+      var vLoc = math.floor(i * resolution / (binSize));
 
       //get volume from frequency bin
       var value = dataStream[i];

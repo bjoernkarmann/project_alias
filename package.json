@@ -1,6 +1,7 @@
 {
   "name": "project_alias",
   "version": "1.0.0",
+  "repository": "https://github.com/bjoernkarmann/project_alias",
   "description": "A open-source hack to train custom wake-up names for smart home devices and block the their build in microphone.",
   "main": "server/app.js",
   "scripts": {
@@ -22,10 +23,7 @@
     "express": "^4.16.3",
     "fourier-transform": "^1.1.2",
     "fs": "0.0.1-security",
-    "lodash": "^4.17.10",
-    "lodash.chunk": "^4.2.0",
-    "lodash.max": "^4.0.1",
-    "lodash.sum": "^4.0.2",
+    "mathjs": "^4.4.2",
     "mic": "^2.1.2",
     "node-cmd": "^3.0.0",
     "socket.io": "^2.1.0",
