@@ -5,7 +5,7 @@
   "main": "server/app.js",
   "scripts": {
     "start": "nodejs server/app.js",
-    "test": "node server/app.js"
+    "test": "node --harmony server/app.js"
   },
   "keywords": [
     "alias",
