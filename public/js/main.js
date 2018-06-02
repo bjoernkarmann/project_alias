@@ -1,16 +1,17 @@
 var socket = io.connect('http://localhost:3000');
 import * as Canvas from './canvas.js';
-
+socket.emit('msg', 'train');
 // resive data from server
 socket.on('msg', function(data) {
-  //Canvas.drawSpecto(data.server.spectogram); // send data to canvas
-  Canvas.drawButton(data.server.spectogram); // send data to canvas
+  Canvas.drawSpecto(data.server.spectogram); // send data to canvas
+  //Canvas.drawButton(data.server.spectogram); // send data to canvas
   // update GUI with data from server
   $("#noise").text("Noise: "+data.server.noise);
   $("#info" ).text("Examples: "+data.server.examples);
 });
 
-$('#canvas').mouseHold(function(){
+$('#canvas').mouseHold(function(data){
+  console.log(data);
   socket.emit('msg', 'train');
 });
 

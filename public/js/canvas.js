@@ -41,17 +41,18 @@ export function drawButton(data){
   var centerX=canvas.width/2;
   var centerY=canvas.height/2;
 
-
   for (var x = 1; x < 10; x++) {
     var points = [];
     var lastValue = 0;
     for (var y = 0; y < resolution; y++) {
       var loc = (resolution-x) + (y * resolution);
 
-      var value = Math.floor(data[loc]);
+      var value = Math.floor(data[loc])*20;
       var avg_value = (value+lastValue)/2;
+
       var angle = interval*y;
       var sec_angle = interval*(y-0.5); // take avage
+
       var r = (x*10)+100 + value/2; // radius of circe
       var sec_r = (x*10)+100 + avg_value/2; // radius of circe
       var polarX     = centerX+r*Math.cos(angle);
@@ -73,14 +74,6 @@ function ellipse(ctx, x, y, r) {
   ctx.arc(x, y, r, 0, 2 * Math.PI);
   ctx.closePath();
   ctx.fill();
-}
-
-function constrain(val, min, max) {
-  return (val > max ? max : val < min ? min : val);
-}
-
-function norm(val, min, max) {
-  return (val - min) / (max - min);
 }
 
 function resize(canvas) {

@@ -1,5 +1,5 @@
 // This is a jquary addon for mouse and tuch hold function
-jQuery.fn.mouseHold = function(timeout, f) {
+jQuery.fn.mouseHold = function(timeout, f, callback) {
 	if (timeout && typeof timeout == 'function') {
 		f = timeout;
 		timeout = 100;
@@ -17,6 +17,7 @@ jQuery.fn.mouseHold = function(timeout, f) {
 					ctr++;
 					f.call(t, ctr);
 					fireStep = 2;
+					callback(ctr);
 					if(ctr > 30) clearMousehold(); // timelimit if get stuck
 				}, timeout);
 			})
@@ -25,6 +26,7 @@ jQuery.fn.mouseHold = function(timeout, f) {
 				clearInterval(timer);
 				if (fireStep == 1) f.call(this, 1);
 				fireStep = 0;
+				console.log("off");
 			}
 
 			jQuery(this).on('mouseout touchmove',clearMousehold);

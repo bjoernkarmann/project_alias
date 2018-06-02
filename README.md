@@ -2,54 +2,55 @@
 
 A open-source hack to train custom wake-up names for smart home devices and block the their build in microphone. 
 
-## Getting Started
+### Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites
+### Setup your raspberry pi
 
-What things you need to install the software and how to install them
+1. Download the latest version of **Raspbian** and flash your micro SD card with **Etcher**
 
+2. Copy the **ssh** and **wpa_supplicant.conf** files to the SD card (boot) 
+
+3. Edit the **wpa_supplicant.conf** to match your wifi settings. Insert the card to the raspberry pi
+
+4. In **terminal** ssh into the pi: ```sudo ssh pi@raspberrypi.local```<br>*Defult password is 'raspberry'. To change password use the 'passwd' command*
+
+5. Update your pi: 
 ```
-Give examples
+sudo apt-get update && sudo apt-get upgrade
 ```
-
-### Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
+6. Install **nodejs**: 
 ```
-npm install
-```
-
-And repeat
-
-```
-until finished
+sudo apt-get install nodejs npm git-core
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+
+
+### Installing Alias
+
+Clone and install sound driver for the **ReSpeaker** hat:
+
+```
+cd && git clone https://github.com/respeaker/seeed-voicecard.git
+cd seeed-voicecard && sudo ./install.sh
+```
+
+Clone and install the **Alias** project: 
+
+```
+cd && git clone https://github.com/bjoernkarmann/project_alias.git
+cd project_alias && sudo npm install
+```
+Setup a bootscript: 
 
 ## Using Alias
 
 Explain how to run the automated tests for this system
 
-### Break down into end to end tests
-
-Explain what these tests test and why
 
 ```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
+npm start
 ```
 
 

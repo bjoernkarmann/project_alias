@@ -1,16 +1,16 @@
 var trainer    = new(require('./js/trainer.js'))(require('./js/knear.js')(3));
 var sound      = new(require('./js/sound.js'));
 var spectogram = new(require('./js/spectogram.js'));
-var io         = new(require('./js/io.js'));
+//var io         = new(require('./js/io.js'));
 var client     = new(require('./js/client.js'));
 
 sound.setVolume(80);
 sound.startRecord(function(data){
 
-  // Create and update spectogram from mic data
- var pixelArr = spectogram.convertToSpec(data);
+//Create and update spectogram from mic data
+var pixelArr = spectogram.convertToSpec(data);
   // Feed the audio data to the training module
-  trainer.feed(data);
+  //trainer.feed(data);
   // Prepere clientPackage for client
   var clientPackage = {
     spectogram: pixelArr,
