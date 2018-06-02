@@ -71,7 +71,7 @@ function sound() {
   // }
 
   this.startRecord = function(callback){
-    let buffers = [];
+    var buffers = [];
     var micInstance =  mic(config);
     var stream = micInstance.getAudioStream();
 
