@@ -7,7 +7,7 @@ function Spectogram() {
   var thresh = 0.1;
   var r, g, b;
   var Pixels = [];
-  for (let i = 0; i < inputToKnn; i++) {
+  for (var i = 0; i < inputToKnn; i++) {
     Pixels[i] = 50;
   }
 
