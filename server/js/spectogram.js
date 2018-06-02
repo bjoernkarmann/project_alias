@@ -14,7 +14,7 @@ function Spectogram() {
   this.convertToSpec = function(dataStream) {
 
     var binSize = dataStream.length - 600;
-    for (let i = 0; i < binSize; i++) {
+    for (var i = 0; i < binSize; i++) {
 
       // calculate the vertical location of the pixel
       var vLoc = _.floor(i * resolution / (binSize));
@@ -35,8 +35,8 @@ function Spectogram() {
       Pixels[index] = (r + g + b) / 3;
     }
     // Update the spectrogram one step to the left
-    for (let r = 0; r < resolution; r++) {
-      for (let p = 0; p < 1; p++) {
+    for (var r = 0; r < resolution; r++) {
+      for (var p = 0; p < 1; p++) {
         Pixels.copyWithin(resolution * r, resolution * r + 1, (resolution * r + 1) + (resolution - 1));
       }
     }
