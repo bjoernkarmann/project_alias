@@ -1,5 +1,7 @@
 # Project: Alias
 
+[![Build Status](https://travis-ci.org/bjoernkarmann/project_alias.svg?branch=master)](https://travis-ci.org/bjoernkarmann/project_alias)
+
 A open-source hack to train custom wake-up names for smart home devices and block the their build in microphone. 
 
 ### Getting Started
