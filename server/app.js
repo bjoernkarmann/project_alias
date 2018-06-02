@@ -28,8 +28,13 @@ client.listen(function(data){
   if(data=='noise')    sound.noise = !sound.noise; // toggle noise
 });
 
-
 //sound.playFile('server/data/noise.wav');
 //io.setRGB(0, 0, 200);
-
 console.log("Alias is Running!");
+
+// validation https://travis-ci.org/bjoernkarmann/project_alias
+process.argv.forEach(function (val, index, array) {
+  if(val == "test"){
+    process.exit()
+  }
+});
