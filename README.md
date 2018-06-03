@@ -11,7 +11,15 @@
 
 Project Alias is a open-source parasite to train custom wake-up names for smart home devices while disturbing the their build in microphone. This node app is a sound classifier running on a raspberry pi zero and can be trained from a web-app.
 
+# Requirements
 
+- Raspberry Pi zero W
+- ReSpkeaker hat
+- Tiny speakers
+
+
+*NOTE: for best results use...*
+ 
 # Setup 🔧
 How to prepare and setup a raspberry pi zero for this project. 
 
