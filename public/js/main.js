@@ -1,4 +1,4 @@
-var socket = io.connect('http://localhost:3000');
+var socket = io.connect('http://localhost:8000');
 import * as Canvas from './canvas.js';
 socket.emit('msg', 'train');
 // resive data from server
