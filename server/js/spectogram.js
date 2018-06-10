@@ -1,21 +1,19 @@
 function Spectogram() {
   var math = require('mathjs');
   // Init input and output variables for K-near algorithm
-  var inputToKnn = 625; // 625
-  resolution = Math.floor(Math.sqrt(inputToKnn));
-  var mappingRoof = 2;
+  var inputToKnn = 625;
+  resolution = math.floor(math.sqrt(inputToKnn));
+  var mappingRoof = 4;
   var thresh = 0.1;
   var r, g, b;
   var Pixels = [];
   for (var i = 0; i < inputToKnn; i++) {
-    Pixels[i] = 50;
+    Pixels[i] = 0;
   }
 
   this.convertToSpec = function(dataStream) {
-
-    var binSize = dataStream.length - 600;
+    var binSize = dataStream.length/2;
     for (var i = 0; i < binSize; i++) {
-
       // calculate the vertical location of the pixel
       var vLoc = math.floor(i * resolution / (binSize));
 

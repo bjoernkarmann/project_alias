@@ -35,6 +35,8 @@ How to prepare and setup a raspberry pi zero for this project.
 
 6. Install **nodejs** : ```sudo apt-get install nodejs npm git-core```
 
+*Optional:* install nettalk for easy file sharing ```sudo apt-get install netatalk```
+
 # Installing 
 
 Clone and install sound driver for the [ReSpeaker](http://wiki.seeedstudio.com/ReSpeaker_2_Mics_Pi_HAT/) hat and reboot. 
