@@ -69,3 +69,7 @@ p{
   float: left;
   text-align: right;
 }
+
+#nullState{
+  float: right;
+}

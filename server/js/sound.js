@@ -47,9 +47,9 @@ function sound() {
 
   //mic config object
   const config = {
-    rate: 16000, // 4096 44100 2048 4000
+    rate: 42100, // 4096 44100 2048 4000
     channels: 2,
-    debug: true
+    debug: false
   };
 
   var size = 512; // size to slice
@@ -73,7 +73,7 @@ function sound() {
         callback(fftValues);
         if(config.debug) {
           console.timeEnd("bufferTime");
-          console.log("Max: "+math.max(fftValues));
+          console.log("Max: "+ math.max(fftValues));
         }
       }catch(err){
         console.error(err);
@@ -98,7 +98,6 @@ function sound() {
     //Convert from Object to Array
     var arr = [];
     var i = 0;
-
     Object.keys(spectrum).map(function(key){
       arr[i] = math.round(spectrum[key]*100, 4);
       i++;

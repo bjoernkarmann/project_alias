@@ -1,4 +1,4 @@
-var socket = io.connect('http://localhost:8000');
+var socket = io.connect('10.0.0.16:8000');
 import * as Canvas from './canvas.js';
 socket.emit('msg', 'train');
 // resive data from server
@@ -11,8 +11,11 @@ socket.on('msg', function(data) {
 });
 
 $('#canvas').mouseHold(function(data){
-  console.log(data);
   socket.emit('msg', 'train');
+});
+
+$('#nullState').mouseHold(function(data){
+  socket.emit('msg', 'nullState');
 });
 
 $('#reset').on('mousedown touch',function(){

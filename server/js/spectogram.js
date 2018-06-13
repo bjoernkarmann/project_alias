@@ -3,7 +3,7 @@ function Spectogram() {
   // Init input and output variables for K-near algorithm
   var inputToKnn = 625;
   resolution = math.floor(math.sqrt(inputToKnn));
-  var mappingRoof = 4;
+  var mappingRoof = 2;
   var thresh = 0.1;
   var r, g, b;
   var Pixels = [];
@@ -34,7 +34,7 @@ function Spectogram() {
     }
     // Update the spectrogram one step to the left
     for (var r = 0; r < resolution; r++) {
-      for (var p = 0; p < 1; p++) {
+      for (var p = 0; p < 3; p++) {
         Pixels.copyWithin(resolution * r, resolution * r + 1, (resolution * r + 1) + (resolution - 1));
       }
     }

@@ -23,6 +23,7 @@
     "express": "^4.16.3",
     "fourier-transform": "^1.1.2",
     "fs": "0.0.1-security",
+    "knear": "0.0.5",
     "mathjs": "^4.4.2",
     "mic": "^2.1.2",
     "node-cmd": "^3.0.0",

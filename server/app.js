@@ -1,4 +1,4 @@
-var trainer    = new(require('./js/trainer.js'))(require('./js/knear.js')(3));
+var trainer    = new(require('./js/trainer.js'));
 var sound      = new(require('./js/sound.js'));
 var spectogram = new(require('./js/spectogram.js'));
 //var io         = new(require('./js/io.js'));
@@ -9,7 +9,7 @@ sound.startRecord(function(data){
   //Create and update spectogram from mic data
   var pixelArr = spectogram.convertToSpec(data);
   // Feed the audio data to the training module
-  //trainer.feed(data);
+  trainer.feed(data);
   // Prepere clientPackage for client
   var clientPackage = {
     spectogram: pixelArr,
@@ -25,7 +25,9 @@ client.listen(function(data){
   if(data=='train')    trainer.startTraining();
   if(data=='trainoff') trainer.stopTraining();
   if(data=='reset')    trainer.resetTraining();
+  if(data=='nullState') trainer.trainNull();
   if(data=='noise')    sound.noise = !sound.noise; // toggle noise
+
 });
 
 //sound.playFile('server/data/noise.wav');

@@ -26,7 +26,7 @@ jQuery.fn.mouseHold = function(timeout, f, callback) {
 				clearInterval(timer);
 				if (fireStep == 1) f.call(this, 1);
 				fireStep = 0;
-				console.log("off");
+				//console.log("off");
 			}
 
 			jQuery(this).on('mouseout touchmove',clearMousehold);
