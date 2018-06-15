@@ -33,6 +33,16 @@ export function drawSpecto(data) {
   }
 }
 
+var processStatus = false;
+var processCounter = 0;
+
+export function startFeedback(){
+  processStatus = true;
+}
+export function stopFeedback(){
+  processStatus = false;
+}
+
 export function drawButton(data){
 
   ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -67,6 +77,26 @@ export function drawButton(data){
     }
     points = [];
   }
+
+  // draw process
+  if(processStatus){
+    processCounter++;
+    ctx.save();
+      ctx.translate(centerX,centerY);
+      ctx.rotate(degreesToRadians(90));
+      ctx.beginPath();
+      ctx.arc(0,0,100,0,degreesToRadians(processCounter*10));
+      ctx.lineWidth = 10;
+      ctx.stroke();
+
+    ctx.restore();
+  }else{
+    processCounter = 0;
+  }
+}
+
+function degreesToRadians (degrees) {
+   return degrees * (Math.PI/180);
 }
 
 function ellipse(ctx, x, y, r) {
@@ -75,6 +105,8 @@ function ellipse(ctx, x, y, r) {
   ctx.closePath();
   ctx.fill();
 }
+
+
 
 function resize(canvas) {
   // Lookup the size the browser is displaying the canvas.
