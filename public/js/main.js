@@ -1,4 +1,4 @@
-var socket = io.connect('10.0.0.16:8000');
+var socket = io.connect('localhost:8000');
 import * as Canvas from './canvas.js';
 socket.emit('msg', 'train');
 // resive data from server
@@ -10,13 +10,35 @@ socket.on('msg', function(data) {
   $("#info" ).text("Examples: "+data.server.examples);
 });
 
-$('#canvas').mouseHold(function(data){
-  socket.emit('msg', 'train');
+var timeOut = 0;
+//Canvas.stopFeedback();
+
+// while mousehold for training button
+$('#canvas').on('mousedown touchstart', function(e) {
+  $(this).addClass('active');
+  timeOut = setInterval(function(){
+    socket.emit('msg', 'train');
+    //Canvas.startFeedback();
+  }, 100);
+}).bind('mouseup mouseleave touchend', function() {
+  $(this).removeClass('active');
+  socket.emit('msg', 'stop');
+  //Canvas.stopFeedback();
+  clearInterval(timeOut);
 });
 
-$('#nullState').mouseHold(function(data){
-  socket.emit('msg', 'nullState');
+// while mousehold for nullstate button
+$('#nullState').on('mousedown touchstart', function(e) {
+  $(this).addClass('active');
+  timeOut = setInterval(function(){
+    socket.emit('msg', 'nullState');
+  }, 100);
+}).bind('mouseup mouseleave touchend', function() {
+  $(this).removeClass('active');
+  socket.emit('msg', 'stop');
+  clearInterval(timeOut);
 });
+
 
 $('#reset').on('mousedown touch',function(){
   socket.emit('msg', 'reset');
