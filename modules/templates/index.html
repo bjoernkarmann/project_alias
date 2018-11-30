@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" type="text/css" href="../static/style/style.css">
+    <title>PROJECT ALIAS</title>
+    <script type="text/javascript" src="../static/js/p5.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/js/socket.io.js"></script>
+  </head>
+  <body oncontextmenu="false">
+    <div class="app-wrapper">
+
+      <!-- start of app -->
+      <div class="header small-section">
+        <h1 id="header-text">Examples <span id="tr_examples">0</span></h1>
+        <p class="hidden" id="header-meta" style='margin:8px'>neutral sounds</p>
+      </div>
+
+      <div class="visualization" oncontextmenu="false" id="canvas-wrapper">
+        <P>Hold to record<br>your alias</P>
+      </div>
+
+      <div class="menu">
+        <div class="menu-icon"></div>
+          <p id="train" >Train alias</p>
+          <p id="reset" >Reset alias</p>
+          <p id="bg-toggle">Background sound - OFF</p>
+          <p id="onoff">Turn OFF</p>
+      </div>
+      <!-- end of app -->
+
+  </div>
+    <!-- Javascript -->
+  <script type="text/javascript" src="../static/js/visualization.js"></script>
+  <script type="text/javascript" src="../static/js/interaction.js" charset="utf-8"></script>
+  <script type="text/javascript" charset="utf-8"> 
+
+    //////////////////////////////////////////////////////////////////////////////////////////
+    // GEt data form Raspberry
+    var socket = io.connect('http://' + document.domain + ':' + location.port + '/socket');
+
+    //Global variables from RPI
+    var rowCount; 
+    var examples;
+    var bgExamples;
+    var predictState; 
+    var trainState;
+    var resetState;
+    var result;
+    var hasBeenTrained; 
+    var triggered;
+
+    //Get spectogram from python
+    socket.on('sound', function(msg) { 
+      rowCount = $.parseJSON(msg.count);
+      var spectogram = $.parseJSON(msg.spectogram);
+      receiveData(spectogram);
+    });
+
+    //Get system info from RPI 
+    socket.on('response', function(msg) {
+
+      console.log(msg);
+      examples       = msg.tr_examples; 
+      bgExamples     = msg.bg_examples;
+      predictState   = msg.predict_state;
+      trainState     = msg.train_state;
+      resetState     = msg.reset_state;
+      result         = msg.result;
+      hasBeenTrained = msg.hasbeentrained
+      triggered      = msg.triggered
+
+      console.log("record btn: " + recordBtn);
+      if(resetState) progress_feedback("Reset alias");
+        else if(trainState) progress_feedback("Training");
+        else if(predictState){
+          // if system gets ready after loading
+          if(timeOut_progress != null){
+            clearInterval(timeOut_progress);
+            $("#header-text").html("Examples <span id='tr_examples'></span>");
+            clickMenu();
+            timeOut_progress = null
+            if(examples == 0) resetVisualizations(); 
+          }
+       }
+
+      //Update values when data is coming from RPI 
+      $('#result').text(result);
+      if(hasBeenTrained){
+        if(triggered) toogleColors(triggered);
+        else toogleColors(triggered);
+        $("#header-meta").addClass('hidden')
+      }
+      else{
+        $('#header-text').html("Examples <span id='tr_examples'></span>")
+      }
+      if(record_BG) $('#tr_examples').text(bgExamples);
+      else $('#tr_examples').text(examples);
+    });
+
+
+
+    function toogleColors(toogle){
+      if(toogle){
+        $('#header-text').text("Your assistant is activated")
+        $('.menu').css("background-color", 'rgb(53, 143, 213)');
+        bgCol = color(53, 143, 213);
+      }
+      else{
+        if(predictState) $('#header-text').text("Say your alias!")
+        else{
+          $('#header-text').html("Examples <span id='tr_examples'></span>")
+        }
+        bgCol = 255;
+        $('.menu').css("background-color", 'white');
+      }
+    }
+
+    //prevent scroll on phone
+    function preventBehavior(e) {
+      e.preventDefault(); 
+    };
+    document.addEventListener("touchmove", preventBehavior, {passive: false});
+  </script>
+  </body>
+</html>
