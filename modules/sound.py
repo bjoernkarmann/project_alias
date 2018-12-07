@@ -26,7 +26,7 @@ FINISHED_SPECTOGRAM = np.empty([0,FRAMES_RANGE], dtype=np.int16) # array to stor
 FRAME               = np.empty([CHUNK], dtype=np.int16) # frames to fill up spectogram
 
 def initialize():
-    os.system('amixer -c 1 set Speaker -37db')
+    os.system('sudo amixer -c 1 sset Speaker 83')
     return pyaudio.PyAudio().open(format=FORMAT,
                      channels=CHANNELS,
                      rate=RATE,
@@ -47,7 +47,7 @@ def audio_callback(in_data, frame_count, time_info, flag):
 def mic_thresh(volume):
     if(np.max(volume) > 2000 and not globals.MIC_TRIGGER):
         globals.MIC_TRIGGER = True
-        
+
 # Callback on mic input
 pre_emphasis = 0.97
 NFFT = 512
