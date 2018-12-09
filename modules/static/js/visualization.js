@@ -1,8 +1,8 @@
  /////////////////////////////////////////////////////////////
     // Visualization 
     var centerX, centerY;
-    var colLength = 20;
-    var rowLength = 22; 
+    var colLength = 13;
+    var rowLength = 23; 
     var radius = 100;
     var angle;
     var recordBtn = false;

@@ -27,6 +27,8 @@ BATCH_SIZE      = 8
 DENSE_UNITS     = 128
 RESULT          = None
 LOAD_MODEL      = True
+row = 23
+col = 13
 
 # Load or reset training examples for class 0 (background sounds)
 def load_BG_examples():
@@ -35,8 +37,8 @@ def load_BG_examples():
         TRAINING_DATA = np.load('data/background_sound_examples.npy')
         TRAINING_LABELS = np.load('data/background_sound_labels.npy')
     else:
-        TRAINING_DATA = np.empty([0, 1, sound.SPECTOGRAM_LEN, sound.FRAMES_RANGE]) # XS Example array to be trained
-        TRAINING_LABELS = np.empty([0, 2]) # YS Label array
+        TRAINING_DATA = np.empty([0, 1, row, col]) # XS Example array to be trained
+        TRAINING_LABELS = np.empty([0, NUM_CLASSES ]) # YS Label array
     globals.BG_EXAMPLES = len(TRAINING_DATA)
     globals.TR_EXAMPLES = 0
     print("- loaded example shape")
@@ -48,7 +50,7 @@ def create_model():
 
     if(not LOAD_MODEL):
         model = Sequential()
-        model.add(Conv2D(32, kernel_size = (3,3), input_shape = (1, sound.SPECTOGRAM_LEN, sound.FRAMES_RANGE), data_format='channels_first'))
+        model.add(Conv2D(32, kernel_size = (3,3), input_shape = (1, row, col), data_format='channels_first'))
         model.add(MaxPooling2D(pool_size = (2, 2)))
         model.add(Conv2D(filters = 16, kernel_size = (3,3), activation = 'relu'))
         model.add(MaxPooling2D(pool_size = (2, 2)))
@@ -58,7 +60,7 @@ def create_model():
         model.add(Flatten())
         model.add(Dense(units = DENSE_UNITS, activation = 'relu'))
         model.add(Dropout(rate = 0.5))
-        model.add(Dense(units = NUM_CLASSES, activation = 'softmax'))
+        model.add(Dense(units = NUM_CLASSES, activation = 'sigmoid'))
         model.compile(optimizer= 'adam',loss= 'binary_crossentropy',metrics = ['accuracy'])   
 
         globals.HAS_BEEN_TRAINED = False
@@ -74,18 +76,15 @@ def addExample(sample, label):
     encoded_y = keras.utils.np_utils.to_categorical(label,num_classes=NUM_CLASSES) # make one-hot
     encoded_y = np.reshape(encoded_y,(1,2))
     TRAINING_LABELS = np.append(TRAINING_LABELS,encoded_y,axis=0)
-    sample = np.expand_dims(sample, axis=0)
-    sample = np.expand_dims(sample, axis=0)
+    sample = sample.reshape(sample.shape[0],1,row, col)
     TRAINING_DATA = np.append(TRAINING_DATA,sample,axis=0)
     print('add example for label %d'%label)
-    print(TRAINING_LABELS.shape)
-    print(TRAINING_DATA.shape)
+
     if globals.HAS_BEEN_TRAINED:
         globals.HAS_BEEN_TRAINED = False
 
 # Train the model on recorded examples
 def train_model():
-    global model
 
     if globals.TR_EXAMPLES > 0:
         weightRatio = np.ceil(globals.BG_EXAMPLES / globals.TR_EXAMPLES)
@@ -116,10 +115,9 @@ def train_model():
 
 # Predict incoming frames
 def predict(sample):
-    global model
+    print(sample.shape)
     sample = np.expand_dims(sample, axis=0)
-    sample_extended = np.expand_dims(sample, axis=0)
-    prediction = model.predict(sample_extended)
+    prediction = model.predict(sample)
     return np.argmax(prediction)
 
 # Reset the current model to the neutral with no wake-word trained yet.

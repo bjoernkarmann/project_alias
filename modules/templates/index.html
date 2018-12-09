@@ -56,7 +56,7 @@
     socket.on('sound', function(msg) { 
       rowCount = $.parseJSON(msg.count);
       var spectogram = $.parseJSON(msg.spectogram);
-      receiveData(spectogram);
+      receiveData(spectogram[0]);
     });
 
     //Get system info from RPI 
@@ -72,7 +72,6 @@
       hasBeenTrained = msg.hasbeentrained
       triggered      = msg.triggered
 
-      console.log("record btn: " + recordBtn);
       if(resetState) progress_feedback("Reset alias");
         else if(trainState) progress_feedback("Training");
         else if(predictState){

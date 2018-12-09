@@ -14,9 +14,8 @@ import atexit
 
 # Global inits 
 #====================================================#
-#init and setup RPI LED
-LED = led.Pixels()
-LED.off()
+#init and setup RPI LEDs
+led.LED.off()
 #Initialize the sound objects
 noise = sound.audioPlayer("data/noise.wav",-1,"noise",True)
 wakeup = sound.audioPlayer("data/ok_google.wav",0,"wakeup", False)
@@ -36,14 +35,14 @@ def test_message(message):
         example = sound.get_spectrogram()
         ai.addExample(example,0)
         globals.BG_EXAMPLES += 1
-        LED.listen()
+        led.LED.listen()
     
     #Add example to class 1 - WakeWord
     elif('class1' in msg and globals.EXAMPLE_READY and not globals.UPDATE_BG_DATA):
         example = sound.get_spectrogram()
         ai.addExample(example,1)
         globals.TR_EXAMPLES += 1
-        LED.listen()
+        led.LED.listen()
     
     #Receive train command
     elif('train' in msg):    
@@ -97,54 +96,60 @@ def main_thread():
 
     # Program loop start here 
     #====================================================#
-    while True:
+    try: 
+        while True:
 
-        while stream.is_active():
-            time.sleep(0.033)
-            LED.off()
-            current_sec = time.time()
-
-            # If the mic is triggered an spectogram is not done, make a row more.
-            if(globals.MIC_TRIGGER and not globals.EXAMPLE_READY):
-                sound.make_spectrogram()
+            while stream.is_active():
+                time.sleep(0.01)
+                led.LED.off()
+                current_sec = time.time()
                 
-            if globals.PREDICT and globals.EXAMPLE_READY and not globals.TRAIN and not globals.RESET:
-                sample = sound.get_spectrogram()
-                print("get spectogram")
-                print(globals.EXAMPLE_READY)
-                if globals.HAS_BEEN_TRAINED: #if model has been trained then predict
-                    globals.RESULT = ai.predict(sample).item()
-                    print("GLOBAL RESULT: %d" %globals.RESULT)
 
-                if globals.RESULT  == 1:
-                    noise.stop()
-                    wakeup.play()
-                    LED.on()
-                    globals.TRIGGERED = True
-                    globals.PREDICT = False
-                    prev_timer = current_sec
-                    connection.send_response()
+                # If the mic is triggered an spectogram is not done, make a row more.
+                if(globals.MIC_TRIGGER and not globals.EXAMPLE_READY):
+                    sound.make_spectrogram()
+                    
+                if globals.PREDICT and globals.EXAMPLE_READY and not globals.TRAIN and not globals.RESET:
+                    sample = sound.get_spectrogram()
+                    print("get spectogram")
+                    print(globals.EXAMPLE_READY)
+                    if globals.HAS_BEEN_TRAINED: #if model has been trained then predict
+                        globals.RESULT = ai.predict(sample).item()
+                        print("GLOBAL RESULT: %d" %globals.RESULT)
 
-            elif globals.TRAIN:
-                ai.train_model()
-                globals.PREDICT = True
-                globals.TRAIN = False
-                connection.send_response() #tell client that we are done training
+                    if globals.RESULT  == 1:
+                        noise.stop()
+                        wakeup.play()
+                        globals.TRIGGERED = True
+                        globals.PREDICT = False
+                        prev_timer = current_sec
+                        connection.send_response()
 
-            else:
-                globals.RESULT = 0
-
-            if current_sec - prev_timer > interval:
-                if globals.TRIGGERED:
-                    noise.play()
-                    print("start noise")
-                    LED.off()
-                    globals.TRIGGERED = False;
+                elif globals.TRAIN:
+                    ai.train_model()
                     globals.PREDICT = True
-                    connection.send_response()
+                    globals.TRAIN = False
+                    connection.send_response() #tell client that we are done training
 
-# Setup
-#====================================================#
+                else:
+                    globals.RESULT = 0
+
+                if current_sec - prev_timer > interval:
+                    if globals.TRIGGERED:
+                        noise.play()
+                        print("start noise")
+                        led.LED.off()
+                        globals.TRIGGERED = False;
+                        globals.PREDICT = True
+                        connection.send_response()
+
+              
+
+    except (KeyboardInterrupt, SystemExit):
+        exit_handler()
+
+    # Setup
+    #====================================================#
 
 globals.initialize()
 stream = sound.initialize()
@@ -167,8 +172,8 @@ if __name__ == '__main__':
 
 
 def exit_handler():
-    #noise.close()
-    LED.off()
+    led.LED.off()
+    stream.stop_stream()
     stream.close()
     sound.pyaudio.terminate()
 atexit.register(exit_handler)
