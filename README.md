@@ -1,23 +1,25 @@
 # Project: Alias
 
-![alt text](imgs/short_alias_explenation.gif)
+<img src="imgs/alias.jpg" width="49%">
+<img src="imgs/short_alias_explained.gif" width="49%">
 
-[![Build Status](https://travis-ci.org/bjoernkarmann/project_alias.svg?branch=master)](https://travis-ci.org/bjoernkarmann/project_alias)
 [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-*Project Alias is a open-source parasite to train custom wake-up names for smart home devices while disturbing the their build in microphone.* 
+Project Alias is an open-source parasite to train custom wake-up names for smart home devices while disturbing their build in microphone.  
 
-# Requirements
+*NOTE: this project is still experimental and in development.*
 
-- Raspberry Pi A+
-- ReSpkeaker hat
-- Tiny speakers
+## Hardware requirements
+
+- [Raspberry Pi A+](https://www.raspberrypi.org/products/raspberry-pi-3-model-a-plus/)
+- [ReSpeaker 2-Mics Pi HAT](http://wiki.seeedstudio.com/ReSpeaker_2_Mics_Pi_HAT/)
+- [Tiny speakers](http://www.visaton.de/en/products/miniature-speakers/k-16-50-ohm)
 
 
-*NOTE: for best results use...*
 
-# Raspberry Pi Setup 🔧
+## Raspberry Pi Setup 🔧
+
 How to prepare and setup a Raspberry Pi for this project:
 
 1. Download the latest version of [Raspbian](https://www.raspberrypi.org/downloads/raspbian/) and flash your micro SD card with [Etcher](https://etcher.io/)
@@ -33,13 +35,8 @@ How to prepare and setup a Raspberry Pi for this project:
 7. Reboot ```sudo reboot```
 
 
-# Installing 
+## Installing 
 
-Install all the required software in one go with this command:
-
-```
-sudo apt-get install python3-dev python3-pip git libatlas-base-dev  
-```
 
 Clone and install the sound driver for the [ReSpeaker](http://wiki.seeedstudio.com/ReSpeaker_2_Mics_Pi_HAT/) hat and reboot.<br>
 *This is only required when using the ReSpeaker hat, this code will also work with other sound drivers.*
@@ -47,6 +44,21 @@ Clone and install the sound driver for the [ReSpeaker](http://wiki.seeedstudio.c
 ```
 cd && git clone https://github.com/respeaker/seeed-voicecard.git
 cd seeed-voicecard && sudo ./install.sh
+```
+
+Install **Tensorflow** and **Keras**:
+
+```
+sudo apt-get install python3-dev python3-pip git libatlas-base-dev 
+sudo pip3 install tensorflow keras 
+```
+
+Install the requred modules: 
+
+```
+sudo apt-get install python3-numpy python3-spidev python-h5py
+sudo apt-get install python3-pyaudio libsdl-ttf2.0-0 python3-pygame 
+sudo pip3 install flask flask_socketio python_speech_features
 ```
 
 Clone the **Alias** project: 
@@ -63,15 +75,22 @@ Setup a bootscript. Open this file:
 sudo nano /etc/rc.local
 ```
 
-# Use Alias 🍄
-
-Explain how to run the automated tests for this system
-
-Open a browser on your phone and go to ```raspberrypi.local:5050```
+## Use Alias 🍄
 
 
-## Contributers
-Made with love by [Bjørn Karmann](http://bjoernkarmann.dk) and [Tore Knudsen](). 
+
+1. To train Alias use the browser on your phone and open ```raspberrypi.local:5050```
+
+2. Hold down the record button while saying the new name about 4-6 times. A small bar should indicate the 2 seconds recording window. Each name should fit within this timeframe.
+
+3. Under the menu, click Train Alias and wait a few seconds for the model to learn the name. This name does not necessarily need to be a word but can be a sound and any language. So be creative! You can always reset your name on the menu. *Tip: it helps to record the name from different locations in your home.*
+
+4. Try it out! Say the name and ask your question once you see a blue light on the device or on your phone. 
+Note: once trained there is no need to have the phone connected anymore. 
+
+
+## Contributors
+Made with love by [Bjørn Karmann](http://bjoernkarmann.dk) and [Tore Knudsen](http://www.toreknudsen.dk/). 
 
 
 ## License 
