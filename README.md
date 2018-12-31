@@ -65,8 +65,6 @@ Clone the **Alias** project:
 
 ```
 git clone https://github.com/bjoernkarmann/project_alias.git
-cd project_alias
-pip install -r requirements.txt
 ```
 
 Setup a bootscript. Open this file:
@@ -74,8 +72,17 @@ Setup a bootscript. Open this file:
 ```
 sudo nano /etc/rc.local
 ```
+ and add at the end of the command just before **exit 0**, like:
+  
+```
+cd project_alias && python3 app.py &
+```
+Now reboot the Pi to test it:
 
-## Use Alias 🍄
+```
+sudo reboot
+```
+## Training Alias 🍄
 
 
 
@@ -83,11 +90,12 @@ sudo nano /etc/rc.local
 
 2. Hold down the record button while saying the new name about 4-6 times. A small bar should indicate the 2 seconds recording window. Each name should fit within this timeframe.
 
-3. Under the menu, click Train Alias and wait a few seconds for the model to learn the name. This name does not necessarily need to be a word but can be a sound and any language. So be creative! You can always reset your name on the menu. *Tip: it helps to record the name from different locations in your home.*
+3. Under the menu, click **Train Alias** and wait a few seconds for the model to learn the name. This name does not necessarily need to be a word but can be a sound and any language. So be creative! You can always reset your name on the menu. *Tip: it helps to record the name from different locations in your home.*
 
 4. Try it out! Say the name and ask your question once you see a blue light on the device or on your phone. 
 Note: once trained there is no need to have the phone connected anymore. 
 
+*If you find Alias is not responding correctly, try to train a few more examples. Or if you find Alias is triggering to often, you can go to the menu and turn background sound ON. This toggles the background mode and adds any new recordings to the background examples. Record and train just as before, but try to capture unique sounds in your environment or even words that sound similar to your chosen name.*
 
 ## Contributors
 Made with love by [Bjørn Karmann](http://bjoernkarmann.dk) and [Tore Knudsen](http://www.toreknudsen.dk/). 
