@@ -1,7 +1,6 @@
 # Project: Alias
 
-<img src="imgs/alias.jpg" width="49%">
-<img src="imgs/short_alias_explained.gif" width="49%">
+<img src="imgs/alias.jpg" width="48%"> <img src="imgs/short_alias_explained.gif" width="48%">
 
 [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -38,7 +37,7 @@ How to prepare and setup a Raspberry Pi for this project:
 ## Installing 
 
 
-Clone and install the sound driver for the [ReSpeaker](http://wiki.seeedstudio.com/ReSpeaker_2_Mics_Pi_HAT/) hat and reboot.<br>
+On the Rapsberry Pi: clone and install the sound driver for the [ReSpeaker](http://wiki.seeedstudio.com/ReSpeaker_2_Mics_Pi_HAT/) hat:<br>
 *This is only required when using the ReSpeaker hat, this code will also work with other sound drivers.*
 
 ```
@@ -101,7 +100,7 @@ Note: once trained there is no need to have the phone connected anymore.
 Made with love by [Bjørn Karmann](http://bjoernkarmann.dk) and [Tore Knudsen](http://www.toreknudsen.dk/). 
 
 
-## License 
+## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
