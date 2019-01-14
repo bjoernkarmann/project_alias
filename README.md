@@ -1,22 +1,23 @@
 # Project Alias
 
 <p float="left">
-<img src="imgs/alias.jpg" width="48%"><img src="imgs/short_alias_explained.gif" width="48%">
+<img src="imgs/alias.jpg" width="49%"> <img src="imgs/short_alias_explained.gif" width="49%">
 </p>
 
 [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+
+
 Project Alias is an open-source parasite to train custom wake-up names for smart home devices while disturbing their build in microphone.  
 
 *NOTE: this project is still experimental and in development.*
 
-## Hardware requirements
 
-- [Raspberry Pi A+](https://www.raspberrypi.org/products/raspberry-pi-3-model-a-plus/)
-- [ReSpeaker 2-Mics Pi HAT](http://wiki.seeedstudio.com/ReSpeaker_2_Mics_Pi_HAT/)
-- [Tiny speakers](http://www.visaton.de/en/products/miniature-speakers/k-16-50-ohm)
+## Build Guide
 
+
+For the complete step-by-step guide and 3D files see our [Instructables](https://www.instructables.com/id/Project-Alias)
 
 
 ## Raspberry Pi Setup 🔧
@@ -27,7 +28,9 @@ How to prepare and setup a Raspberry Pi for this project:
 
 2. Copy the **ssh** and **wpa_supplicant.conf** files from the [setup folder](setup/) to the SD card (boot) 
 
+
 3. Edit the **wpa_supplicant.conf** in a text editor to match your wifi settings. Insert the card to the raspberry pi
+
 
 4. In terminal ssh into the pi: ```sudo ssh pi@raspberrypi.local```<br>*Defult password is 'raspberry'. To change password use the 'passwd' command*
 
