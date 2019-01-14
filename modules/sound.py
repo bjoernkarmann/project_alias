@@ -17,7 +17,7 @@ pygame.mixer.init()
 #====================================================#
 RATE                = 16000
 CHUNK_SAMPLES       = 1024
-FEED_DURATION       = 1.5 # Duration in seconds 
+FEED_DURATION       = 1.5 # Duration in seconds
 FEED_LENGTH         = np.floor(RATE * FEED_DURATION / CHUNK_SAMPLES)
 WIN_LEN             = 1/(RATE/CHUNK_SAMPLES) #IN SECONDS
 FORMAT              = pyaudio.paInt16
@@ -50,7 +50,7 @@ def audio_callback(in_data, frame_count, time_info, flag):
         q.put(audio_data)
     return in_data, pyaudio.paContinue
 
-        
+
 
 
 def make_spectrogram():
@@ -60,7 +60,7 @@ def make_spectrogram():
     if(len(RUNNING_SPECTOGRAM) < FEED_LENGTH):
         #preemphasis the signal to weight up high frequencies
         signal = sigproc.preemphasis(data, coeff=0.95)
-        #apply mfcc on the frames 
+        #apply mfcc on the frames
         mfcc_feat = mfcc(signal, RATE, winlen= 1/(RATE/CHUNK_SAMPLES), nfft=CHUNK_SAMPLES*2, winfunc=np.hamming)
         RUNNING_SPECTOGRAM = np.vstack([mfcc_feat,RUNNING_SPECTOGRAM])
         connection.send_spectogram(mfcc_feat,len(RUNNING_SPECTOGRAM))
@@ -70,7 +70,7 @@ def make_spectrogram():
         RUNNING_SPECTOGRAM = np.empty([0,13], dtype='int16')
         globals.EXAMPLE_READY = True
         globals.MIC_TRIGGER = False
-    
+
 def get_spectrogram():
     global FINISHED_SPECTOGRAM
     FINISHED_SPECTOGRAM = np.expand_dims(FINISHED_SPECTOGRAM, axis=0)
@@ -101,7 +101,7 @@ class audioPlayer():
         self.player.play(loops=self.loop)
         if not self.loop:
             self.check_if_playing()
-        
+
     def stop(self):
         print("stopping " + self.name)
         self.player.stop()

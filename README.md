@@ -8,16 +8,15 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
+Project Alias is an open-source parasite to train custom wake-up names for smart home devices while disturbing their build in microphone. Read more about the project [here](http://bjoernkarmann.dk/project_alias).
 
-Project Alias is an open-source parasite to train custom wake-up names for smart home devices while disturbing their build in microphone.  
-
-*NOTE: this project is still experimental and in development.*
+<p style='color:red'>NOTE: this project is experimental and still in development.</p>
 
 
 ## Build Guide
 
 
-For the complete step-by-step guide and 3D files see our [Instructables](https://www.instructables.com/id/Project-Alias)
+For the complete step-by-step guide and 3D files see our [Instructables](https://www.instructables.com/id/Project-Alias).
 
 
 ## Raspberry Pi Setup 🔧
@@ -101,8 +100,17 @@ Note: once trained there is no need to have the phone connected anymore.
 
 *If you find Alias is not responding correctly, try to train a few more examples. Or if you find Alias is triggering to often, you can go to the menu and turn background sound ON. This toggles the background mode and adds any new recordings to the background examples. Record and train just as before, but try to capture unique sounds in your environment or even words that sound similar to your chosen name.*
 
+## Callibration 
+
+- If you are using a **Amazon Alexa**, please change line 21 in **app.py** to: ```wakeup = sound.audioPlayer("data/alexa.wav",0,"wakeup", False)```
+
+- To set the volume of the speaker you can change the line 32 in **modules/sound.py** ```os.system('sudo amixer -c 1 sset Speaker 83')``` 
+
+## Get Involved!
+We are both Ineraction Designers, Makers and strong believers in privacy but no experts when it comes to Speech Recognition software. If you are interrested in getting involved in version 2.0 please let us know!
+
 ## Contributors
-Made with love by [Bjørn Karmann](http://bjoernkarmann.dk) and [Tore Knudsen](http://www.toreknudsen.dk/). 
+Made by [Bjørn Karmann](http://bjoernkarmann.dk) and [Tore Knudsen](http://www.toreknudsen.dk/). 
 
 
 ## License
