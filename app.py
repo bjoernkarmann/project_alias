@@ -12,7 +12,7 @@ from modules import led
 import atexit
 
 
-# Global inits 
+# Global inits
 #====================================================#
 #init and setup RPI LEDs
 led.LED.off()
@@ -20,7 +20,7 @@ led.LED.off()
 noise = sound.audioPlayer("data/noise.wav",-1,"noise",True)
 wakeup = sound.audioPlayer("data/ok_google.wav",0,"wakeup", False)
 
-# Socket connection between client 
+# Socket connection between client
 #====================================================#
 @connection.socketio.on('msgEvent', namespace='/socket')
 def test_message(message):
@@ -36,26 +36,26 @@ def test_message(message):
         ai.addExample(example,0)
         globals.BG_EXAMPLES += 1
         led.LED.listen()
-    
+
     #Add example to class 1 - WakeWord
     elif('class1' in msg and globals.EXAMPLE_READY and not globals.UPDATE_BG_DATA):
         example = sound.get_spectrogram()
         ai.addExample(example,1)
         globals.TR_EXAMPLES += 1
         led.LED.listen()
-    
+
     #Receive train command
-    elif('train' in msg):    
-        globals.TRAIN = True 
+    elif('train' in msg):
+        globals.TRAIN = True
 
     #Receive reset command
     elif('reset' in msg):
-        globals.RESET = True;   
+        globals.RESET = True;
         connection.send_response()  #tell client that we are reseting
         ai.reset_model()
-        globals.RESET = False; 
+        globals.RESET = False;
         globals.TR_EXAMPLES = 0
-        
+
     #Toogle Alias on and off
     elif('onoff' in msg):
         if(stream.is_active()):
@@ -63,7 +63,7 @@ def test_message(message):
             noise.stop()
         else:
             stream.start_stream()
-            noise.play()    
+            noise.play()
 
     #Receive is Button is pressed or released
     if('btn_release' in msg):
@@ -80,35 +80,35 @@ def test_message(message):
 
     connection.send_response()
 
-# End of socket 
+# End of socket
 #====================================================#
 
 # Main thread
 def main_thread():
 
-    noise.play() #Start noise   
+    noise.play() #Start noise
     ai.create_model()  # setup keras model
     connection.send_response() #Send system info to client
 
-    # variables to control timing between predictions 
+    # variables to control timing between predictions
     prev_timer = 0;
     interval = 5;
 
-    # Program loop start here 
+    # Program loop start here
     #====================================================#
-    try: 
+    try:
         while True:
 
             while stream.is_active():
                 time.sleep(0.01)
                 led.LED.off()
                 current_sec = time.time()
-                
+
 
                 # If the mic is triggered an spectogram is not done, make a row more.
                 if(globals.MIC_TRIGGER and not globals.EXAMPLE_READY):
                     sound.make_spectrogram()
-                    
+
                 if globals.PREDICT and globals.EXAMPLE_READY and not globals.TRAIN and not globals.RESET:
                     sample = sound.get_spectrogram()
                     print("get spectogram")
@@ -143,7 +143,7 @@ def main_thread():
                         globals.PREDICT = True
                         connection.send_response()
 
-              
+
 
     except (KeyboardInterrupt, SystemExit):
         exit_handler()
