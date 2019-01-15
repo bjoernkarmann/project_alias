@@ -31,7 +31,7 @@ How to prepare and setup a Raspberry Pi for this project:
 3. Edit the **wpa_supplicant.conf** in a text editor to match your wifi settings. Insert the card to the raspberry pi
 
 
-4. In terminal ssh into the pi: ```sudo ssh pi@raspberrypi.local```<br>*Defult password is 'raspberry'. To change password use the 'passwd' command*
+4. In terminal ssh into the pi: ```sudo ssh pi@raspberrypi.local```<br>*Default password is 'raspberry'. To change password use the 'passwd' command*
 
 5. Update the pi: ```sudo apt-get update && sudo apt-get upgrade```<br>
 
@@ -56,7 +56,7 @@ sudo apt-get install python3-dev python3-pip git libatlas-base-dev
 sudo pip3 install tensorflow keras 
 ```
 
-Install the requred modules: 
+Install the required modules: 
 
 ```
 sudo apt-get install python3-numpy python3-spidev python-h5py
@@ -107,7 +107,7 @@ Note: once trained there is no need to have the phone connected anymore.
 - To set the volume of the speaker you can change the line 32 in **modules/sound.py** ```os.system('sudo amixer -c 1 sset Speaker 83')``` 
 
 ## Get Involved!
-We are both Ineraction Designers, Makers and strong believers in privacy but no experts when it comes to Speech Recognition software. If you are interrested in getting involved in version 2.0 please let us know!
+We are both Interaction Designers, Makers and strong believers in privacy but no experts when it comes to Speech Recognition software. If you are interested in getting involved in version 2.0 please let us know!
 
 ## Contributors
 Made by [Bjørn Karmann](http://bjoernkarmann.dk) and [Tore Knudsen](http://www.toreknudsen.dk/). 
