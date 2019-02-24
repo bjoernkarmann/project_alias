@@ -109,7 +109,7 @@ def train_model():
     if globals.UPDATE_BG_DATA:
         print(TRAINING_DATA.shape)
         model.save("data/neutral_model.h5")
-        model.save("data/previous_model.h5)
+        model.save("data/previous_model.h5")
         np.save('data/background_sound_examples.npy',TRAINING_DATA)
         np.save('data/background_sound_labels.npy',TRAINING_LABELS)
 
