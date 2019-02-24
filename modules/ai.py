@@ -66,7 +66,7 @@ def create_model():
         globals.HAS_BEEN_TRAINED = False
 
     else:
-        model = load_model('data/neutral_model.h5') #load the last model saved to continue. 
+        model = load_model('data/previous_model.h5') #load the last model saved to continue. 
         print("just loaded model")
         globals.HAS_BEEN_TRAINED = False # Change to True if wake word is trained in the loaded model
 
