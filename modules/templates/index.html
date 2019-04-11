@@ -4,124 +4,127 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" type="text/css" href="../static/style/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     <title>PROJECT ALIAS</title>
-    <script type="text/javascript" src="../static/js/p5.min.js"></script>
     <script type="text/javascript" src="../static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../static/js/socket.io.js"></script>
   </head>
-  <body oncontextmenu="false">
-    <div class="app-wrapper">
 
-      <!-- start of app -->
-      <div class="header small-section">
-        <h1 id="header-text">Examples <span id="tr_examples">0</span></h1>
-        <p class="hidden" id="header-meta" style='margin:8px'>neutral sounds</p>
+  <body oncontextmenu="false" onload="requestSettings()">
+    <div id="app-wrapper">
+      <div id="blocks"></div>
+
+      <div id="plus" onclick="addBlock()"><p>+</p></div>
+      <div id="footer" onclick="updateSettings()">
+        <div id="submit"><p>update Alias</p></div>
       </div>
 
-      <div class="visualization" oncontextmenu="false" id="canvas-wrapper">
-        <P>Hold to record<br>your alias</P>
-      </div>
+    </div>
+  </body>
 
-      <div class="menu">
-        <div class="menu-icon"></div>
-          <p id="train" >Train alias</p>
-          <p id="reset" >Reset alias</p>
-          <p id="bg-toggle">Background sound - OFF</p>
-          <p id="onoff">Turn OFF</p>
-      </div>
-      <!-- end of app -->
-
-  </div>
-    <!-- Javascript -->
-  <script type="text/javascript" src="../static/js/visualization.js"></script>
-  <script type="text/javascript" src="../static/js/interaction.js" charset="utf-8"></script>
-  <script type="text/javascript" charset="utf-8"> 
-
+  <!-- Javascript -->
+  <script type="text/javascript" charset="utf-8">
     //////////////////////////////////////////////////////////////////////////////////////////
     // GEt data form Raspberry
     var socket = io.connect('http://' + document.domain + ':' + location.port + '/socket');
+    var currentSettings;
 
-    //Global variables from RPI
-    var rowCount; 
-    var examples;
-    var bgExamples;
-    var predictState; 
-    var trainState;
-    var resetState;
-    var result;
-    var hasBeenTrained; 
-    var triggered;
-
-    //Get spectogram from python
-    socket.on('sound', function(msg) { 
-      rowCount = $.parseJSON(msg.count);
-      var spectogram = $.parseJSON(msg.spectogram);
-      receiveData(spectogram[0]);
-    });
-
-    //Get system info from RPI 
+    // get message from pi
     socket.on('response', function(msg) {
-
       console.log(msg);
-      examples       = msg.tr_examples; 
-      bgExamples     = msg.bg_examples;
-      predictState   = msg.predict_state;
-      trainState     = msg.train_state;
-      resetState     = msg.reset_state;
-      result         = msg.result;
-      hasBeenTrained = msg.hasbeentrained
-      triggered      = msg.triggered
-
-      if(resetState) progress_feedback("Reset alias");
-        else if(trainState) progress_feedback("Training");
-        else if(predictState){
-          // if system gets ready after loading
-          if(timeOut_progress != null){
-            clearInterval(timeOut_progress);
-            $("#header-text").html("Examples <span id='tr_examples'></span>");
-            clickMenu();
-            timeOut_progress = null
-            if(examples == 0) resetVisualizations(); 
-          }
-       }
-
-      //Update values when data is coming from RPI 
-      $('#result').text(result);
-      if(hasBeenTrained){
-        if(triggered) toogleColors(triggered);
-        else toogleColors(triggered);
-        $("#header-meta").addClass('hidden')
-      }
-      else{
-        $('#header-text').html("Examples <span id='tr_examples'></span>")
-      }
-      if(record_BG) $('#tr_examples').text(bgExamples);
-      else $('#tr_examples').text(examples);
+      currentSettings = msg;
+      clearBlocks();
+      updateBlocks(msg);
     });
 
+    // ask pi for settings on startup
+    function requestSettings(){
+      socket.emit('msgEvent',{data:"request"});
+    }
 
-
-    function toogleColors(toogle){
-      if(toogle){
-        $('#header-text').text("Your assistant is activated")
-        $('.menu').css("background-color", 'rgb(53, 143, 213)');
-        bgCol = color(53, 143, 213);
+    // copy the current block values and update settings on pi
+    function updateSettings(){
+      var blocks = document.getElementById('blocks');
+      var setting = [];
+      for(var i=0; i< blocks.children.length; i++){
+        var name = blocks.children[i].getElementsByClassName('name')[0].value;
+        var whisper = blocks.children[i].getElementsByClassName('whisper')[0].value;
+        setting.push({name,whisper});
       }
-      else{
-        if(predictState) $('#header-text').text("Say your alias!")
-        else{
-          $('#header-text').html("Examples <span id='tr_examples'></span>")
-        }
-        bgCol = 255;
-        $('.menu').css("background-color", 'white');
-      }
+      socket.emit('msgEvent',{data:"update", setting: {setting}});
     }
 
     //prevent scroll on phone
     function preventBehavior(e) {
-      e.preventDefault(); 
+      e.preventDefault();
     };
+
+    // reset blocks by emptying parent object
+    function clearBlocks(){
+      document.getElementById('blocks').innerHTML = '';
+    }
+
+    // update blocks based on the settings file
+    function updateBlocks(obj){
+      for(var i=0; i<obj.setting.length; i++){
+        var form = document.createElement("div");
+        form.setAttribute('class',"form");
+        form.setAttribute('id',"block");
+
+        if(i>0){ // dont make on first one
+          var remove = document.createElement("div");
+          remove.setAttribute('class',"remove");
+          remove.setAttribute('onclick',"removeBlock(this)");
+          form.appendChild(remove);
+        }
+
+        var input = document.createElement("input"); //input element, text
+        input.setAttribute('type',"text");
+        input.setAttribute('class',"name");
+        input.setAttribute('value',obj.setting[i].name);
+        form.appendChild(input);
+
+        var whisper = document.createElement("input"); //input element, text
+        whisper.setAttribute('type',"text");
+        whisper.setAttribute('class',"whisper");
+        whisper.setAttribute('value',obj.setting[i].whisper);
+        form.appendChild(whisper);
+
+        document.getElementById('blocks').appendChild(form);
+      }
+    }
+
+    // add a single block
+    function addBlock(){
+      var form = document.createElement("div");
+      form.setAttribute('class',"form");
+      form.setAttribute('id',"block");
+
+      var input = document.createElement("input"); //input element, text
+      input.setAttribute('type',"text");
+      input.setAttribute('class',"name");
+      input.setAttribute('value',"Name");
+      form.appendChild(input);
+
+      var remove = document.createElement("div");
+      remove.setAttribute('class',"remove");
+      remove.setAttribute('onclick',"removeBlock(this)");
+      form.appendChild(remove);
+
+      var whisper = document.createElement("input"); //input element, text
+      whisper.setAttribute('type',"text");
+      whisper.setAttribute('class',"whisper");
+      whisper.setAttribute('value',"Whisper");
+      form.appendChild(whisper);
+
+      document.getElementById('blocks').appendChild(form);
+    }
+
+    function removeBlock(event){
+      var block = event.parentElement;
+      block.remove();
+    }
+
     document.addEventListener("touchmove", preventBehavior, {passive: false});
   </script>
-  </body>
 </html>

@@ -9,7 +9,7 @@ font-family: 'Work Sans', sans-serif;
 }
 
 @media only screen and (max-width: 600px) {
-	.app-wrapper{
+	#app-wrapper{
 		position: relative;
 		margin: -8px 0 0 -8px;
 		width:100vw;
@@ -20,7 +20,7 @@ font-family: 'Work Sans', sans-serif;
 }
 
 @media only screen and (min-width: 600px) {
-	.app-wrapper{
+	#app-wrapper{
 		position: relative;
 		margin: 40px auto;
 		width:320px;
@@ -43,64 +43,76 @@ h1{
 p{
 	font-family: "Work Sans";
 	font-size: 16px;
-	font-weight: 600;
+	font-weight: 400;
 	text-align: center;
+}
+
+#block{
+  width: auto;
+  margin: 15px;
+  border-radius: 5px;
+  border: 1px solid black;
+
+}
+
+input{
+  position: relative;
+  width: 70%;
+  height: 20px;
+  margin: 8px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+#plus{
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+#plus p{
+  font-size: 30px;
+}
+
+.remove{
+  position: relative;
+  float: right;
+  width: 15px;
+  height: 15px;
+  background-image: url("../assets/x.png");
+  background-size: cover;
+  opacity: 0.1;
+  top:28px;
+  right:18px;
 }
 
 .header{
 	position: absolute;
 	top: 8%;
-    z-index: 3;
-    width: 90%;
-    padding: 5%;
+  z-index: 3;
+  width: 90%;
+  padding: 5%;
 }
-.footer{
+
+#footer{
 	position: absolute;
-	height:15%;
+	height:20px;
+  bottom: 60px;
+  width: 100%;
 }
 
-.visualization{
-	position: absolute;
-	height:100%;
-	width: 100%;
-	margin: 0;
+#submit{
+  position: relative;
+  margin: 15px;
+  padding: 1px 0px;
+  width: auto;
+  background-color: black;
+  border-radius: 5px;
+  color: white;
+  text-align: center;
 }
 
-.visualization p{
-	position: absolute;
-    width: 150px;
-    height: 40px;
-    left: 50%;
-    top: 50%;
-    margin-left: -75px;
-    margin-top: -20px;
-}
 
-.menu{
-	background-color: white;
-	position: absolute;
-	height: 80%;
-	width: 100%;
-	top:80%;
-}
-
-.menu p{
-	line-height: 64px;
-	margin-top: 0px;
-
-}
-
-.menu p:hover{
-	color:grey;
-}
-
-.menu .menu-icon{
-	margin:15% auto 15% auto;
-	height: 8px;
-	width: 40px;
-	border-top: 4px solid black;
-	border-bottom: 4px solid black;
-}
 .hidden{
 	display: none;
 }

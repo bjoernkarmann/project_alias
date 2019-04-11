@@ -1,16 +1,36 @@
 # coding=utf-8
 import numpy as np
 import time
+import atexit
 from threading import Thread
-
+from pocketsphinx import LiveSpeech
 # Import modules
 from modules import globals
-from modules import connection
+from modules import connect
 from modules import sound
-from modules import ai
+from modules import settings
 from modules import led
-import atexit
 
+# 2.0 to do:
+# add settings on app:
+#   noise on/of
+#   noise delay slider
+#   volume controle
+#   select language model
+#   sensitivity controle (1-10) this ads a number on mapping
+#   set defult (tbd)
+#   write that we recomemend more that 5 syllables
+
+# style app
+# built in recomendation (random on plus )
+
+# add timer
+# send result back to app
+# add text to speach
+# update speech object
+
+# sd card image (try again)
+# new readme (update instructables)
 
 # Global inits
 #====================================================#
@@ -18,162 +38,73 @@ import atexit
 led.LED.off()
 #Initialize the sound objects
 noise = sound.audioPlayer("data/noise.wav",-1,"noise",True)
-wakeup = sound.audioPlayer("data/ok_google.wav",0,"wakeup", False)
+#wakeup = sound.audioPlayer("data/ok_google2.wav",0,"wakeup", False)
+
+globals.initialize()
+settings.read() # load settings from json file and save in globals
 
 # Socket connection between client
 #====================================================#
-@connection.socketio.on('msgEvent', namespace='/socket')
-def test_message(message):
+@connect.socketio.on('msgEvent', namespace='/socket')
+def incoming(message):
     msg = message['data']
-    print(msg);
-    print("----------------------")
-
-    globals.PREDICT = False; #always stop prediction on button comman
-
-    #Add example to class 0 - Silence / background noise
-    if('class0' in msg and globals.EXAMPLE_READY):
-        example = sound.get_spectrogram()
-        ai.addExample(example,0)
-        globals.BG_EXAMPLES += 1
-        led.LED.listen()
-
-    #Add example to class 1 - WakeWord
-    elif('class1' in msg and globals.EXAMPLE_READY and not globals.UPDATE_BG_DATA):
-        example = sound.get_spectrogram()
-        ai.addExample(example,1)
-        globals.TR_EXAMPLES += 1
-        led.LED.listen()
-
-    #Receive train command
-    elif('train' in msg):
-        globals.TRAIN = True
-
-    #Receive reset command
-    elif('reset' in msg):
-        globals.RESET = True;
-        connection.send_response()  #tell client that we are reseting
-        ai.reset_model()
-        globals.RESET = False;
-        globals.TR_EXAMPLES = 0
-
-    #Toogle Alias on and off
-    elif('onoff' in msg):
-        if(stream.is_active()):
-            stream.stop_stream()
-            noise.stop()
-        else:
-            stream.start_stream()
-            noise.play()
-
-    #Receive is Button is pressed or released
-    if('btn_release' in msg):
-        print("released")
-        globals.BUTTON_PRESSED = False
-    elif('class1' in msg or 'class0' in msg):
-        globals.BUTTON_PRESSED = True
-
-    #Check if system is ready to predict
-    if(globals.TRAIN or globals.RESET or globals.BUTTON_PRESSED or globals.TRIGGERED):
-        globals.PREDICT = False
-    else:
-        globals.PREDICT = True
-
-    connection.send_response()
+    if('update' in msg):
+        # client has a updated the settings
+        newSetting = message['setting']
+        print('settings update recieved')
+        settings.write(newSetting)
+        settings.updateKeywords(newSetting)
+        speech.kws='data/keyphrase.list'
+        # at this point we want to reset the speech model or reload kws
+    if('request' in msg):
+        # send settings when client requests them
+        print('settings request send')
+        connect.sendMsg(settings.read())
 
 # End of socket
 #====================================================#
 
-# Main thread
+speech = LiveSpeech(
+    audio_device = None,
+    sampling_rate=16000,
+    lm=False,
+    kws='data/keyphrase.list')
+
 def main_thread():
+    while True:
+        # when a new word is detected
+        for phrase in speech:
+            topWord = phrase.segments()[0]
+            lookup = globals.SETTING['setting'] # get setting
+            # lookup the setting words
+            led.LED.on()
+            for data in lookup:
+                # check the topword with setting list
+                if data['name'].lower().strip() == topWord.lower().strip():
+                    # get the whisper command matching the word
+                    print('say:', data['whisper'])
+            time.sleep(1) # delay for 1 second
+            led.LED.off()
 
-    noise.play() #Start noise
-    ai.create_model()  # setup keras model
-    connection.send_response() #Send system info to client
-
-    # variables to control timing between predictions
-    prev_timer = 0;
-    interval = 5;
-
-    # Program loop start here
-    #====================================================#
-    try:
-        while True:
-
-            while stream.is_active():
-                time.sleep(0.01)
-                led.LED.off()
-                current_sec = time.time()
-
-
-                # If the mic is triggered an spectogram is not done, make a row more.
-                if(globals.MIC_TRIGGER and not globals.EXAMPLE_READY):
-                    sound.make_spectrogram()
-
-                if globals.PREDICT and globals.EXAMPLE_READY and not globals.TRAIN and not globals.RESET:
-                    sample = sound.get_spectrogram()
-                    print("get spectogram")
-                    print(globals.EXAMPLE_READY)
-                    if globals.HAS_BEEN_TRAINED: #if model has been trained then predict
-                        globals.RESULT = ai.predict(sample).item()
-                        print("GLOBAL RESULT: %d" %globals.RESULT)
-
-                    if globals.RESULT  == 1:
-                        noise.stop()
-                        wakeup.play()
-                        globals.TRIGGERED = True
-                        globals.PREDICT = False
-                        prev_timer = current_sec
-                        connection.send_response()
-
-                elif globals.TRAIN:
-                    ai.train_model()
-                    globals.PREDICT = True
-                    globals.TRAIN = False
-                    connection.send_response() #tell client that we are done training
-
-                else:
-                    globals.RESULT = 0
-
-                if current_sec - prev_timer > interval:
-                    if globals.TRIGGERED:
-                        noise.play()
-                        print("start noise")
-                        led.LED.off()
-                        globals.TRIGGERED = False;
-                        globals.PREDICT = True
-                        connection.send_response()
-
-
-
-    except (KeyboardInterrupt, SystemExit):
-        exit_handler()
-
-    # Setup
-    #====================================================#
-
-globals.initialize()
-stream = sound.initialize()
-stream.start_stream() # start stream
-
-# Setup and start main thread
 thread = Thread(target=main_thread)
 thread.daemon = True
 thread.start()
 
+noise.play()
+
 print('')
 print("============================================")
-print("SERVER RUNNING ON: http://" + str(connection.HOST) + ":" + str(connection.PORT))
+print("SERVER RUNNING ON: http://" + str(connect.HOST) + ":" + str(connect.PORT))
 print("============================================")
 print('')
 
 # Start socket io
 if __name__ == '__main__':
-    connection.socketio.run(connection.app, host=connection.HOST, port=connection.PORT, debug=False, log_output=False)
-
+    connect.socketio.run(connect.app, host=connect.HOST, port=connect.PORT, debug=False, log_output=False)
 
 def exit_handler():
     led.LED.off()
-    stream.stop_stream()
-    stream.close()
-    sound.pyaudio.terminate()
+    connect.socketio.stop()
+    sound.mixer.stop()
+
 atexit.register(exit_handler)
