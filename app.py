@@ -1,5 +1,4 @@
 # coding=utf-8
-import numpy as np
 import time
 import atexit
 from threading import Thread
@@ -10,6 +9,7 @@ from modules import connect
 from modules import sound
 from modules import settings
 from modules import led
+import os
 
 # 2.0 to do:
 # add settings on app:
@@ -26,7 +26,6 @@ from modules import led
 
 # add timer
 # send result back to app
-# add text to speach
 # update speech object
 
 # sd card image (try again)
@@ -53,9 +52,10 @@ def incoming(message):
         newSetting = message['setting']
         print('settings update recieved')
         settings.write(newSetting)
-        settings.updateKeywords(newSetting)
-        speech.kws='data/keyphrase.list'
+        settings.updateKeyphrase(newSetting)
         # at this point we want to reset the speech model or reload kws
+        #os.execl(sys.executable, os.path.abspath(__file__), *sys.argv) //Reset program
+
     if('request' in msg):
         # send settings when client requests them
         print('settings request send')
@@ -64,6 +64,10 @@ def incoming(message):
 # End of socket
 #====================================================#
 
+
+
+
+print("init live speech")
 speech = LiveSpeech(
     audio_device = None,
     sampling_rate=16000,
@@ -71,10 +75,12 @@ speech = LiveSpeech(
     kws='data/keyphrase.list')
 
 def main_thread():
+    print("starting thread")
     while True:
-        # when a new word is detected
+        # when a keyphrase is detected, the for loop runs (LiveSpeech magic)
         for phrase in speech:
             topWord = phrase.segments()[0]
+            print(topWord)
             lookup = globals.SETTING['setting'] # get setting
             # lookup the setting words
             led.LED.on()
@@ -82,9 +88,12 @@ def main_thread():
                 # check the topword with setting list
                 if data['name'].lower().strip() == topWord.lower().strip():
                     # get the whisper command matching the word
+                    # Stop noise
                     print('say:', data['whisper'])
+                    sound.speak(data['whisper'])
             time.sleep(1) # delay for 1 second
             led.LED.off()
+            # Start noise
 
 thread = Thread(target=main_thread)
 thread.daemon = True
@@ -106,5 +115,7 @@ def exit_handler():
     led.LED.off()
     connect.socketio.stop()
     sound.mixer.stop()
+    os.system("ps -fA | grep python")
+    thread._stop()
 
 atexit.register(exit_handler)

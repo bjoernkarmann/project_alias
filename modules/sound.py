@@ -1,25 +1,17 @@
-import numpy as np
 from modules import globals
 from modules import led
 
-import subprocess # to send commands to espeak
-
 # Audio
 import os
-import pyttsx3 # text to speech
 from pygame import mixer
 mixer.init()
 
-# print('s')
-# engine = pyttsx3.init()
-# engine.say("I will speak this text")
-# engine.runAndWait()
-# print('e')
 
-# def execute_unix(inputcommand):
-#    p = subprocess.Popen(inputcommand, stdout=subprocess.PIPE, shell=True)
-#    (output, err) = p.communicate()
-#    return output
+# Use $aplay -L to find sound card
+def speak(txt):
+    os.system('espeak "'+txt+'" --stdout | aplay -D "sysdefault:CARD=seeed2micvoicec"')
+    print("TtS: " + txt)
+
 
 # Audio player class
 #====================================================#
@@ -35,7 +27,6 @@ class audioPlayer():
     def check_if_playing(self):
         while mixer.get_busy():
             pass
-        led.LED.on()
 
     def play(self):
         print("playing " + self.name)

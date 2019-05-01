@@ -13,14 +13,14 @@ def read():
         return data
 
 # get setting and write names into keyphrase.list file
-def updateKeywords(data):
+def updateKeyphrase(data):
     print(data)
     with open('data/keyphrase.list', 'w') as f:
         for item in data['setting']:
             threshold = int(mapF(len(item['name']),0,15,1,30))
-            keyword = item['name'] + " /1e-" + str(threshold) + "/"
-            keyword = keyword.lower()
-            f.write("%s\n" % keyword)
+            keyphrase = item['name'] + " /1e-" + str(threshold) + "/"
+            keyphrase = keyphrase.lower()
+            f.write("%s\n" % keyphrase)
 
 
 def mapF(x,in_min, in_max, out_min, out_max):
