@@ -2,12 +2,12 @@ import json
 from modules import globals
 
 def write(data):
-    with open('data/settings.txt', 'w') as outfile:
+    with open(globals.SETTINGS_PATH, 'w') as outfile:
         json.dump(data, outfile)
 
 
 def read():
-    with open('data/settings.txt') as json_file:
+    with open(globals.SETTINGS_PATH) as json_file:
         data = json.load(json_file)
         globals.SETTING = data
         return data
@@ -15,7 +15,7 @@ def read():
 # get setting and write names into keyphrase.list file
 def updateKeyphrase(data):
     print(data)
-    with open('data/keyphrase.list', 'w') as f:
+    with open(globals.KEYWORD_PATH, 'w') as f:
         for item in data['setting']:
             threshold = int(mapF(len(item['name']),0,15,1,30))
             keyphrase = item['name'] + " /1e-" + str(threshold) + "/"

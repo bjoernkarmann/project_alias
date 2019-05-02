@@ -1,1 +1,1 @@
-{"setting": [{"whisper": "test", "name": "test"}, {"whisper": "Desktop", "name": "desktop"}]}
+{"setting": [{"name": "Hey Alias ", "whisper": "Ok Google "}, {"name": "Party Time", "whisper": "Ok Google... Play some music"}]}

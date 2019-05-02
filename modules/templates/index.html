@@ -8,49 +8,75 @@
     <title>PROJECT ALIAS</title>
     <script type="text/javascript" src="../static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../static/js/socket.io.js"></script>
+    <!-- <script type="text/javascript" src="../static/js/autosize.js"></script> -->
   </head>
 
   <body oncontextmenu="false" onload="requestSettings()">
     <div id="app-wrapper">
-      <div id="blocks"></div>
-
-      <div id="plus" onclick="addBlock()"><p>+</p></div>
-      <div id="footer" onclick="updateSettings()">
-        <div id="submit"><p>update Alias</p></div>
+      <div id="header">
+        <img id="settings-icon" src="../static/assets/settings.png" onclick="openSettings()">
+        <p>PROJECT: ALIAS</p>
       </div>
+      <div id="inner-scrool">
+        <div id="blocks">
 
+          <form id="base_block" class="block">
+            <img style="display: none" id="close-icon" src="../static/assets/close.png" onclick="removeBlock(this)">
+            <p>TRIGGER</p>
+            <input class="text-input" type="text" name="input" value="Hi Alias"/>
+            <div class="line"></div>
+            <p>COMMAND</p>
+            <textarea class="text-input" name="output" rows=1 >Ok Google</textarea>
+          </form>
+
+        </div>
+        <p style="text-align: center;">
+          <img id="plus-icon" src="../static/assets/plus.png" onclick="addNewBlock()">
+        </p>
     </div>
+
+    <div id="footer" onclick="updateSettings()">
+        <div id="submit">TRAIN ALIAS</div>
+      </p>
+    </div>
+
+    <div id="settings">
+      <div style="padding: 15px;">
+        <img id="close-setting" src="../static/assets/close.png" onclick="closeSettings()">
+        <p>SETTINGS</p>
+      </div>
+    </div>
+
+  </div>
   </body>
 
   <!-- Javascript -->
   <script type="text/javascript" charset="utf-8">
-    //////////////////////////////////////////////////////////////////////////////////////////
-    // GEt data form Raspberry
+
+    // Get data form Raspberry
     var socket = io.connect('http://' + document.domain + ':' + location.port + '/socket');
     var currentSettings;
 
     // get message from pi
     socket.on('response', function(msg) {
-      console.log(msg);
       currentSettings = msg;
-      clearBlocks();
       updateBlocks(msg);
     });
 
-    // ask pi for settings on startup
+    // // ask pi for settings on startup
     function requestSettings(){
       socket.emit('msgEvent',{data:"request"});
     }
 
-    // copy the current block values and update settings on pi
+    // copy the current blocks values into a settings file and send it to the pi
     function updateSettings(){
-      var blocks = document.getElementById('blocks');
       var setting = [];
-      for(var i=0; i< blocks.children.length; i++){
-        var name = blocks.children[i].getElementsByClassName('name')[0].value;
-        var whisper = blocks.children[i].getElementsByClassName('whisper')[0].value;
-        setting.push({name,whisper});
-      }
+      $('#blocks').children('.block').each(function () {
+        var name = $(this).find('input').val(); // "this" is the current element in the loop
+        var whisper = $(this).find('textarea').val();
+        setting.push({"name":name ,"whisper":whisper});
+      });
+      console.log(setting);
       socket.emit('msgEvent',{data:"update", setting: {setting}});
     }
 
@@ -59,71 +85,59 @@
       e.preventDefault();
     };
 
-    // reset blocks by emptying parent object
-    function clearBlocks(){
-      document.getElementById('blocks').innerHTML = '';
-    }
-
-    // update blocks based on the settings file
+    // update blocks on start up
     function updateBlocks(obj){
-      for(var i=0; i<obj.setting.length; i++){
-        var form = document.createElement("div");
-        form.setAttribute('class',"form");
-        form.setAttribute('id',"block");
-
-        if(i>0){ // dont make on first one
-          var remove = document.createElement("div");
-          remove.setAttribute('class',"remove");
-          remove.setAttribute('onclick',"removeBlock(this)");
-          form.appendChild(remove);
+      var base = $("#blocks").children().first();
+      base.find('input').val(obj.setting[0].name);
+      base.find('textarea').val(obj.setting[0].whisper);
+      if(obj.setting.length > 1){
+        for(var i=1; i< obj.setting.length; i++){
+          addDefinedBlock(obj.setting[i].name, obj.setting[i].whisper);
         }
-
-        var input = document.createElement("input"); //input element, text
-        input.setAttribute('type',"text");
-        input.setAttribute('class',"name");
-        input.setAttribute('value',obj.setting[i].name);
-        form.appendChild(input);
-
-        var whisper = document.createElement("input"); //input element, text
-        whisper.setAttribute('type',"text");
-        whisper.setAttribute('class',"whisper");
-        whisper.setAttribute('value',obj.setting[i].whisper);
-        form.appendChild(whisper);
-
-        document.getElementById('blocks').appendChild(form);
       }
     }
 
-    // add a single block
-    function addBlock(){
-      var form = document.createElement("div");
-      form.setAttribute('class',"form");
-      form.setAttribute('id',"block");
+    function addDefinedBlock(input, output){
+      $("#base_block").clone().appendTo("#blocks");
+      var new_block = $("#blocks").children().last();
+      new_block.find('img').css("display", "block");
+      new_block.find('input').val(input);
+      new_block.find('textarea').val(input);
+    }
 
-      var input = document.createElement("input"); //input element, text
-      input.setAttribute('type',"text");
-      input.setAttribute('class',"name");
-      input.setAttribute('value',"Name");
-      form.appendChild(input);
-
-      var remove = document.createElement("div");
-      remove.setAttribute('class',"remove");
-      remove.setAttribute('onclick',"removeBlock(this)");
-      form.appendChild(remove);
-
-      var whisper = document.createElement("input"); //input element, text
-      whisper.setAttribute('type',"text");
-      whisper.setAttribute('class',"whisper");
-      whisper.setAttribute('value',"Whisper");
-      form.appendChild(whisper);
-
-      document.getElementById('blocks').appendChild(form);
+    // add new block with random trigger
+    function addNewBlock(){
+      addDefinedBlock(premadeCommands[1].input, premadeCommands[1].output);
     }
 
     function removeBlock(event){
       var block = event.parentElement;
+      console.log(block);
       block.remove();
     }
+
+    function openSettings(){
+      $("#settings").animate({height: '100%'});
+    }
+    function closeSettings(){
+      $("#settings").animate({height: '0%'});
+    }
+
+
+    var premadeCommands = [
+      {
+        "input": "Hey Alias",
+        "output": "Ok Google"
+      },
+      {
+        "input": "Weather man",
+        "output": "Ok Google, how is the weather today"
+      },
+      {
+        "input": "Funky time",
+        "output": "Ok Google, play some funky music on spotify"
+      }
+    ];
 
     document.addEventListener("touchmove", preventBehavior, {passive: false});
   </script>

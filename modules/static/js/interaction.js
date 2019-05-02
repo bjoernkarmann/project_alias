@@ -1,5 +1,5 @@
     var timeOut;
-    var timeOut_progress = null; 
+    var timeOut_progress = null;
 
     var class_to_train = 'class1'
     var record_BG = false;
@@ -7,7 +7,7 @@
     var showMenu = false;
 
   $(document).ready(function(){
-    //init menu function 
+    //init menu function
     $(".menu-icon").on('click',clickMenu);
 
     // Toggle mechanic for buttons
@@ -41,7 +41,7 @@
        stopBtnPress();
     })
 
-    //Toggle system to be on and off 
+    //Toggle system to be on and off
     $("#onoff").mousedown(function(){
       stopBtnPress();
       socket.emit('msgEvent',{data:"onoff"});
@@ -56,7 +56,7 @@
         $("#header-text").html("Examples <span id='tr_examples'></span>");
       }
     });
-    
+
     //Class to train toogle
     $("#bg-toggle").mousedown(function(){
       stopBtnPress();
@@ -73,8 +73,8 @@
         class_to_train = 'class1';
       }
       requestInfo();
-    })   
-    
+    })
+
     //Prevent selection
     $('body').disableSelection();
     $("canvas").on('touchstart click', (e)=>{
@@ -89,19 +89,19 @@
    //Ask server to update info
   function requestInfo(){
     socket.emit('msgEvent',{data:"get-info"});
-  }   
+  }
 
   function stopBtnPress(){
       clearInterval(timeOut)
       recordBtn = false;
   }
-  
+
   function progress_feedback(word){
     $("#header-text").text(word)
     var progress = ".";
     timeOut_progress = setInterval(function(){
       $("#header-text").text(word+progress);
-      progress += "."; 
+      progress += ".";
       if(progress.length > 3) progress = ".";
       },500);
   }
