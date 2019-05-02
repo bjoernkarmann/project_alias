@@ -43,7 +43,7 @@ p{
 	font-size: 11px;
 	font-weight: 600;
   margin: 0px;
-  color: #DFDFDF;
+  color: #D0D0D0;
 }
 
 .block{
@@ -74,7 +74,6 @@ p{
   margin: 10px 0px;
   background-color: #DFDFDF;
   height: 2px;
-
 }
 
 #header{
@@ -90,7 +89,7 @@ p{
 #settings{
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 0%;
   bottom: 0px;
   background-color: white;
 }
@@ -111,11 +110,10 @@ p{
 }
 
 #close-icon{
-  position: relative;
-  width:16px;
-  height:16px;
-  top: 0px;
-  right: -3px;
+  position: absolute;
+  width:13px;
+  height:13px;
+  right: 30px;
   float: right;
   opacity: 0.1;
 }
@@ -139,14 +137,14 @@ p{
   position: relative;
   margin: 15px;
   padding: 15px 0px;
-  width: 50%;
+  width: 160px;
   background-color: black;
   border-radius: 5px;
   color: white;
   text-align: center;
   font-family: "Work Sans";
 	font-size: 18px;
-	font-weight: 500;
+	font-weight: 600;
   margin-left: auto;
   margin-right: auto;
 }

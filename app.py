@@ -11,25 +11,10 @@ from modules import settings
 from modules import led
 import os
 
-# 2.0 to do:
-# add settings on app:
-#   noise on/of
-#   noise delay slider
-#   volume controle
-#   select language model
-#   sensitivity controle (1-10) this ads a number on mapping
-#   set defult (tbd)
-#   write that we recomemend more that 5 syllables
-
-# style app
-# built in recomendation (random on plus )
 
 # send result back to app
-
 # sd card image (try again)
 # new readme (update instructables)
-
-
 
 # Socket connection between client
 #====================================================#
@@ -120,7 +105,6 @@ def main():
         if globals.CONFIG_HAS_CHANGED:
             globals.CONFIG_HAS_CHANGED = False
             main()
-
 
 # Start socket io
 if __name__ == '__main__':
