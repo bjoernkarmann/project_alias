@@ -15,7 +15,7 @@ app             = Flask(__name__)
 app.debug       = False
 socketio        = SocketIO(app, async_mode='threading', logger=False)
 socket_thread   = None
-
+FLASK_DEBUG = 0
 logging.getLogger('werkzeug').setLevel(logging.ERROR) # remove socket io logs
 
 def sendMsg(obj):
