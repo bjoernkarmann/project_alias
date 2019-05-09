@@ -7,7 +7,7 @@
 [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Project Alias is an open-source parasite to hack smart home devices. Train custom wake-up names and commands for your devices while disturbing their built-in microphone with noise. Introduce false labelling to their algorithm by changing gender or nationality. Read more about the project [here](http://bjoernkarmann.dk/project_alias).
+Project Alias is an open-source parasite to hack smart home devices. Train custom wake-up names and commands for your devices while disturbing their built-in microphone with noise. Introduce false labelling to their algorithm by changing gender or nationality. Read more about the project **[here](http://bjoernkarmann.dk/project_alias)**.
 
 This repository has been updated to 2.0. Find the old version **[here](http://bjoernkarmann.dk/project_alias)**.
 
@@ -26,12 +26,10 @@ For the complete step-by-step guide and 3D files see our **[Instructables](https
 We have made the setup even easier with a SD-card clone of our working Alias.
 1. **[Download]()** the latest .img file
 2. Use **[Etcher](https://etcher.io/)** to flash a micro SD card with the .img file.
-3. **[Download]()** and edit the **wpa_supplicant.conf** file with your wifi settings and copy the file to the SD card (boot).
-4. Insert the micro SD card into the Raspberry Pi A+.
-5. Log on to the wifi name **"Project Alias"** and open the browser.
+3. Insert the micro SD card into the Raspberry Pi A+.
+4. Log on to the wifi name **"Project Alias"** and open the browser.
 
-*We recommend to use the Easy Setup but if you wish to install the project from skcr
-atch use the [Raspberry Pi Setup]() instrucrtions.*
+*We recommend to use the Easy Setup but if you wish to install the project from scratch use the [Raspberry Pi Setup]() instrucrtions.*
 
 ### Using Alias 🍄
 1. To start using Alias, log on the wifi network called "Project Alias" with any device.
@@ -50,7 +48,6 @@ Note: once trained there is no need to have the phone connected anymore.
 Setting | Description | Default
 --- | --- | ---
 Noise | This will turn on/off the looping noise| `ON`
-Politeness | This will add a polite endings to your commands, to provoke a false politeness towards the assistant, triggering it to response  xxxx . | `OFF`
 Gender | -- | `Female`
 Language | Change the language Alias uses to | `English`
 Volume | Change the volume of the speakers. This needs to be heigh enough for the noise to block the assistant, but low enough not to be audible. | `10`
