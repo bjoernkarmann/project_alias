@@ -11,7 +11,6 @@ from modules import settings
 from modules import led
 import os
 
-
 # send result back to app
 # sd card image (try again)
 # new readme (update instructables)
@@ -21,13 +20,14 @@ import os
 @connect.socketio.on('msgEvent', namespace='/socket')
 def incoming(message):
     msg = message['data']
-    if('update' in msg):
+    if('updateKeyphrase' in msg):
         # client has a updated the settings
         newSetting = message['setting']
         print('settings update recieved')
         settings.write(newSetting)
         settings.updateKeyphrase(newSetting)
         globals.CONFIG_HAS_CHANGED = True
+
 
     if('request' in msg):
         # send settings when client requests them
@@ -43,7 +43,7 @@ def speechInit():
         audio_device = None,
         sampling_rate=16000,
         lm=False,
-        kws='data/keyphrase.list')
+        kws=globals.KEYWORD_PATH)
 
 def socket_thread():
     print("starting socket thread")
@@ -72,9 +72,6 @@ def speech_thread():
 def main():
     # Global inits
     #====================================================#
-
-    #Initialize the sound objects
-    globals.initialize()
     settings.read() # load settings from json file and save in globals
 
     noise.play()
@@ -106,9 +103,12 @@ def main():
             globals.CONFIG_HAS_CHANGED = False
             main()
 
+
 # Start socket io
 if __name__ == '__main__':
-     noise = sound.audioPlayer("data/noise.wav")
+    #Initialize the sound objects
+     globals.initialize()
+     noise = sound.audioPlayer(globals.NOISE_PATH)
      main()
 
 
