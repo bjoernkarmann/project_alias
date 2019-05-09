@@ -23,10 +23,10 @@
           <form id="base_block" class="block">
             <img style="display: none" id="close-icon" src="../static/assets/close.png" onclick="removeBlock(this)">
             <p>TRIGGER</p>
-            <input class="text-input" type="text" name="input" value="Hi Alias"/>
+            <input class="text-input" type="text" name="input" onkeypress="checkInput(this)" value="Hi Alias"/>
             <div class="line"></div>
             <p>COMMAND</p>
-            <textarea class="text-input" rows="1" name="output" rows=1 >Ok Google</textarea>
+            <textarea class="text-input" rows="1" name="output" onkeypress="checkInput(this)">Ok Google</textarea>
           </form>
 
         </div>
@@ -44,10 +44,65 @@
       <div style="padding: 15px;">
         <img id="close-setting" src="../static/assets/close.png" onclick="closeSettings()">
         <p>SETTINGS</p>
+        <br><br>
+        <p>Trigger word is what you say, command is what Alias whispers to your assistant.
+        We recoommend trigger words with at least 3 syllables.</p>
+      </div>
+
+      <div class="setting-input">
+          <div class="setting-title">Noise</div>
+          <div class="setting-value">
+            <div id="toggle" onclick="toggleNoise(this)">
+              <div id="toggle-noise"></div>
+            </div>
+          </div>
+      </div>
+      <div class="setting-input">
+          <div class="setting-title">Politeness</div>
+          <div class="setting-value">
+            <div id="toggle" onclick="togglePolite(this)">
+              <div id="toggle-polite"></div>
+            </div>
+          </div>
+      </div>
+      <div class="setting-input">
+        <div class="setting-title">Language</div>
+        <div class="setting-value">English</div>
+      </div>
+      <div class="setting-input">
+        <div class="setting-title">Gender</div>
+        <div class="setting-value">
+          female
+        </div>
+      </div>
+      <div style="height: 25px;"></div>
+      <div class="setting-input" class="slider">
+        <div class="setting-title">Volume</div>
+        <div class="setting-value">10</div>
+        <input id="setting-volume" type="range" value="10" max="100"></input>
+      </div>
+      <div style="height: 24px;"></div>
+      <div class="setting-input" class="slider">
+        <div class="setting-title">Sensitivity</div>
+        <div class="setting-value">5</div>
+        <input id="setting-sense" type="range" value="2" max="10"></input>
+      </div>
+      <div style="height: 24px;"></div>
+      <div class="setting-input" class="slider">
+        <div class="setting-title">Noise delay</div>
+        <div class="setting-value">10s</div>
+        <input id="setting-noise" type="range" value="10" max="30"></input>
+      </div>
+      <div style="height: 50px;"></div>
+      <div class="setting-input">
+        <div class="setting-title">Set to dufult</div>
+        <div class="setting-value" style="width: 130px;">
+          <p style="font-size: 10px; ">Design by Bjørn Karmann and Tore Knudsen. </p>
+        </div>
+        <div style="height: 15px;"></div>
       </div>
     </div>
 
-  </div>
   </body>
 
   <!-- Javascript -->
@@ -100,35 +155,74 @@
     function addDefinedBlock(input, output){
       $("#base_block").clone().appendTo("#blocks");
       var new_block = $("#blocks").children().last();
+
       new_block.find('img').css("display", "block");
       new_block.find('input').val(input);
-      new_block.find('textarea').val(input);
+      new_block.find('textarea').val(output);
+      checkInput(new_block.find('textarea')[0]);
     }
 
     // add new block with random trigger
     function addNewBlock(){
-      addDefinedBlock(premadeCommands[1].input, premadeCommands[1].output);
+      var r = Math.floor(Math.random() * (premadeCommands.length - 0));
+      addDefinedBlock(premadeCommands[r].input, premadeCommands[r].output);
     }
+
+    $('#setting-volume').change(function(e){
+        console.log(this.value);
+        console.log($(this.parentElement).find('.setting-value').html);
+
+        //setting-value
+    })
 
     function removeBlock(event){
       var block = event.parentElement;
-      console.log(block);
       block.remove();
     }
 
+    function checkInput(obj){
+      var letters = obj.value.length
+      var input_w = $("#base_block").width();
+      var max_letters = input_w / 11;
+      var rows = Math.ceil(letters / max_letters);
+      console.log(rows);
+      obj.rows = rows;
+    }
+
     function openSettings(){
-      $("#settings").animate({height: '100%'});
+      //$("#settings").animate({height: '100%'});
+      $("#settings").css('display', 'block');
     }
     function closeSettings(){
-      $("#settings").animate({height: '0%'});
+      //$("#settings").animate({height: '0%'});
+      $("#settings").css('display', 'none');
     }
 
+    function toggleNoise(event){
+      // make noise ON
+      //if currentSettings.noise == false
+      //$("#toggle-knob").css('float', 'right');
+      //$("#toggle-knob").css('background', 'black');
+
+      // make noise OFF
+      // if currentSettings.noise == true
+      $("#toggle-noise").css('float', 'left');
+      $("#toggle-noise").css('background', '#D84143');
+    }
+
+    function togglePolite(event){
+      // make noise ON
+      //if currentSettings.noise == false
+      //$("#toggle-knob").css('float', 'right');
+      //$("#toggle-knob").css('background', 'black');
+
+      // make noise OFF
+      // if currentSettings.noise == true
+      $("#toggle-polite").css('float', 'left');
+      $("#toggle-polite").css('background', '#D84143');
+    }
 
     var premadeCommands = [
-      {
-        "input": "Hey Alias",
-        "output": "Ok Google"
-      },
       {
         "input": "Weather man",
         "output": "Ok Google, how is the weather today"
@@ -136,6 +230,18 @@
       {
         "input": "Funky time",
         "output": "Ok Google, play some funky music on spotify"
+      },
+      {
+        "input": "Gandalf",
+        "output": "Ok Google, where is Hogwards?"
+      },
+      {
+        "input": "Pizza time",
+        "output": "Ok Google, order a pizza"
+      },
+      {
+        "input": "Marvin",
+        "output": "Ok Google"
       }
     ];
 

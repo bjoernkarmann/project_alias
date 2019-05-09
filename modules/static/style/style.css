@@ -40,8 +40,9 @@ h1{
 
 p{
 	font-family: "Work Sans";
-	font-size: 11px;
+	font-size: 13px;
 	font-weight: 600;
+  line-height: 16px;
   margin: 0px;
   color: #D0D0D0;
 }
@@ -61,7 +62,7 @@ p{
   border: none;
   font-family: "Work Sans";
 	font-size: 20px;
-	font-weight: 700;
+	font-weight: 600;
   margin: 0px;
   padding: 0px;
   resize: none;
@@ -74,6 +75,28 @@ p{
   margin: 10px 0px;
   background-color: #DFDFDF;
   height: 2px;
+}
+
+.setting-input{
+  margin: 15px 15px 0px 15px;
+  height: 15px;
+  color: #000;
+  font-family: "Work Sans";
+  font-size: 18px;
+	font-weight: 600;
+  padding: 1px 0px;
+}
+
+.setting-title{
+  position: absolute;
+  width: 50%;
+}
+
+.setting-value{
+  float: right;
+  width: 50%;
+  position: relative;
+  text-align: right;
 }
 
 #header{
@@ -89,8 +112,9 @@ p{
 #settings{
   position: absolute;
   width: 100%;
-  height: 0%;
+  height: 100%;
   bottom: 0px;
+  display: none;
   background-color: white;
 }
 
@@ -99,6 +123,7 @@ p{
   width:16px;
   height:16px;
   float: right;
+  cursor: pointer;
 }
 
 #settings-icon{
@@ -107,15 +132,17 @@ p{
   right: 0px;
   top: -3px;
   float: right;
+  cursor: pointer;
 }
 
 #close-icon{
-  position: absolute;
+  position: relative;
   width:13px;
   height:13px;
-  right: 30px;
   float: right;
+  right: -3px;
   opacity: 0.1;
+  cursor: pointer;
 }
 
 #plus-icon{
@@ -123,11 +150,12 @@ p{
   width: 21px;
   margin: 0 auto;
   padding-bottom: 50px;
+  cursor: pointer;
 }
 
 #footer{
 	position: absolute;
-	height:20px;
+	height: 20px;
   bottom: 65px;
   width: 100%;
   background-color: white;
@@ -147,9 +175,134 @@ p{
 	font-weight: 600;
   margin-left: auto;
   margin-right: auto;
+  cursor: pointer;
 }
 
+#toggle{
+  border: 3px solid black;
+  width: 35px;
+  height: 16px;
+  float:right;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+#toggle-noise{
+  width: 12px;
+  height: 12px;
+  border-radius: 20px;
+  margin: 2px;
+  float: right;
+  background-color: black;
+}
+
+#toggle-polite{
+  width: 12px;
+  height: 12px;
+  border-radius: 20px;
+  margin: 2px;
+  float: right;
+  background-color: black;
+}
+
+.slider{
+  padding: 50px;
+}
 
 .hidden{
 	display: none;
+}
+
+
+/* range syleing below */
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  padding: 0px;
+  margin: 0px;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 3px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 0px 0px 0px #000000;
+  background: #000000;
+  border-radius: 3px;
+  border: 0px solid #000000;
+}
+input[type=range]::-webkit-slider-thumb {
+  box-shadow: 0px 0px 0px #000000;
+  border: 0px solid #2497E3;
+  height: 14px;
+  width: 14px;
+  border-radius: 20px;
+  background: #000000;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -6px;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #000000;
+}
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 3px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 0px 0px 0px #000000;
+  background: #000000;
+  border-radius: 3px;
+  border: 0px solid #000000;
+}
+input[type=range]::-moz-range-thumb {
+  box-shadow: 0px 0px 0px #000000;
+  border: 0px solid #2497E3;
+  height: 14px;
+  width: 14px;
+  border-radius: 20px;
+  background: #000000;
+  cursor: pointer;
+}
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 3px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: #000000;
+  border: 0px solid #000000;
+  border-radius: 6px;
+  box-shadow: 0px 0px 0px #000000;
+}
+input[type=range]::-ms-fill-upper {
+  background: #000000;
+  border: 0px solid #000000;
+  border-radius: 6px;
+  box-shadow: 0px 0px 0px #000000;
+}
+input[type=range]::-ms-thumb {
+  margin-top: 1px;
+  box-shadow: 0px 0px 0px #000000;
+  border: 0px solid #2497E3;
+  height: 14px;
+  width: 14px;
+  border-radius: 20px;
+  background: #000000;
+  cursor: pointer;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: #000000;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: #000000;
 }
