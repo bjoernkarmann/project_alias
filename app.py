@@ -15,24 +15,40 @@ import os
 # sd card image (try again)
 # new readme (update instructables)
 
+#settings {keyphrase, setting}
+
 # Socket connection between client
 #====================================================#
 @connect.socketio.on('msgEvent', namespace='/socket')
 def incoming(message):
-    msg = message['data']
-    if('updateKeyphrase' in msg):
+    msg = message['msg']
+    if('updateServer' in msg):
         # client has a updated the settings
-        newSetting = message['setting']
-        print('settings update recieved')
+        print(message)
+        print('----')
+        newSetting = message['data']
+        print('serverData update recieved')
         settings.write(newSetting)
-        settings.updateKeyphrase(newSetting)
-        globals.CONFIG_HAS_CHANGED = True
-
+        settings.updateServer(newSetting)
 
     if('request' in msg):
         # send settings when client requests them
         print('settings request send')
         connect.sendMsg(settings.read())
+
+    if('reloadSpeech' in msg):
+        print('reloading speech class')
+        globals.CONFIG_HAS_CHANGED = True
+
+    if('volumeChange' in msg):
+        print('change volume')
+
+    if('sensitivityChange' in msg):
+        print('change volume')
+
+    if('delayChange' in msg):
+        print('change volume')
+
 
 # End of socket
 #====================================================#
@@ -47,6 +63,13 @@ def speechInit():
 
 def socket_thread():
     print("starting socket thread")
+
+    print('')
+    print("============================================")
+    print("SERVER RUNNING ON: http://" + str(connect.HOST) + ":" + str(connect.PORT))
+    print("============================================")
+    print('')
+
     connect.socketio.run(connect.app, host=connect.HOST, port=connect.PORT, debug=False, log_output=False)
 
 def speech_thread():
@@ -54,7 +77,7 @@ def speech_thread():
     for phrase in globals.SPEECH:
         topWord = phrase.segments()[0]
         print(topWord)
-        lookup = globals.SETTING['setting'] # get setting
+        lookup = globals.SETTING['keyphrase'] # get setting
         # lookup the setting words
         led.LED.on()
         for data in lookup:
@@ -83,25 +106,14 @@ def main():
     thread_speech.daemon = True
     thread_speech.start()
 
-    thread = Thread(target=socket_thread)
-    thread.daemon = True
-    thread.start()
-
-
-    print('')
-    print("============================================")
-    print("SERVER RUNNING ON: http://" + str(connect.HOST) + ":" + str(connect.PORT))
-    print("============================================")
-    print('')
-
     while True:
         time.sleep(0.3)
-        print("loop")
 
         #reset program when config is changed
         if globals.CONFIG_HAS_CHANGED:
             globals.CONFIG_HAS_CHANGED = False
             main()
+            print("running main again")
 
 
 # Start socket io
@@ -109,6 +121,11 @@ if __name__ == '__main__':
     #Initialize the sound objects
      globals.initialize()
      noise = sound.audioPlayer(globals.NOISE_PATH)
+
+     thread = Thread(target=socket_thread)
+     thread.daemon = True
+     thread.start()
+
      main()
 
 
@@ -117,7 +134,5 @@ def exit_handler():
     connect.socketio.stop()
     sound.mixer.stop()
     os.system("ps -fA | grep python")
-    thread._stop()
-    thread_speech.stop()
 
 atexit.register(exit_handler)

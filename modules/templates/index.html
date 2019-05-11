@@ -18,8 +18,8 @@
         <p>PROJECT: ALIAS</p>
       </div>
       <div id="inner-scrool">
-        <div id="blocks">
 
+        <div id="blocks">
           <form id="base_block" class="block">
             <img style="display: none" id="close-icon" src="../static/assets/close.png" onclick="removeBlock(this)">
             <p>TRIGGER</p>
@@ -28,14 +28,14 @@
             <p>COMMAND</p>
             <textarea class="text-input" rows="1" name="output" onkeypress="checkInput(this)">Ok Google</textarea>
           </form>
-
         </div>
+
         <p style="text-align: center;">
           <img id="plus-icon" src="../static/assets/plus.png" onclick="addNewBlock()">
         </p>
     </div>
 
-    <div id="footer" onclick="updateSettings()">
+    <div id="footer" onclick="updateButton()">
         <div id="submit">Update Alias</div>
       </p>
     </div>
@@ -54,14 +54,6 @@
           <div class="setting-value">
             <div id="toggle" onclick="toggleNoise(this)">
               <div id="toggle-noise"></div>
-            </div>
-          </div>
-      </div>
-      <div class="setting-input">
-          <div class="setting-title">Politeness</div>
-          <div class="setting-value">
-            <div id="toggle" onclick="togglePolite(this)">
-              <div id="toggle-polite"></div>
             </div>
           </div>
       </div>
@@ -85,13 +77,13 @@
       <div class="setting-input" class="slider">
         <div class="setting-title">Sensitivity</div>
         <div class="setting-value">5</div>
-        <input id="setting-sense" type="range" value="2" max="10"></input>
+        <input id="setting-sensitivity" type="range" value="2" max="10"></input>
       </div>
       <div style="height: 24px;"></div>
       <div class="setting-input" class="slider">
         <div class="setting-title">Noise delay</div>
         <div class="setting-value">10s</div>
-        <input id="setting-noise" type="range" value="10" max="30"></input>
+        <input id="setting-delay" type="range" value="10" max="30"></input>
       </div>
       <div style="height: 50px;"></div>
       <div class="setting-input">
@@ -115,24 +107,37 @@
     // get message from pi
     socket.on('response', function(msg) {
       currentSettings = msg;
+      console.log(currentSettings)
       updateBlocks(msg);
+      updateSettings(msg);
     });
 
-    // // ask pi for settings on startup
+    // ask pi for settings on startup
     function requestSettings(){
-      socket.emit('msgEvent',{data:"request"});
+      socket.emit('msgEvent',{msg:"request"});
+    }
+
+    function updateButton(){
+      updateServer();
+      socket.emit('msgEvent',{msg:"reloadSpeech"});
     }
 
     // copy the current blocks values into a settings file and send it to the pi
-    function updateSettings(){
-      var setting = [];
+    function updateServer(){
+      var keyphrase = [];
       $('#blocks').children('.block').each(function () {
         var name = $(this).find('input').val(); // "this" is the current element in the loop
         var whisper = $(this).find('textarea').val();
-        setting.push({"name":name ,"whisper":whisper});
+        keyphrase.push({"name":name ,"whisper":whisper});
       });
-      console.log(setting);
-      socket.emit('msgEvent',{data:"update", setting: {setting}});
+      var setting = {"noise": true,
+                     "language": "en",
+                     "gender":"female",
+                     "volume": $("#setting-volume").val(),
+                     "sensitivity": $("#setting-sensitivity").val(),
+                     "delay": $("#setting-delay").val()}
+
+      socket.emit('msgEvent',{msg:"updateServer", data: {keyphrase, setting}});
     }
 
     //prevent scroll on phone
@@ -143,13 +148,26 @@
     // update blocks on start up
     function updateBlocks(obj){
       var base = $("#blocks").children().first();
-      base.find('input').val(obj.setting[0].name);
-      base.find('textarea').val(obj.setting[0].whisper);
-      if(obj.setting.length > 1){
-        for(var i=1; i< obj.setting.length; i++){
-          addDefinedBlock(obj.setting[i].name, obj.setting[i].whisper);
+      base.find('input').val(obj.keyphrase[0].name);
+      base.find('textarea').val(obj.keyphrase[0].whisper);
+      if(obj.keyphrase.length > 1){
+        for(var i=1; i< obj.keyphrase.length; i++){
+          addDefinedBlock(obj.keyphrase[i].name, obj.keyphrase[i].whisper);
         }
       }
+    }
+
+    function updateSettings(msg){
+      var set = currentSettings.setting;
+
+      $("#setting-volume").val(set.volume);
+      $("#setting-volume").parent().find('.setting-value')[0].innerHTML = set.volume;
+
+      $("#setting-sensitivity").val(set.sensitivity);
+      $("#setting-sensitivity").parent().find('.setting-value')[0].innerHTML = set.sensitivity;
+
+      $("#setting-delay").val(set.delay);
+      $("#setting-delay").parent().find('.setting-value')[0].innerHTML = set.delay;
     }
 
     function addDefinedBlock(input, output){
@@ -168,12 +186,28 @@
       addDefinedBlock(premadeCommands[r].input, premadeCommands[r].output);
     }
 
-    $('#setting-volume').change(function(e){
-        console.log(this.value);
-        console.log($(this.parentElement).find('.setting-value').html);
 
-        //setting-value
-    })
+    // this changes the displayed value on sliding motion
+    $('input').on("input", function (e) {
+      console.log(this.value);
+      $(this.parentElement).find('.setting-value')[0].innerHTML = this.value;
+    });
+
+    // these updatesd the settings when realeasing the slider
+    $('#setting-volume').change(function(e){
+      updateServer();
+      socket.emit('msgEvent',{msg:"volumeChange"});
+    });
+
+    $('#setting-sensitivity').change(function(e){
+      updateServer();
+      socket.emit('msgEvent',{msg:"sensitivityChange"});
+    });
+
+    $('#setting-delay').change(function(e){
+      updateServer();
+      socket.emit('msgEvent',{msg:"delayChange"});
+    });
 
     function removeBlock(event){
       var block = event.parentElement;
@@ -185,7 +219,6 @@
       var input_w = $("#base_block").width();
       var max_letters = input_w / 11;
       var rows = Math.ceil(letters / max_letters);
-      console.log(rows);
       obj.rows = rows;
     }
 
@@ -208,18 +241,6 @@
       // if currentSettings.noise == true
       $("#toggle-noise").css('float', 'left');
       $("#toggle-noise").css('background', '#D84143');
-    }
-
-    function togglePolite(event){
-      // make noise ON
-      //if currentSettings.noise == false
-      //$("#toggle-knob").css('float', 'right');
-      //$("#toggle-knob").css('background', 'black');
-
-      // make noise OFF
-      // if currentSettings.noise == true
-      $("#toggle-polite").css('float', 'left');
-      $("#toggle-polite").css('background', '#D84143');
     }
 
     var premadeCommands = [
