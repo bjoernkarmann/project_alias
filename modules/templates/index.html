@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     <title>PROJECT ALIAS</title>
     <script type="text/javascript" src="../static/js/jquery.min.js"></script>
+    <script src="https://cdn.rangetouch.com/2.0.0/rangetouch.js"></script>
     <script type="text/javascript" src="../static/js/socket.io.js"></script>
     <!-- <script type="text/javascript" src="../static/js/autosize.js"></script> -->
   </head>
@@ -41,7 +42,7 @@
     </div>
 
     <div id="settings">
-      <div style="padding: 15px;">
+      <div style="padding: 15px; margin-Bottom: 32px;">
         <img id="close-setting" src="../static/assets/close.png" onclick="closeSettings()">
         <p>SETTINGS</p>
         <br><br>
@@ -52,44 +53,58 @@
       <div class="setting-input">
           <div class="setting-title">Noise</div>
           <div class="setting-value">
-            <div id="toggle" onclick="toggleNoise(this)">
-              <div id="toggle-noise"></div>
-            </div>
+            <label class="switch">
+              <input id="noise" type="checkbox" checked>
+              <span class="toogle round"></span>
+            </label>
           </div>
       </div>
+
       <div class="setting-input">
         <div class="setting-title">Language</div>
-        <div class="setting-value">English</div>
+        <div class="setting-value">
+          <select id="language">
+            <option value="English">English</option>
+            <option value="German">German</option>
+            <option value="Chinese">Chinese</option>
+            <option value="Spanish">Spanish</option>
+          </select>
+        </div>
       </div>
+
       <div class="setting-input">
         <div class="setting-title">Gender</div>
         <div class="setting-value">
-          female
+          <select id="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
         </div>
       </div>
-      <div style="height: 25px;"></div>
+
+      <div style="height: 32px;"></div>
       <div class="setting-input" class="slider">
         <div class="setting-title">Volume</div>
         <div class="setting-value">10</div>
-        <input id="setting-volume" type="range" value="10" max="100"></input>
+        <input class="slider" id="setting-volume" type="range" value="10" max="100"></input>
       </div>
-      <div style="height: 24px;"></div>
+      <div style="height: 32px;"></div>
       <div class="setting-input" class="slider">
         <div class="setting-title">Sensitivity</div>
         <div class="setting-value">5</div>
-        <input id="setting-sensitivity" type="range" value="2" max="10"></input>
+        <input class="slider" id="setting-sensitivity" type="range" value="2" max="10"></input>
       </div>
-      <div style="height: 24px;"></div>
+      <div style="height: 32px;"></div>
       <div class="setting-input" class="slider">
         <div class="setting-title">Noise delay</div>
         <div class="setting-value">10s</div>
-        <input id="setting-delay" type="range" value="10" max="30"></input>
+        <input class="slider" id="setting-delay" type="range" value="10" max="30"></input>
       </div>
-      <div style="height: 50px;"></div>
+      <div style="height: 68px;"></div>
       <div class="setting-input">
-        <div class="setting-title">Set to dufult</div>
-        <div class="setting-value" style="width: 130px;">
-          <p style="font-size: 10px; ">Design by Bjørn Karmann and Tore Knudsen. </p>
+        <div class="setting-title">Set to default</div>
+        <div class="setting-value" style="width: 162px;">
+          <p style="font-size: 13px; ">Design by Bjørn Karmann and Tore Knudsen. </p>
         </div>
         <div style="height: 15px;"></div>
       </div>
@@ -99,6 +114,7 @@
 
   <!-- Javascript -->
   <script type="text/javascript" charset="utf-8">
+  const ranges = RangeTouch.setup('input[type="range"]', { thumbWidth: 20 });
 
     // Get data form Raspberry
     var socket = io.connect('http://' + document.domain + ':' + location.port + '/socket');
@@ -130,13 +146,15 @@
         var whisper = $(this).find('textarea').val();
         keyphrase.push({"name":name ,"whisper":whisper});
       });
-      var setting = {"noise": true,
-                     "language": "en",
-                     "gender":"female",
+
+      var setting = {"noise": $("#noise").prop('checked'),
+                     "language": $("#language").val(),
+                     "gender": $("#gender").val(),
                      "volume": $("#setting-volume").val(),
                      "sensitivity": $("#setting-sensitivity").val(),
                      "delay": $("#setting-delay").val()}
 
+      console.log(setting.noise);
       socket.emit('msgEvent',{msg:"updateServer", data: {keyphrase, setting}});
     }
 
@@ -158,7 +176,12 @@
     }
 
     function updateSettings(msg){
+
       var set = currentSettings.setting;
+
+      $("#noise").val(set.noise);
+      $("#language").val(set.language);
+      $("#gender").val(set.gender);
 
       $("#setting-volume").val(set.volume);
       $("#setting-volume").parent().find('.setting-value')[0].innerHTML = set.volume;
@@ -188,7 +211,7 @@
 
 
     // this changes the displayed value on sliding motion
-    $('input').on("input", function (e) {
+    $('.slider').on("input", function (e) {
       console.log(this.value);
       $(this.parentElement).find('.setting-value')[0].innerHTML = this.value;
     });
@@ -207,6 +230,21 @@
     $('#setting-delay').change(function(e){
       updateServer();
       socket.emit('msgEvent',{msg:"delayChange"});
+    });
+
+    $('#noise').change(function(e){
+      updateServer();
+      socket.emit('msgEvent',{msg:"noiseChanged"});
+    });
+
+    $('#language').change(function(e){
+      updateServer();
+      socket.emit('msgEvent',{msg:"languageChanged"});
+    });
+
+    $('#gender').change(function(e){
+      updateServer();
+      socket.emit('msgEvent',{msg:"genderChanged"});
     });
 
     function removeBlock(event){
@@ -229,18 +267,6 @@
     function closeSettings(){
       //$("#settings").animate({height: '0%'});
       $("#settings").css('display', 'none');
-    }
-
-    function toggleNoise(event){
-      // make noise ON
-      //if currentSettings.noise == false
-      //$("#toggle-knob").css('float', 'right');
-      //$("#toggle-knob").css('background', 'black');
-
-      // make noise OFF
-      // if currentSettings.noise == true
-      $("#toggle-noise").css('float', 'left');
-      $("#toggle-noise").css('background', '#D84143');
     }
 
     var premadeCommands = [
