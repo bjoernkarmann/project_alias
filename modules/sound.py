@@ -6,13 +6,49 @@ import os
 from pygame import mixer
 mixer.init()
 
+language = [['Afrikaans',   '-vaf'],
+            ['Czech',       '-vcs'],
+            ['Danish',      '-vda'],
+            ['German',      '-vde'],
+            ['Greek',       '-vel'],
+            ['Esperanto',   '-veo'],
+            ['English',     '-ven'],
+            ['Spanish',     '-ves'],
+            ['Finnish',     '-vfi'],
+            ['French',      '-vfr'],
+            ['Croatian',    '-vhr'],
+            ['Hungarian',   '-vhu'],
+            ['Italian',     '-vit'],
+            ['Polish',      '-vpl'],
+            ['Dutch',       '-vnl'],
+            ['Portuguese',  '-vpt'],
+            ['Swedish',     '-vsv'],
+            ['Swahihi',     '-vsw'],
+            ['Mandarin',    '-vzh']]
 
 # Use $aplay -L to find sound card
 def speak(txt):
-    os.system('espeak '+txt)
-    #os.system('espeak "'+txt+'" --stdout | aplay -D "sysdefault:CARD=seeed2micvoicec"')
+    gender = globals.SETTING['setting']['gender']
+    if(gender == 'Male'):
+        gender = '+m3'
+    if(gender == 'Female'):
+        gender = '+f3'
+
+    lang = globals.SETTING['setting']['language']
+
+    for lan in language:
+        if lan[0] == lang:
+            lang = lan[1]
+
+    cmd = 'espeak '+lang+gender+' "'+txt+'" --stdout | aplay -D "sysdefault:CARD=seeed2micvoicec"'
+    os.system(cmd)
     print("TtS: " + txt)
 
+def setVolume():
+    vol = globals.SETTING['setting']['volume']
+    vol = str(int(vol) + 50)
+    os.system('amixer -c 1 sset Headphone '+vol)
+    os.system('amixer -c 1 sset Speaker '+vol)
 
 class audioPlayer():
     def __init__(self,filepath):

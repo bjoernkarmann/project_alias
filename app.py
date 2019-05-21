@@ -30,6 +30,7 @@ def incoming(message):
         print('serverData update recieved')
         settings.write(newSetting)
         settings.updateServer(newSetting)
+        settings.read()
 
     if('request' in msg):
         # send settings when client requests them
@@ -40,14 +41,24 @@ def incoming(message):
         print('reloading speech class')
         globals.CONFIG_HAS_CHANGED = True
 
+    if('languageChanged' in msg):
+        lan = globals.SETTING['setting']['language']
+        print('change: language', lan)
+
+    if('genderChanged' in msg):
+        gen = globals.SETTING['setting']['gender']
+        print('change: gender', gen)
+
     if('volumeChange' in msg):
-        print('change volume')
+        vol = globals.SETTING['setting']['volume']
+        print('change: volume', vol)
+        sound.setVolume()
 
     if('sensitivityChange' in msg):
-        print('change volume')
+        print('change: volume')
 
     if('delayChange' in msg):
-        print('change volume')
+        print('change: volume')
 
 
 # End of socket
@@ -96,7 +107,7 @@ def main():
     # Global inits
     #====================================================#
     settings.read() # load settings from json file and save in globals
-
+    sound.setVolume()
     noise.play()
     #init and setup RPI LEDs
     led.LED.off()
