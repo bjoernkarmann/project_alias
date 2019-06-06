@@ -1,14 +1,16 @@
 import os
 
 def initialize():
-    global SETTING, RESET, SILENCE,TRIGGERED, SPEECH, CONFIG_HAS_CHANGED
+    global SETTING, RESET, SILENCE,TRIGGERED, GLOW, SPEECH, CONFIG_HAS_CHANGED
 
     SETTING     = []
     RESET       = False
     SILENCE		= False
     TRIGGERED   = False
-    SPEECH = 0
+    GLOW        = False
+    SPEECH      = 0
     CONFIG_HAS_CHANGED = False
+
 
 
     global ROOT_PATH, KEYWORD_PATH, NOISE_PATH, SETTINGS_PATH

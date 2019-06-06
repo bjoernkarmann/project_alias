@@ -1,1 +1,1 @@
-{"keyphrase": [{"name": "Hey Alias ", "whisper": "Ok Google "}, {"name": "Funky time", "whisper": "Ok Google, play some funky music on spotify"}], "setting": {"gender": "female", "language": "en", "noise": true, "delay": "7", "volume": "48", "sensitivity": "2"}}
+{"setting": {"sensitivity": "1", "gender": "Female", "noise": true, "volume": "20", "delay": "10", "language": "English"}, "keyphrase": [{"whisper": "Ok Google", "name": "Hey Alias"}, {"whisper": "test", "name": "Test test"}, {"whisper": "ok google suona musica", "name": "Italy time"}]}

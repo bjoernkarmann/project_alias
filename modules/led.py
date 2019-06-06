@@ -7,9 +7,9 @@ class Pixels:
     def __init__(self):
         self.dev = apa102.APA102(num_led=self.PIXELS_N)
 
-    def on(self):
+    def on(self, dim):
         for i in range(self.PIXELS_N):
-            self.dev.set_pixel(i, 0, 0, 200,50)
+            self.dev.set_pixel(i, 255, 180, 0,dim)
         self.dev.show()
 
     def listen(self):

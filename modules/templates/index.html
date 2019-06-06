@@ -4,10 +4,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" type="text/css" href="../static/style/style.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous"> -->
     <title>PROJECT ALIAS</title>
     <script type="text/javascript" src="../static/js/jquery.min.js"></script>
-    <script src="https://cdn.rangetouch.com/2.0.0/rangetouch.js"></script>
+    <script type="text/javascript" src="../static/js/rangetouch.js">></script>
     <script type="text/javascript" src="../static/js/socket.io.js"></script>
     <!-- <script type="text/javascript" src="../static/js/autosize.js"></script> -->
   </head>
@@ -64,10 +64,25 @@
         <div class="setting-title">Language</div>
         <div class="setting-value">
           <select id="language">
+            <option value="Afrikaans">Afrikaans</option>
+            <option value="Croatian">Croatian</option>
+            <option value="Czech">Czech</option>
+            <option value="Danish">Danish</option>
+            <option value="Dutch">Dutch</option>
             <option value="English">English</option>
+            <option value="Esperanto">Esperanto</option>
+            <option value="Finnish">Finnish</option>
+            <option value="French">French</option>
             <option value="German">German</option>
-            <option value="Chinese">Chinese</option>
+            <option value="Greek">Greek</option>
+            <option value="Hungarian">Hungarian</option>
+            <option value="Italian">Italian</option>
+            <option value="Mandarin">Mandarin</option>
+            <option value="Polish">Polish</option>
             <option value="Spanish">Spanish</option>
+            <option value="Portuguese">Portuguese</option>
+            <option value="Swedish">Swedish</option>
+            <option value="Swahihi">Swahihi</option>
           </select>
         </div>
       </div>
@@ -102,9 +117,9 @@
       </div>
       <div style="height: 68px;"></div>
       <div class="setting-input">
-        <div class="setting-title">Set to default</div>
+        <div class="setting-title" id="setting-default" >Set to default</div>
         <div class="setting-value" style="width: 162px;">
-          <p style="font-size: 13px; ">Design by Bjørn Karmann and Tore Knudsen. </p>
+          <p style="font-size: 13px;" >Design by Bjørn Karmann and Tore Knudsen. </p>
         </div>
         <div style="height: 15px;"></div>
       </div>
@@ -191,6 +206,7 @@
 
       $("#setting-delay").val(set.delay);
       $("#setting-delay").parent().find('.setting-value')[0].innerHTML = set.delay;
+
     }
 
     function addDefinedBlock(input, output){
@@ -247,6 +263,25 @@
       socket.emit('msgEvent',{msg:"genderChanged"});
     });
 
+    $('#setting-default').click(function(e){
+
+      $("#noise").val(true);
+      $("#language").val("English");
+      $("#gender").val("Female");
+
+      $("#setting-volume").val(20);
+      $("#setting-volume").parent().find('.setting-value')[0].innerHTML = 20;
+
+      $("#setting-sensitivity").val(2);
+      $("#setting-sensitivity").parent().find('.setting-value')[0].innerHTML = 2;
+
+      $("#setting-delay").val(10);
+      $("#setting-delay").parent().find('.setting-value')[0].innerHTML = 10;
+
+      updateServer();
+
+    });
+
     function removeBlock(event){
       var block = event.parentElement;
       block.remove();
@@ -275,7 +310,7 @@
         "output": "Ok Google, how is the weather today"
       },
       {
-        "input": "Funky time",
+        "input": "Funky Time",
         "output": "Ok Google, play some funky music on spotify"
       },
       {
@@ -283,7 +318,7 @@
         "output": "Ok Google, where is Hogwards?"
       },
       {
-        "input": "Pizza time",
+        "input": "Pizza Time",
         "output": "Ok Google, order a pizza"
       },
       {
