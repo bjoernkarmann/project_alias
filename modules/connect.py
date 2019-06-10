@@ -18,11 +18,11 @@ socket_thread   = None
 FLASK_DEBUG = 0
 logging.getLogger('werkzeug').setLevel(logging.ERROR) # remove socket io logs
 
-def sendMsg(obj):
-    socketio.emit('response',obj,namespace='/socket')
+def sendMsg(namespace,obj):
+    socketio.emit(namespace,obj,namespace='/socket')
 
 @app.route('/')
 def index():
     print('Someone Connected!')
-    sendMsg(settings.read())
+    sendMsg('response',settings.read())
     return render_template('index.html')

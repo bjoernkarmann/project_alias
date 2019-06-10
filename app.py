@@ -30,10 +30,23 @@ def incoming(message):
         settings.updateServer(newSetting)
         settings.read()
 
+    if('volumeChange' in msg):
+        vol = globals.SETTING['setting']['volume']
+        print('change: volume', vol)
+        sound.setVolume()
+
+    if('noiseChanged' in msg):
+        onOff = globals.SETTING['setting']['noise']
+        if(onOff):
+            noise.play()
+        else:
+            noise.stop()
+
+
     if('request' in msg):
         # send settings when client requests them
         print('settings request send')
-        connect.sendMsg(settings.read())
+        connect.sendMsg('response', settings.read())
 
     if('reloadSpeech' in msg):
         print('reloading speech class')
@@ -69,15 +82,16 @@ def speech_thread():
         print('trigger: ', topWord)
         lookup = globals.SETTING['keyphrase'] # get setting
         # lookup the setting words
-        globals.GLOW = True # have the LED glow when triggered
         for data in lookup:
             # check the topword with setting list
             if data['name'].lower().strip() == topWord.lower().strip():
+                connect.sendMsg('activated', data['name'].lower().strip())
                 # get the whisper command matching the word
+                globals.GLOW = True
                 noise.stop()
                 print('say:', data['whisper'])
                 sound.speak(data['whisper'])
-        #time.sleep(int(globals.SETTING['delay'])) # delay
+        time.sleep(int(globals.SETTING['setting']['delay']))
         noise.play()
 
 
@@ -114,7 +128,7 @@ def main():
 
             if(count > 100):
                 up = False
-                time.sleep(2) # wait 2 secounds
+                time.sleep(int(globals.SETTING['setting']['delay'])) # wait 2 secounds
 
             if( count < 1 & up == False):
                 globals.GLOW = False

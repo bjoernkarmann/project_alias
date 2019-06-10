@@ -1,6 +1,7 @@
 @@font-face {
   font-family: "Work Sans";
-  src: url("/../assets/fonts/WorkSans-SemiBold.ttf");
+  src: url('/../assets/fonts/worksans-semibold-webfont.woff2') format('woff2'),
+       url('/../assets/fonts/worksans-semibold-webfont.woff') format('woff');
   font-weight: SemiBold;
   font-style: SemiBold;
 }
@@ -55,6 +56,7 @@ p{
 }
 
 .block{
+  background-color: white;
   width: auto;
   margin: 0 15px 15px 15px;
   padding: 10px 12px 5px 12px;
@@ -64,6 +66,7 @@ p{
 }
 
 .text-input{
+  background-color: transparent;
   position: relative;
   width: 100%;
   border: none;
@@ -108,6 +111,7 @@ p{
 #inner-scrool{
   max-height: 80%;
   overflow: scroll;
+  -webkit-overflow-scrolling
 }
 
 #settings{
@@ -133,6 +137,10 @@ p{
   right: 0px;
   top: -3px;
   float: right;
+  cursor: pointer;
+}
+
+#setting-default{
   cursor: pointer;
 }
 

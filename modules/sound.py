@@ -1,5 +1,6 @@
 from modules import globals
 from modules import led
+from modules import settings
 
 # Audio
 import os
@@ -40,14 +41,16 @@ def speak(txt):
         if lan[0] == lang:
             lang = lan[1]
 
-    cmd = 'espeak '+lang+gender+' "'+txt+'" --stdout | aplay -D "sysdefault:CARD=seeed2micvoicec"'
+    cmd = 'espeak '+lang+gender+' "'+txt+'"'
     os.system(cmd)
 
 def setVolume():
+
     vol = globals.SETTING['setting']['volume']
-    vol = str(int(vol) + 50)
-    os.system('amixer -c 1 sset Headphone '+vol)
-    os.system('amixer -c 1 sset Speaker '+vol)
+    vol = str(settings.mapF(int(vol),0,100,80,100))
+    os.system('amixer -c 0 sset Headphone '+vol+'%')
+    os.system('amixer -c 0 sset Speaker '+vol+'%')
+
 
 class audioPlayer():
     def __init__(self,filepath):
@@ -61,7 +64,7 @@ class audioPlayer():
 
     def play(self):
         print("play noise")
-        self.player.play(loops=True)
+        self.player.play(loops=-1)
 
     def stop(self):
         print("stop noise")

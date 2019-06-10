@@ -7,16 +7,16 @@
     <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous"> -->
     <title>PROJECT ALIAS</title>
     <script type="text/javascript" src="../static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-color-min.js"></script>
     <script type="text/javascript" src="../static/js/rangetouch.js">></script>
     <script type="text/javascript" src="../static/js/socket.io.js"></script>
-    <!-- <script type="text/javascript" src="../static/js/autosize.js"></script> -->
   </head>
 
   <body oncontextmenu="false" onload="requestSettings()">
     <div id="app-wrapper">
       <div id="header">
         <img id="settings-icon" src="../static/assets/settings.png" onclick="openSettings()">
-        <p>PROJECT: ALIAS</p>
+        <p>PROJECT ALIAS</p>
       </div>
       <div id="inner-scrool">
 
@@ -129,11 +129,12 @@
 
   <!-- Javascript -->
   <script type="text/javascript" charset="utf-8">
-  const ranges = RangeTouch.setup('input[type="range"]', { thumbWidth: 20 });
+    const ranges = RangeTouch.setup('input[type="range"]', { thumbWidth: 20 });
 
     // Get data form Raspberry
     var socket = io.connect('http://' + document.domain + ':' + location.port + '/socket');
     var currentSettings;
+
 
     // get message from pi
     socket.on('response', function(msg) {
@@ -143,6 +144,29 @@
       updateSettings(msg);
     });
 
+    //Animate block when keyword is activated
+    socket.on('activated', function(msg){
+      console.log(msg);
+      $('#blocks').children('.block').each(function () {
+        var name = $(this).find('input').val(); //
+
+        if(msg.toLowerCase() === name.toLowerCase()){
+           animateblock(this, 0, 1000);
+        }
+      })
+    })
+
+   function animateblock(that, delay, duration){
+     setTimeout(function () {
+       $(that).css("background-color", "#ffc700");
+       $(that).find('p').css('color','white');
+       $(that).find('.line').css('background-color', 'white')
+       $(that).animate({backgroundColor:"#fff"},duration);
+       $(that).find('p').animate({color: '#D0D0D0'},duration);
+       $(that).find('.line').animate({backgroundColor: '#D0D0D0'},duration);
+     }, delay);
+   }
+
     // ask pi for settings on startup
     function requestSettings(){
       socket.emit('msgEvent',{msg:"request"});
@@ -151,7 +175,14 @@
     function updateButton(){
       updateServer();
       socket.emit('msgEvent',{msg:"reloadSpeech"});
-    }
+      var i = 0;
+      $('#blocks').children('.block').each(function () {
+        $this = $(this);
+        console.log(this);
+        animateblock($this, i, 500)
+        i += 100;
+    });
+  }
 
     // copy the current blocks values into a settings file and send it to the pi
     function updateServer(){
@@ -270,7 +301,7 @@
       $("#gender").val("Female");
 
       $("#setting-volume").val(20);
-      $("#setting-volume").parent().find('.setting-value')[0].innerHTML = 20;
+      $("#setting-volume").parent().find('.setting-value')[0].innerHTML = 80;
 
       $("#setting-sensitivity").val(2);
       $("#setting-sensitivity").parent().find('.setting-value')[0].innerHTML = 2;
