@@ -1,106 +1,328 @@
-@import url('https://fonts.googleapis.com/css?family=Work+Sans:500,600');
-font-family: 'Work Sans', sans-serif;
+
+@font-face {
+  font-family: 'Work Sans';
+  src: url('../assets/fonts/worksans-semibold-webfont.woff2') format('woff2'),
+       url('../assets/fonts/worksans-semibold-webfont.woff') format('woff');
+
+  font-weight: SemiBold;
+  font-style: SemiBold;
+}
+
+html * {
+  font-family: "Work Sans" !important;
+  font-weight: 600;
+  font-size: 20px;
+}
 
  body{
-	max-width: 100vw;
+  height:100vh;
+	width: 100vw;
+  position: fixed;
 	overflow: hidden;
 	margin:0;
 	padding:0;
 }
 
 @media only screen and (max-width: 600px) {
-	.app-wrapper{
-		position: relative;
-		margin: -8px 0 0 -8px;
-		width:100vw;
-		height:100vh;
+	#app-wrapper{
+		height:100%;
+    width:100%;
+    position: fixed;
 		padding-top: 1px;
 		overflow: hidden;
 	}
 }
 
 @media only screen and (min-width: 600px) {
-	.app-wrapper{
+	#app-wrapper{
 		position: relative;
 		margin: 40px auto;
-		width:320px;
-		height:568px;
+		width:375px;
+		height:667px;
 		padding-top: 1px;
 		border:1px solid black;
 		overflow: hidden;
 	}
 }
 
-
 h1{
-	font-family: "Work Sans";
-	font-size: 32px;
-	font-weight: 500;
-	text-align: center;
-	margin:0;
+  font-family: "Work Sans";
+  font-size: 20px;
+  padding: 10px 15px 0px 15px;
+  margin: 0px;
 }
 
 p{
 	font-family: "Work Sans";
-	font-size: 16px;
+	font-size: 13px;
 	font-weight: 600;
-	text-align: center;
+  line-height: 16px;
+  margin: 0px;
+  color: #D0D0D0;
 }
 
-.header{
-	position: absolute;
-	top: 8%;
-    z-index: 3;
-    width: 90%;
-    padding: 5%;
-}
-.footer{
-	position: absolute;
-	height:15%;
+.block{
+  background-color: white;
+  width: auto;
+  margin: 0 15px 15px 15px;
+  padding: 10px 12px 5px 12px;
+  border-radius: 8px;
+  border: 3px solid black;
+  overflow: hidden;
 }
 
-.visualization{
-	position: absolute;
-	height:100%;
-	width: 100%;
-	margin: 0;
+.text-input{
+  background-color: transparent;
+  position: relative;
+  width: 100%;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+  resize: none;
 }
 
-.visualization p{
-	position: absolute;
-    width: 150px;
-    height: 40px;
-    left: 50%;
-    top: 50%;
-    margin-left: -75px;
-    margin-top: -20px;
+.line{
+  position: relative;
+  width: 150%;
+  left: -15px;
+  margin: 10px 0px;
+  background-color: #DFDFDF;
+  height: 2px;
 }
 
-.menu{
-	background-color: white;
-	position: absolute;
-	height: 80%;
-	width: 100%;
-	top:80%;
+.setting-input{
+  margin: 20px 15px 0px 15px;
+  height: 15px;
+  color: #000;
+  padding: 1px 0px;
 }
 
-.menu p{
-	line-height: 64px;
-	margin-top: 0px;
-
+.setting-title{
+  position: absolute;
+  width: 50%;
 }
 
-.menu p:hover{
-	color:grey;
+.setting-value{
+  float: right;
+  width: 50%;
+  position: relative;
+  text-align: right;
 }
 
-.menu .menu-icon{
-	margin:15% auto 15% auto;
-	height: 8px;
-	width: 40px;
-	border-top: 4px solid black;
-	border-bottom: 4px solid black;
+#header{
+  position: relative;
+  margin: 4% 16px 4% 16px;
 }
+
+#inner-scrool{
+  height: 75%;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+#settings{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: 0px;
+  display: none;
+  background-color: white;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+#close-setting{
+  position: relative;
+  width:16px;
+  height:16px;
+  float: right;
+  cursor: pointer;
+}
+
+#settings-icon{
+  position: relative;
+  height: 20px;
+  right: 0px;
+  top: -3px;
+  float: right;
+  cursor: pointer;
+}
+
+#setting-default{
+  cursor: pointer;
+}
+
+#close-icon{
+  position: relative;
+  width:13px;
+  height:13px;
+  float: right;
+  right: -3px;
+  opacity: 0.1;
+  cursor: pointer;
+}
+
+#plus-icon{
+  position: relative;
+  width: 21px;
+  margin: 0 auto;
+  padding-bottom: 50px;
+  cursor: pointer;
+}
+
+#footer{
+	position: relative;
+	height: 16%;
+  width: 100%;
+  background-color: white;
+}
+
+#submit{
+  position: relative;
+  margin: 15px;
+  padding: 15px 0px;
+  width: 160px;
+  background-color: black;
+  border-radius: 5px;
+  color: white;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+}
+
+#toggle{
+  border: 3px solid black;
+  width: 35px;
+  height: 16px;
+  float:right;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+#toggle-noise{
+  width: 12px;
+  height: 12px;
+  border-radius: 20px;
+  margin: 2px;
+  float: right;
+  background-color: black;
+}
+
+#toggle-polite{
+  width: 12px;
+  height: 12px;
+  border-radius: 20px;
+  margin: 2px;
+  float: right;
+  background-color: black;
+}
+
 .hidden{
 	display: none;
+}
+
+select{
+  direction: rtl;
+  background-color: white;
+  border: none;
+  -webkit-appearance: none;
+}
+
+select:focus{
+  outline: none;
+}
+select::-ms-expand{
+  display: none;
+}
+
+/* toogle */
+.switch{
+  position: relative;
+  display: inline-block;
+  width: 56px;
+  height: 28px
+}
+.switch input{
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toogle{
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right:0;
+  bottom:0;
+  border: 2px solid black;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.toogle:before{
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 3px;
+  background-color: black;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .toogle{
+  background-color: black;
+}
+
+input:checked + .toogle:before{
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+    background-color: white;
+}
+
+.toogle.round{
+  border-radius: 34px;
+}
+.toogle.round:before{
+  border-radius: 50%;
+}
+
+
+/* range syleing below */
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 3px;
+  border-radius: 5px;
+  background: black;
+  outline: none;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: black;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: black;
+  cursor: pointer;
 }
