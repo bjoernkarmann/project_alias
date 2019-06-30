@@ -1,7 +1,9 @@
-@@font-face {
-  font-family: "Work Sans";
-  src: url('/../assets/fonts/worksans-semibold-webfont.woff2') format('woff2'),
-       url('/../assets/fonts/worksans-semibold-webfont.woff') format('woff');
+
+@font-face {
+  font-family: 'Work Sans';
+  src: url('../assets/fonts/worksans-semibold-webfont.woff2') format('woff2'),
+       url('../assets/fonts/worksans-semibold-webfont.woff') format('woff');
+
   font-weight: SemiBold;
   font-style: SemiBold;
 }
@@ -13,7 +15,9 @@ html * {
 }
 
  body{
-	max-width: 100vw;
+  height:100vh;
+	width: 100vw;
+  position: fixed;
 	overflow: hidden;
 	margin:0;
 	padding:0;
@@ -21,7 +25,9 @@ html * {
 
 @media only screen and (max-width: 600px) {
 	#app-wrapper{
-		height:100vh;
+		height:100%;
+    width:100%;
+    position: fixed;
 		padding-top: 1px;
 		overflow: hidden;
 	}
@@ -105,13 +111,13 @@ p{
 
 #header{
   position: relative;
-  margin: 15px;
+  margin: 4% 16px 4% 16px;
 }
 
 #inner-scrool{
-  max-height: 80%;
+  height: 75%;
   overflow: scroll;
-  -webkit-overflow-scrolling
+  -webkit-overflow-scrolling: touch;
 }
 
 #settings{
@@ -121,6 +127,8 @@ p{
   bottom: 0px;
   display: none;
   background-color: white;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 #close-setting{
@@ -163,9 +171,8 @@ p{
 }
 
 #footer{
-	position: absolute;
-	height: 20px;
-  bottom: 65px;
+	position: relative;
+	height: 16%;
   width: 100%;
   background-color: white;
 }
