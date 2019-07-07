@@ -1,7 +1,10 @@
 # coding=utf-8
 import time
 import atexit
+import ctypes
+import threading
 from threading import Thread
+import multiprocessing
 from pocketsphinx import LiveSpeech
 # Import modules
 from modules import globals
@@ -22,8 +25,8 @@ def incoming(message):
     msg = message['msg']
     if('updateServer' in msg):
         # client has a updated the settings
-        print(message)
-        print('----')
+        #print(message)
+        #print('----')
         newSetting = message['data']
         print('serverData update recieved')
         settings.write(newSetting)
@@ -50,7 +53,7 @@ def incoming(message):
 
     if('reloadSpeech' in msg):
         print('reloading speech class')
-        globals.CONFIG_HAS_CHANGED = True
+        globals.STOP_THREAD = True
 
 
 # End of socket
@@ -75,24 +78,61 @@ def socket_thread():
 
     connect.socketio.run(connect.app, host=connect.HOST, port=connect.PORT, debug=False, log_output=False)
 
-def speech_thread():
-    # when a keyphrase is detected, the for loop runs (LiveSpeech magic)
-    for phrase in globals.SPEECH:
-        topWord = phrase.segments()[0]
-        print('trigger: ', topWord)
-        lookup = globals.SETTING['keyphrase'] # get setting
-        # lookup the setting words
-        for data in lookup:
-            # check the topword with setting list
-            if data['name'].lower().strip() == topWord.lower().strip():
-                connect.sendMsg('activated', data['name'].lower().strip())
-                # get the whisper command matching the word
-                globals.GLOW = True
-                noise.stop()
-                print('say:', data['whisper'])
-                sound.speak(data['whisper'])
-        time.sleep(int(globals.SETTING['setting']['delay']))
-        noise.play()
+
+
+
+
+# Speech thread 
+#====================================================#
+
+class thread_with_exception(threading.Thread): 
+    def __init__(self, name): 
+        threading.Thread.__init__(self) 
+        self.name = name 
+              
+    def run(self): 
+        try: 
+            while True: 
+                #main
+                # when a keyphrase is detected, the for loop runs (LiveSpeech magic)
+                print("running speech")
+                for phrase in globals.SPEECH:
+            
+                    topWord = phrase.segments()[0]
+                    print('trigger: ', topWord)
+                    lookup = globals.SETTING['keyphrase'] # get setting
+                    # lookup the setting words
+                    for data in globals.SETTING['keyphrase']:
+                        # check the topword with setting list
+                        if data['name'].lower().strip() == topWord.lower().strip():
+                            connect.sendMsg('activated', data['name'].lower().strip())
+                            # get the whisper command matching the word
+                            globals.GLOW = True
+                            noise.stop()
+                            print('say:', data['whisper'])
+                            sound.speak(data['whisper'])
+                            time.sleep(int(globals.SETTING['setting']['delay']))
+                            noise.play()
+                
+        finally: 
+            print('ended') 
+           
+    def get_id(self): 
+        # returns id of the respective thread 
+        if hasattr(self, '_thread_id'): 
+            return self._thread_id 
+        for id, thread in threading._active.items(): 
+            if thread is self: 
+                return id
+   
+    def raise_exception(self): 
+        thread_id = self.get_id() 
+        res = ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 
+              ctypes.py_object(SystemExit)) 
+        if res > 1: 
+            ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 0) 
+            print('Exception raise failure') 
+       
 
 
 def main():
@@ -100,14 +140,13 @@ def main():
     #====================================================#
     settings.read() # load settings from json file and save in globals
     sound.setVolume()
-    noise.play()
-    #init and setup RPI LEDs
     led.LED.off()
     globals.SPEECH = speechInit()
 
-    thread_speech = Thread(target=speech_thread)
-    thread_speech.daemon = True
-    thread_speech.start()
+    t1 = thread_with_exception('Speech thread') 
+    t1.start() 
+    #init and setup RPI LEDs
+    
 
     globals.GLOW = True; # glow on startup once
     count = 1
@@ -137,11 +176,18 @@ def main():
         else:
             time.sleep(0.3)
 
-        #reset program when config is changed
-        if globals.CONFIG_HAS_CHANGED:
-            globals.CONFIG_HAS_CHANGED = False
-            main()
-            print("running main again")
+        
+        if globals.STOP_THREAD:
+            globals.STOP_THREAD = False
+            t1.raise_exception() 
+            t1.join()
+            print("thread killed")
+
+            globals.SPEECH = speechInit()
+            t1 = thread_with_exception('Speech thread') 
+            time.sleep(1)
+            t1.start() 
+
 
 # Start socket io
 if __name__ == '__main__':
@@ -149,10 +195,12 @@ if __name__ == '__main__':
      globals.initialize()
      noise = sound.audioPlayer(globals.NOISE_PATH)
 
-     thread = Thread(target=socket_thread)
-     thread.daemon = True
-     thread.start()
+     thread_socket = Thread(target=socket_thread)
+     thread_socket.daemon = True
+     thread_socket.start()
+     noise.play()
      main()
+     print("runs once");
 
 def exit_handler():
     led.LED.off()
@@ -161,3 +209,9 @@ def exit_handler():
     os.system("ps -fA | grep python")
 
 atexit.register(exit_handler)
+
+
+
+
+
+

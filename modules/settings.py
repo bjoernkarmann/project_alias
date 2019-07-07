@@ -15,9 +15,12 @@ def read():
 # get setting and write names into keyphrase.list file
 def updateServer(data):
     print(data)
+    sensitivity = data['setting']['sensitivity'] # 0 - 10 
+    
     with open(globals.KEYWORD_PATH, 'w') as f:
         for item in data['keyphrase']:
-            threshold = int(mapF(len(item['name']),0,15,1,30))
+            threshold = int(mapF(len(item['name']),4, 15, 0 , 30)) + int(sensitivity)
+            print(threshold)
             keyphrase = item['name'] + " /1e-" + str(threshold) + "/"
             keyphrase = keyphrase.lower()
             f.write("%s\n" % keyphrase)

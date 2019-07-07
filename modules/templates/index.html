@@ -310,10 +310,10 @@
       $("#gender").val("Female");
 
       $("#setting-volume").val(20);
-      $("#setting-volume").parent().find('.setting-value')[0].innerHTML = 80;
+      $("#setting-volume").parent().find('.setting-value')[0].innerHTML = 20;
 
-      $("#setting-sensitivity").val(2);
-      $("#setting-sensitivity").parent().find('.setting-value')[0].innerHTML = 2;
+      $("#setting-sensitivity").val(5);
+      $("#setting-sensitivity").parent().find('.setting-value')[0].innerHTML = 5;
 
       $("#setting-delay").val(10);
       $("#setting-delay").parent().find('.setting-value')[0].innerHTML = 10;
@@ -342,6 +342,7 @@
     function closeSettings(){
       //$("#settings").animate({height: '0%'});
       $("#settings").css('display', 'none');
+      socket.emit('msgEvent',{msg:"reloadSpeech"});
     }
 
     var premadeCommands = [

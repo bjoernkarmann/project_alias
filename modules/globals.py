@@ -1,8 +1,7 @@
 import os
 
 def initialize():
-    global SETTING, RESET, SILENCE,TRIGGERED, GLOW, SPEECH, CONFIG_HAS_CHANGED
-
+    global SETTING, RESET, SILENCE,TRIGGERED, GLOW, SPEECH, CONFIG_HAS_CHANGED, STOP_THREAD
     SETTING     = []
     RESET       = False
     SILENCE		= False
@@ -10,6 +9,7 @@ def initialize():
     GLOW        = False
     SPEECH      = 0
     CONFIG_HAS_CHANGED = False
+    STOP_THREAD = False
 
 
 
