@@ -2,6 +2,7 @@
 import time
 import atexit
 import ctypes
+import signal
 import threading
 from threading import Thread
 import multiprocessing
@@ -40,6 +41,7 @@ def incoming(message):
 
     if('noiseChanged' in msg):
         onOff = globals.SETTING['setting']['noise']
+        print(onOff)
         if(onOff):
             noise.play()
         else:
@@ -82,22 +84,22 @@ def socket_thread():
 
 
 
-# Speech thread 
+# Speech thread
 #====================================================#
 
-class thread_with_exception(threading.Thread): 
-    def __init__(self, name): 
-        threading.Thread.__init__(self) 
-        self.name = name 
-              
-    def run(self): 
-        try: 
-            while True: 
+class thread_with_exception(threading.Thread):
+    def __init__(self, name):
+        threading.Thread.__init__(self)
+        self.name = name
+
+    def run(self):
+        try:
+            while True:
                 #main
                 # when a keyphrase is detected, the for loop runs (LiveSpeech magic)
                 print("running speech")
                 for phrase in globals.SPEECH:
-            
+
                     topWord = phrase.segments()[0]
                     print('trigger: ', topWord)
                     lookup = globals.SETTING['keyphrase'] # get setting
@@ -113,26 +115,26 @@ class thread_with_exception(threading.Thread):
                             sound.speak(data['whisper'])
                             time.sleep(int(globals.SETTING['setting']['delay']))
                             noise.play()
-                
-        finally: 
-            print('ended') 
-           
-    def get_id(self): 
-        # returns id of the respective thread 
-        if hasattr(self, '_thread_id'): 
-            return self._thread_id 
-        for id, thread in threading._active.items(): 
-            if thread is self: 
+
+        finally:
+            print('ended')
+
+    def get_id(self):
+        # returns id of the respective thread
+        if hasattr(self, '_thread_id'):
+            return self._thread_id
+        for id, thread in threading._active.items():
+            if thread is self:
                 return id
-   
-    def raise_exception(self): 
-        thread_id = self.get_id() 
-        res = ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 
-              ctypes.py_object(SystemExit)) 
-        if res > 1: 
-            ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 0) 
-            print('Exception raise failure') 
-       
+
+    def raise_exception(self):
+        thread_id = self.get_id()
+        res = ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id,
+              ctypes.py_object(SystemExit))
+        if res > 1:
+            ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 0)
+            print('Exception raise failure')
+
 
 
 def main():
@@ -143,10 +145,10 @@ def main():
     led.LED.off()
     globals.SPEECH = speechInit()
 
-    t1 = thread_with_exception('Speech thread') 
-    t1.start() 
+    t1 = thread_with_exception('Speech thread')
+    t1.start()
     #init and setup RPI LEDs
-    
+
 
     globals.GLOW = True; # glow on startup once
     count = 1
@@ -176,17 +178,17 @@ def main():
         else:
             time.sleep(0.3)
 
-        
+
         if globals.STOP_THREAD:
             globals.STOP_THREAD = False
-            t1.raise_exception() 
+            t1.raise_exception()
             t1.join()
             print("thread killed")
 
             globals.SPEECH = speechInit()
-            t1 = thread_with_exception('Speech thread') 
+            t1 = thread_with_exception('Speech thread')
             time.sleep(1)
-            t1.start() 
+            t1.start()
 
 
 # Start socket io
@@ -203,15 +205,12 @@ if __name__ == '__main__':
      print("runs once");
 
 def exit_handler():
+    print("program stopped")
+    globals.STOP_THREAD = True
     led.LED.off()
     connect.socketio.stop()
     sound.mixer.stop()
     os.system("ps -fA | grep python")
 
+signal.signal(signal.SIGINT, exit_handler)
 atexit.register(exit_handler)
-
-
-
-
-
-

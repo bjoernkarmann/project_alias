@@ -14,6 +14,18 @@ html * {
   font-size: 20px;
 }
 
+@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
+  html {
+    transform: rotate(-90deg);
+    transform-origin: left top;
+    width: 100vh;
+    overflow-x: hidden;
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
+}
+
  body{
   height:100vh;
 	width: 100vw;
@@ -36,11 +48,11 @@ html * {
 @media only screen and (min-width: 600px) {
 	#app-wrapper{
 		position: relative;
-		margin: 40px auto;
-		width:375px;
-		height:667px;
-		padding-top: 1px;
-		border:1px solid black;
+		margin: auto;
+		width:640px;
+		height:100vh;
+
+		/*border:1px solid black;*/
 		overflow: hidden;
 	}
 }
@@ -112,6 +124,7 @@ p{
 #header{
   position: relative;
   margin: 4% 16px 4% 16px;
+  padding-top: 24px;
 }
 
 #inner-scrool{

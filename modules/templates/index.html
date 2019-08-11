@@ -43,11 +43,12 @@
     </div>
 
     <div id="settings">
-      <div style="padding: 15px; margin-Bottom: 32px;">
+      <div id="header">
         <img id="close-setting" src="../static/assets/close.png" onclick="closeSettings()">
         <p>SETTINGS</p>
-        <br><br>
-        <p>Trigger word is what you say, command is what Alias whispers to your assistant.
+      </div>
+      <div style="padding: 15px; margin-Bottom: 32px;">
+        <p style="width:100%; max-width:360px;">Trigger word is what you say, command is what Alias whispers to your assistant.
         We recoommend trigger words with at least 3 syllables.</p>
       </div>
 
@@ -102,7 +103,7 @@
       <div class="setting-input" class="slider">
         <div class="setting-title">Volume</div>
         <div class="setting-value">10</div>
-        <input class="slider" id="setting-volume" type="range" value="10" max="100"></input>
+        <input class="slider" id="setting-volume" type="range" value="40" max="100"></input>
       </div>
       <div style="height: 32px;"></div>
       <div class="setting-input" class="slider">
@@ -147,9 +148,9 @@
         console.log(currentSettings)
         updateBlocks(msg);
         updateSettings(msg);
-        
-        //prevet duplication of blocks on multiple clients. 
-        hasRecievedBlocks = true; 
+
+        //prevet duplication of blocks on multiple clients.
+        hasRecievedBlocks = true;
       }
     });
 
@@ -356,7 +357,7 @@
       },
       {
         "input": "Gandalf",
-        "output": "Ok Google, where is Hogwards?"
+        "output": "Ok Google, where is the hobbits?"
       },
       {
         "input": "Pizza Time",

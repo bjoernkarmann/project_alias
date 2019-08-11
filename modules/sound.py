@@ -47,7 +47,7 @@ def speak(txt):
 def setVolume():
 
     vol = globals.SETTING['setting']['volume']
-    vol = str(settings.mapF(int(vol),0,100,80,100))
+    vol = str(settings.mapF(int(vol),0,100,50,100))
     os.system('amixer -c 0 sset Headphone '+vol+'%')
     os.system('amixer -c 0 sset Speaker '+vol+'%')
 
