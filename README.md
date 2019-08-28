@@ -45,6 +45,7 @@ On the Rapsberry Pi: clone and install the sound driver for the [ReSpeaker](http
 *This is only required when using the ReSpeaker hat, this code will also work with other sound drivers.*
 
 ```
+sudo apt-get install git
 cd && git clone https://github.com/respeaker/seeed-voicecard.git
 cd seeed-voicecard && sudo ./install.sh
 ```
@@ -52,7 +53,7 @@ cd seeed-voicecard && sudo ./install.sh
 Install **Tensorflow** and **Keras**:
 
 ```
-sudo apt-get install python3-dev python3-pip git libatlas-base-dev 
+sudo apt-get install python3-dev python3-pip libatlas-base-dev 
 sudo pip3 install tensorflow keras 
 ```
 
