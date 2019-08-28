@@ -53,14 +53,14 @@ Install **Tensorflow** and **Keras**:
 
 ```
 sudo apt-get install python3-dev python3-pip git libatlas-base-dev 
-sudo pip3 install tensorflow keras 
+sudo pip3 install --no-cache-dir tensorflow keras
 ```
 
 Install the required modules: 
 
 ```
 sudo apt-get install python3-numpy python3-spidev python-h5py
-sudo apt-get install python3-pyaudio libsdl-ttf2.0-0 python3-pygame 
+sudo apt-get install python3-pyaudio libsdl-ttf2.0-0 python3-pygame
 sudo pip3 install flask flask_socketio python_speech_features
 ```
 
@@ -116,4 +116,3 @@ Made by [Bjørn Karmann](http://bjoernkarmann.dk) and [Tore Knudsen](http://www.
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
