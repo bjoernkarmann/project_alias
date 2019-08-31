@@ -1,3 +1,7 @@
 # IntelliJ IDEA
 .idea/
 *.iml
+
+# Python
+data/previous_model.h5
+__pycache__/
