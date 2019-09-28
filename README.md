@@ -9,6 +9,12 @@
 
 Project Alias is an open-source parasite to hack smart home devices. Train custom wake-up names and commands for your devices while disturbing their built-in microphone with noise. Introduce false labelling to their algorithm by changing gender or nationality. Read more about the project **[here](http://bjoernkarmann.dk/project_alias)**.
 
+ 
+```diff
+- WARNING:
+- V2.0 is work in progress and will be updated soon!
+```
+
 This repository has been updated to 2.0. Find the old version **[here](http://bjoernkarmann.dk/project_alias)**.
 
 ### 2.0 Features
