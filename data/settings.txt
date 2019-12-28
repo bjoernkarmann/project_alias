@@ -1,1 +1,1 @@
-{"setting": {"language": "English", "gender": "Female", "delay": "5", "volume": "51", "sensitivity": "0", "noise": true}, "keyphrase": [{"whisper": "Ok Google", "name": "Hey Alias"}, {"whisper": "Ok Google, play some funky music on spotify", "name": "Funky Time"}, {"whisper": "Ok Google", "name": "Marvin"}, {"whisper": "Ok Google, how is the weather today", "name": "Weather man"}]}
+{"setting": {"noise": true, "language": "English", "volume": "39", "gender": "Male", "delay": "10"}, "keyphrase": [{"whisper": "Ok Google", "name": "Hey Alias", "sensitivity": "20"}]}

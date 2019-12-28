@@ -2,14 +2,15 @@
 @font-face {
   font-family: 'Work Sans';
   src: url('../assets/fonts/worksans-semibold-webfont.woff2') format('woff2'),
-       url('../assets/fonts/worksans-semibold-webfont.woff') format('woff');
+       url('../assets/fonts/worksans-semibold-webfont.woff') format('woff'),
+       url('../assets/fonts/worksans-semibold-webfont.ttf') format('truetype');
 
   font-weight: SemiBold;
   font-style: SemiBold;
 }
 
 html * {
-  font-family: "Work Sans" !important;
+  font-family: "Work Sans";
   font-weight: 600;
   font-size: 20px;
 }
@@ -70,14 +71,23 @@ p{
 	font-weight: 600;
   line-height: 16px;
   margin: 0px;
-  color: #D0D0D0;
+  color:grey;
+}
+
+p span{
+  font-family: "Work Sans";
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 16px;
+  margin: 0px;
+  color:grey;
 }
 
 .block{
   background-color: white;
   width: auto;
   margin: 0 15px 15px 15px;
-  padding: 10px 12px 5px 12px;
+  padding: 12px 16px 5px 16px;
   border-radius: 8px;
   border: 3px solid black;
   overflow: hidden;
@@ -91,16 +101,49 @@ p{
   margin: 0px;
   padding: 0px;
   resize: none;
+  margin-bottom: 16px;
 }
 
 .line{
   position: relative;
   width: 150%;
   left: -15px;
-  margin: 10px 0px;
+  margin-bottom: 8px;
+  top:-6px;
   background-color: #DFDFDF;
   height: 2px;
 }
+
+.sensitivity-section{
+    margin-bottom: 8px;
+    margin-right: 4px;
+    float: left;
+  }
+   .sensitivity-button{
+    width: fit-content;
+    float: right;
+    margin-top: -4px;
+    position: relative;
+  }
+  .sensitivity-button img{
+    height: 12px;
+    opacity: 1;
+    display: inline-block !important;
+
+  }
+  .sensitivity-button img:first{
+    margin-right: 32px;
+  }
+
+  #sensitivity{
+    float:left;
+  }
+
+  .clickarea{
+    width: 48px;
+    height: 48px;
+    position: absolute;
+  }
 
 .setting-input{
   margin: 20px 15px 0px 15px;
@@ -131,6 +174,7 @@ p{
   height: 75%;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
 }
 
 #settings{
@@ -142,6 +186,7 @@ p{
   background-color: white;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
 }
 
 #close-setting{
@@ -171,7 +216,7 @@ p{
   height:13px;
   float: right;
   right: -3px;
-  opacity: 0.1;
+  opacity: 0.2;
   cursor: pointer;
 }
 
@@ -240,6 +285,7 @@ select{
   background-color: white;
   border: none;
   -webkit-appearance: none;
+  all: unset;
 }
 
 select:focus{
@@ -248,6 +294,29 @@ select:focus{
 select::-ms-expand{
   display: none;
 }
+
+input::-webkit-input-placeholder{
+  color: grey;
+  opacity: 1; /* Firefox */
+}
+input:-moz-placeholder {
+  color: grey;
+  opacity: 1; /* Firefox */
+}
+
+input::placeholder{
+  color: grey;
+  opacity: 1; /* Firefox */
+
+}
+
+textarea::placeholder{
+    color: grey;
+  opacity: 1; /* Firefox */
+
+}
+
+
 
 /* toogle */
 .switch{
