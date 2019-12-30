@@ -71,7 +71,7 @@ p{
 	font-weight: 600;
   line-height: 16px;
   margin: 0px;
-  color:grey;
+  color:#808080;
 }
 
 p span{
@@ -80,7 +80,7 @@ p span{
   font-weight: 600;
   line-height: 16px;
   margin: 0px;
-  color:grey;
+  color:#808080;
 }
 
 .block{
@@ -296,22 +296,22 @@ select::-ms-expand{
 }
 
 input::-webkit-input-placeholder{
-  color: grey;
+  color: #808080;
   opacity: 1; /* Firefox */
 }
 input:-moz-placeholder {
-  color: grey;
+  color: #808080;
   opacity: 1; /* Firefox */
 }
 
 input::placeholder{
-  color: grey;
+  color: #808080;
   opacity: 1; /* Firefox */
 
 }
 
 textarea::placeholder{
-    color: grey;
+    color: #808080;
   opacity: 1; /* Firefox */
 
 }
