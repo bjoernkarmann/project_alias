@@ -25,8 +25,8 @@ For the complete step-by-step guide and 3D files see our **[Instructables](https
 
 ### Easy Setup 🔧
 The Alias software can be flashed onto a micro SD card, for a fast and easy setup. Make sure the respeaker hat is attached to the Raspberry Pi.
-1. **[Download](https://www.dropbox.com/s/g6hh5e4ml65jcaf/alias2_0.dmg?dl=0)** the *alias2_0.dmg* file
-2. Use **[Etcher](https://www.balena.io/etcher/)** to flash a micro SD card with the .dmg file
+1. **[Download](https://www.dropbox.com/s/k94bkqs4mkza0tj/alias2.0.img?dl=0)** the *alias2_0.img* file
+2. Use **[Etcher](https://www.balena.io/etcher/)** to flash a micro SD card with the .img file
 3. Insert the micro SD card into the Raspberry Pi 3A+
 4. Power Alias up and wait for the yellow light to glow
 
@@ -60,8 +60,8 @@ Noise | This will turn on/off the looping noise| `ON`
 Gender | Choose what gender the assistant should perceive when Alias whispers commands. By changing to the opposite gender you will able to introduce false labelling into the assistants algorithm. This confusion might lead to interesting interactions and answers. Note, this only changes the voice of Alias itself, and will therefore only have an effect with long commands. | `Male`
 Language | Change the language Alias uses to speak to your assistant. This is to introduce another layer of noise that makes the system label you with a different nationality. To use this feature the command for the assistant has to be written in the same language. | `English`
 Volume | Change the volume of the speakers. This needs to be loud enough for the noise to block the assistant, but low enough not to be audible. Settings can vary by acoustics and ambient inferences. | `39`
-Sensitivity | This setting changes the sensitivity of the wake-up word detection. The lower the number the less sensitive. This setting can be helpful for short words. | `20`
 Noise Delay | This increase the delay after the wake-up word has been activated to restart the noise again. This is used as a noise free window, when asking the assistant a question. It should be set to match the appropriate time interval needed for the maximum length of a conversation. | `10s`
+Sensitivity | This setting changes the sensitivity of the wake-up word detection. This setting is found on the front page for each command. The lower the number the less sensitive. | `20`
 
 
 
