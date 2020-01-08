@@ -27,7 +27,7 @@ How to prepare and setup a Raspberry Pi for this project:
 
 2. Download the **2018-11-13-raspbian-stretch.img** image of [Raspbian](https://howchoo.com/g/nzc0yjzjy2u/raspbian-stretch-download) and flash your micro SD card with [Etcher](https://www.balena.io/etcher/)
 
-3. Copy the **ssh**, **wpa_supplicant.conf**, **tensorboard-1.12.0-py3-none-any.whl**, **tensorflow-1.14.0-cp36-none-linux_armv7l.whl**, and **scipy-1.3.3-cp35-cp35m-linux_armv7l.whl** files from the [setup folder](setup/) to the SD card (boot).
+3. Copy the **ssh**, **wpa_supplicant.conf**, **tensorboard-1.12.0-py3-none-any.whl**, **tensorflow-1.14.0-cp35-none-linux_armv7l.whl**, and **scipy-1.3.3-cp35-cp35m-linux_armv7l.whl** files from the [setup folder](setup/) to the SD card (boot).
 
 
 4. Edit the **wpa_supplicant.conf** in a text editor to match your wifi settings. Insert the card to the raspberry pi
