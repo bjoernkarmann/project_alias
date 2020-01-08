@@ -23,68 +23,101 @@ For the complete step-by-step guide and 3D files see our [Instructables](https:/
 
 How to prepare and setup a Raspberry Pi for this project:
 
-1. Download the latest version of [Raspbian](https://www.raspberrypi.org/downloads/raspbian/) and flash your micro SD card with [Etcher](https://etcher.io/)
+1. Using the [SD Memory Card Formatter](https://www.sdcard.org/downloads/formatter/index.html "SD's Download Page"), reformat your memory card by selecting the **overwrite** option and following the prompts.
 
-2. Copy the **ssh** and **wpa_supplicant.conf** files from the [setup folder](setup/) to the SD card (boot) 
+2. Download the `2018-11-13-raspbian-stretch.img` image of [Raspbian](https://howchoo.com/g/nzc0yjzjy2u/raspbian-stretch-download) and flash your micro SD card with [Etcher](https://www.balena.io/etcher/)
+
+3. Copy the **ssh**, **wpa_supplicant.conf**, **tensorboard-1.12.0-py3-none-any.whl**, **tensorflow-1.14.0-cp36-none-linux_armv7l.whl**, and **scipy-1.3.3-cp35-cp35m-linux_armv7l.whl** files from the [setup folder](setup/) to the SD card (boot).
 
 
-3. Edit the **wpa_supplicant.conf** in a text editor to match your wifi settings. Insert the card to the raspberry pi
+4. Edit the **wpa_supplicant.conf** in a text editor to match your wifi settings. Insert the card to the raspberry pi
 
 
-4. In terminal ssh into the pi: ```sudo ssh pi@raspberrypi.local```<br>*Default password is 'raspberry'. To change password use the 'passwd' command*
+5. In terminal ssh into the pi: ```sudo ssh pi@raspberrypi.local```<br>*Default password is 'raspberry'. To change password use the 'passwd' command*
 
-5. Update the pi: ```sudo apt-get update && sudo apt-get upgrade```<br>
+6. Update the pi: ```sudo apt-get update && sudo apt-get upgrade```<br>
 
 7. Reboot ```sudo reboot```
 
 
 ## Installing 
 
+On the Rapsberry Pi: clone and install the sound driver for the ReSpeaker hat:
+This is only required when using the ReSpeaker hat, this code will also work with other sound drivers.
+```
+cd && git clone https://github.com/respeaker/seeed-voicecard.git
+cd seeed-voicecard && sudo ./install.sh
+```
 
-### Necessary Software
-* [SD Memory Card Formatter](https://www.sdcard.org/downloads/formatter/index.html "SD's Download Page")
-* [BalenaEtcher](https://www.balena.io/etcher/ "Balena Etcher Download Link")
+Install the required modules in the following order. Some of these commands might fail but will succeed on the second or third attempts.
+```
+sudo apt-get install python3-dev python3-pip git libatlas-base-dev
+sudo apt-get install python3-numpy python3-spidev python-h5py
+sudo apt-get install portaudio19-dev
+sudo apt-get install python3-pyaudio libsdl-ttf2.0-0 python3-pygame
+sudo pip3 install --no-cache-dir protobuf
+sudo pip3 install flask flask_socketio python_speech_features
+```
 
+Clone the **Alias** project:
+```
+git clone --single-branch --branch 1.0 https://github.com/bjoernkarmann/project_alias.git
+```
 
-### Instructions
-1. Reformat your memory card with the formatting software in the `FAT32` or `FAT` format using the downloaded SD Memory Card Formatter software.
-2. Download the `2018-11-13-raspbian-stretch.img` image of [Raspbian Stretch](https://howchoo.com/g/nzc0yjzjy2u/raspbian-stretch-download) from the link and flash it onto your memory card using the downloaded BalenaEtcher software.
+Install packages from the wheels from the **setup** directory.
+```
+cd project_alias/setup
+sudo pip3 install tensorboard-1.12.0-py3-none-any.whl
+sudo pip3 install --no-cache-dir tensorflow-1.14.0-cp35-none-linux_armv7l.whl
+sudo pip3 install scipy-1.3.3-cp35-cp35m-linux_armv7l.whl
+cd
+```
 
-3. Download the project's `setup` folder from the repo.
-4. Add your network information into the `wpa_supplicant.conf` file.
-5. Move `ssh` and `wpa_supplicant.conf` to the RPi.
+Install **keras**:
+```
+`sudo pip3 install keras`
+```
 
-6. Insert your memory card into your RaspberryPi (RPi).
-7. Login to the RPi using `sudo ssh pi@raspberrypi.local`. The password will be `rapsberry`.
-8. `sudo apt-get update && sudo apt-get upgrade`.
-9. Reboot your raspberrypi using `sudo reboot` and `ssh` back into the RPi once it's done rebooting.
-10. `cd && git clone https://github. com/respeaker/seeed-voicecard. git`.
-11. `cd seeed-voicecard && sudo ./install.sh`.
+Create **startup.sh** and open it:
+```
+touch startup.sh
+sudo nano startup.sh
+```
 
-Installing the packages was the most difficult part. This order worked for me, especially using the provided wheels. Some of the non-wheel installations might fail once but work on the second try.
+Fill **startup.sh** with the following:
+```
+#!/bin/sh
 
-12. `sudo apt-get install python3-dev python3-pip git libatlas-base-dev`.
-13. `sudo apt-get install python3-numpy python3-spidev python-h5py`.
-14. `sudo apt-get install python3-pyaudio libsdl-ttf2. 0-0 python3-pygame`.
-15. `sudo pip3 install --no-cache-dir protobuf`.
-16. `sudo apt-get install urllib3`.
-17. `sudo pip3 flask flask_socketio python_speech_features`.
-18. Using the tensorboard file provided at `/installation/tensorboard-1.12.0-py3-none-any.whl` execute the following command replacing the bracketed part with the file's path `sudo pip3 install {provided tensorboard wheel file}`.
-19. Using the tensorflow file provided at `/installation/tensorflow-1.14.0-cp36-none-linux_armv7l.whl` execute the following command replacing the bracketed part with the file's path `sudo pip3 install --no-cache-dir {provided tensorflow wheel file}`.
-20. Using the scipy file provided at `/installation/scipy-1.3.3-cp35-cp35m-linux_armv7l.whl` execute the following command replacing the bracketed part with the file's path `sudo pip3 install {provided scipy wheel file}`.
-21. `sudo pip3 install keras`.
-22. Reboot your raspberrypi using `sudo reboot` and `ssh` back into the RPi once it's done rebooting.
-23. `git clone https://github.com/bjoernkarmann/project_alias.git`.
-24. Open the bootscript file with `sudo nano /etc/rc.local` and add the line `cd project_alias && python3 /home/pi/project_alias/app.py` immediately before the `exit 0` line.
+cd /home/pi/project_alias
 
-We'll need to fix the permissions of the files to make sure they execute after booting.
+python3 app.py &
 
-25. `sudo chmod 755 project_alias/app.py`.
-26. `sudo cdmod 755 /etc/rc.local`.
+exit 0
+```
 
-At this point, reboot your RPi. If everything worked, then the project should start right up.
+Open your bootscript:
+```
+sudo nano /etc/rc.local
+```
 
-Requirements files are provided in the `installaiton` directory and are separated by `pip` and `apt` packages.
+and add the following command immediately before the line that conatins **exit 0**:
+```
+sudo /home/pi/startup.sh
+```
+
+Update permissions for the bootscript.
+```
+sudo chmod 755 project_alias/app.py
+sudo chmod 755 startup.sh
+sudo cdmod 755 /etc/rc.local
+```
+
+Reboot the RPi to test it:
+```
+sudo reboot
+```
+
+Requirements files are provided in the `installation` directory in the **apt-reqs.txt** and **pip-reqs.txt** files.
 
 
 
