@@ -68,14 +68,14 @@ Install packages from the wheels from the **installation** directory.
 ```
 cd project_alias/installation
 sudo pip3 install tensorboard-1.12.0-py3-none-any.whl
-sudo pip3 install --no-cache-dir tensorflow-1.14.0-cp35-none-linux_armv7l.whl
 sudo pip3 install scipy-1.3.3-cp35-cp35m-linux_armv7l.whl
 cd
 ```
 
-Install **keras**:
+Install **tensorflow** and **keras**:
 ```
-`sudo pip3 install keras`
+sudo pip3 install --no-cache-dir https://www.piwheels.org/simple/tensorflow/tensorflow-1.14.0-cp35-none-linux_armv7l.whl#sha256=cba22b6d9a3e7a92c07e142bd5256c9773fd20c18090cb1d222357d3b3028655
+sudo pip3 install keras
 ```
 
 Create **startup.sh** and open it:
