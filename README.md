@@ -23,9 +23,9 @@ For the complete step-by-step guide and 3D files see our [Instructables](https:/
 
 How to prepare and setup a Raspberry Pi for this project:
 
-1. Using the [SD Memory Card Formatter](https://www.sdcard.org/downloads/formatter/index.html "SD's Download Page"), reformat your memory card by selecting the **overwrite** option and following the prompts.
+1. Using the [SD Memory Card Formatter](https://www.sdcard.org/downloads/formatter/index.html "SD's Download Page"), reformat your memory card by selecting the `overwrite` option and following the prompts.
 
-2. Download the `2018-11-13-raspbian-stretch.img` image of [Raspbian](https://howchoo.com/g/nzc0yjzjy2u/raspbian-stretch-download) and flash your micro SD card with [Etcher](https://www.balena.io/etcher/)
+2. Download the **2018-11-13-raspbian-stretch.img** image of [Raspbian](https://howchoo.com/g/nzc0yjzjy2u/raspbian-stretch-download) and flash your micro SD card with [Etcher](https://www.balena.io/etcher/)
 
 3. Copy the **ssh**, **wpa_supplicant.conf**, **tensorboard-1.12.0-py3-none-any.whl**, **tensorflow-1.14.0-cp36-none-linux_armv7l.whl**, and **scipy-1.3.3-cp35-cp35m-linux_armv7l.whl** files from the [setup folder](setup/) to the SD card (boot).
 
@@ -49,7 +49,7 @@ cd && git clone https://github.com/respeaker/seeed-voicecard.git
 cd seeed-voicecard && sudo ./install.sh
 ```
 
-Install the required modules in the following order. Some of these commands might fail but will succeed on the second or third attempts.
+Install the required modules in the following order:
 ```
 sudo apt-get install python3-dev python3-pip git libatlas-base-dev
 sudo apt-get install python3-numpy python3-spidev python-h5py
@@ -64,9 +64,9 @@ Clone the **Alias** project:
 git clone --single-branch --branch 1.0 https://github.com/bjoernkarmann/project_alias.git
 ```
 
-Install packages from the wheels from the **setup** directory.
+Install packages from the wheels from the **installation** directory.
 ```
-cd project_alias/setup
+cd project_alias/installation
 sudo pip3 install tensorboard-1.12.0-py3-none-any.whl
 sudo pip3 install --no-cache-dir tensorflow-1.14.0-cp35-none-linux_armv7l.whl
 sudo pip3 install scipy-1.3.3-cp35-cp35m-linux_armv7l.whl
