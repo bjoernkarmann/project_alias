@@ -132,7 +132,9 @@ class thread_with_exception(threading.Thread):
                             print('say:', data['whisper'])
                             sound.speak(data['whisper'])
                             time.sleep(int(globals.SETTING['setting']['delay']))
-                            noise.play()
+                            onOff = globals.SETTING['setting']['noise']
+                            if onOff:
+                                noise.play()
 
         finally:
             print('ended')
