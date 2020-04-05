@@ -80,6 +80,7 @@ If you wish to install it on your SO, you can use our automatic install script
 
 5. Clone project_alias repo and execute install script:
 ```
+sudo apt update -y && sudo apt upgrade -y && sudo apt install git -y
 cd $HOME && git clone https://github.com/bjoernkarmann/project_alias.git
 cd $HOME/project_alias/setup/ && ./install_script.sh
 ```
