@@ -31,10 +31,12 @@ def initialize():
 
 
 
-    global ROOT_PATH, KEYWORD_PATH, NOISE_PATH, SETTINGS_PATH
+    global ROOT_PATH, KEYWORD_PATH, NOISE_PATH, OKGOOGLE_PATH, ALEXA_PATH, SETTINGS_PATH
 
     # absolute file paths
     ROOT_PATH        = os.path.dirname(os.path.abspath(__file__))
     KEYWORD_PATH     = os.path.join(ROOT_PATH, '../data/keyphrase.list')
     NOISE_PATH       = os.path.join(ROOT_PATH, '../data/noise.wav')
+    OKGOOGLE_PATH    = os.path.join(ROOT_PATH, '../data/ok_google.wav')
+    ALEXA_PATH       = os.path.join(ROOT_PATH, '../data/alexa.wav')
     SETTINGS_PATH    = os.path.join(ROOT_PATH, '../data/settings.txt')

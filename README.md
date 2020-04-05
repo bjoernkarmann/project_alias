@@ -64,10 +64,40 @@ Noise Delay | This increase the delay after the wake-up word has been activated 
 Sensitivity | This setting changes the sensitivity of the wake-up word detection. This setting is found on the front page for each command. The lower the number the less sensitive. | `20`
 
 
+### Automatic Install (tested on 2020-02-13-raspbian-buster-lite)
+If you wish to install it on your SO, you can use our automatic install script
+
+1. Download the latest version of **[Raspbian Stretch](https://www.raspberrypi.org/downloads/raspbian/)** and flash your micro SD card with **[Etcher](https://etcher.io/)**
+
+
+2. Copy the **ssh** and **wpa_supplicant.conf** files from the **[setup folder](setup/)** to the SD card (boot)
+
+
+3. Edit the **wpa_supplicant.conf** in a text editor to match your wifi settings. Insert the card to the raspberry pi
+
+
+4. In terminal ssh into the pi: ```sudo ssh pi@raspberrypi.local```<br>*Default password is 'raspberry'. To change password use the 'passwd' command*
+
+5. Clone project_alias repo and execute install script:
+```
+sudo apt update -y && sudo apt upgrade -y && sudo apt install git -y
+cd $HOME && git clone https://github.com/bjoernkarmann/project_alias.git
+cd $HOME/project_alias/setup/ && ./install_script.sh
+```
 
 ### Manual Install
 
 If you wish to build this project manually, you can follow the guide below. We do recommend using the pre installed image linked in the Easy Setup.
+1. Download the latest version of **[Raspbian Stretch](https://www.raspberrypi.org/downloads/raspbian/)** and flash your micro SD card with **[Etcher](https://etcher.io/)**
+
+
+2. Copy the **ssh** and **wpa_supplicant.conf** files from the **[setup folder](setup/)** to the SD card (boot)
+
+
+3. Edit the **wpa_supplicant.conf** in a text editor to match your wifi settings. Insert the card to the raspberry pi
+
+
+4. In terminal ssh into the pi: ```sudo ssh pi@raspberrypi.local```<br>*Default password is 'raspberry'. To change password use the 'passwd' command*
 
 #### RaspberryPi Setup
  How to prepare and setup a Raspberry Pi for this project:
