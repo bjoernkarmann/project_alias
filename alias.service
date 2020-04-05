@@ -5,9 +5,10 @@ Requires=network.target
 
 [Service]
 Type=idle
+Environment="XDG_RUNTIME_DIR=/run/user/1000"
 ExecStartPre=/usr/bin/python3 -u sleep.py
 ExecStart=/usr/bin/python3 -u app.py > /home/pi/sample.log 2>&1
-WorkingDirectory=/home/pi/project_alias-2.0
+WorkingDirectory=/home/pi/project_alias
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
