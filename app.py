@@ -130,7 +130,16 @@ class thread_with_exception(threading.Thread):
                             globals.GLOW = True
                             noise.stop()
                             print('say:', data['whisper'])
-                            sound.speak(data['whisper'])
+                            if data['whisper'].lower() == "ok google":
+                                okgoogle.play()
+                                time.sleep(0.6)
+                                okgoogle.stop()
+                            elif data['whisper'].lower() == "alexa":
+                                alexa.play()
+                                time.sleep(0.5)
+                                alexa.stop()
+                            else:
+                                sound.speak(data['whisper'])
                             time.sleep(int(globals.SETTING['setting']['delay']))
                             noise.play()
 
@@ -214,6 +223,8 @@ if __name__ == '__main__':
     #Initialize the sound objects
      globals.initialize()
      noise = sound.audioPlayer(globals.NOISE_PATH)
+     okgoogle = sound.audioPlayer(globals.OKGOOGLE_PATH)
+     alexa = sound.audioPlayer(globals.ALEXA_PATH)
 
      thread_socket = Thread(target=socket_thread)
      thread_socket.daemon = True
