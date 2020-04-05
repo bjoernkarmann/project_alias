@@ -12,6 +12,11 @@ echo ""
 sudo sed -i "s/#dtparam=spi/dtparam=spi/g" /boot/config.txt
 
 echo ""
+echo "# Enable pi user console autologin (needed to communicate to dbus)"
+echo ""
+sudo ln -fs /etc/systemd/system/autologin@.service /etc/systemd/system/getty.target.wants/getty@tty1.service
+
+echo ""
 echo "# Install python basic tools"
 echo ""
 sudo apt install -qq -y python3-dev python3-pip git libatlas-base-dev
@@ -55,7 +60,7 @@ echo ""
 echo "# Clone project_alias repository"
 echo ""
 cd $HOME
-git clone --single-branch --branch fix-google-tts https://github.com/alefnode/project_alias.git
+git clone --single-branch --branch develop https://github.com/alefnode/project_alias.git
 cd project_alias
 
 echo ""
